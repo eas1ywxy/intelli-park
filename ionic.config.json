@@ -1,0 +1,8 @@
+{
+  "name": "IntelliPark",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite",
+  "id": "1594c03b"
+}
