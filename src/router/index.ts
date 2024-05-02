@@ -26,6 +26,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'PrivatePage',
         component: () => import('@/views/PrivatePage.vue')
+      },
+      {
+        path: 'StationPage',
+        component: () => import('@/views/StationPage.vue')
       }
     ]
   }

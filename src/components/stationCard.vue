@@ -1,5 +1,5 @@
 <template>
-    <ion-card href=''>
+    <ion-card href='/tabs/StationPage'>
         <ion-card-header>
             <ion-card-title class="stationTitle">{{ msg.stationName.length>12 ? msg.stationName.slice(0,12)+"..." : msg.stationName  }}
                 <span class="regionName">

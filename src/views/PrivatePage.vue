@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import {IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet, IonAlert} from '@ionic/vue';
+import {IonHeader, IonToolbar, IonTitle, IonLabel, IonPage, IonContent, IonAlert, IonList, IonIcon, IonItem, IonNote, IonAvatar} from '@ionic/vue';
 import { 
     chevronForward,
     chevronBackOutline,
@@ -75,8 +75,9 @@ export default {
     },
     data() {
         return {
-            userLocalData: {},
-            // userLocalData: getUserLocalData,
+            userLocalData: {
+                avatar: 1,
+            },
             userMsg: {
                 role: "user",
                 id: "006909112525",

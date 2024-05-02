@@ -37,7 +37,7 @@
             
             <ion-card>
                 <ion-list inset="true">
-                    <ion-item button="true" href=''>
+                    <ion-item button="true" href='/tabs/PrivatePage'>
                         <!-- color: danger红, tertiary蓝, success绿, warning黄 -->
                         <ion-icon :icon="personCircleOutline" color="tertiary" slot="start" size="large"></ion-icon>
                         <ion-label>个人信息</ion-label>
@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent} from '@ionic/vue';
+import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonList, IonItem, IonIcon, IonLabel} from '@ionic/vue';
 import {
     listCircleOutline,
     personCircleOutline,
@@ -86,7 +86,9 @@ export default {
     },
     data() {
         return {
-            userLocalData: {},
+            userLocalData: {
+                avatar: 1,
+            },
             userMsg: {
                 role: "user",
                 id: "006909112525",
@@ -99,6 +101,12 @@ export default {
             var str_UserLocalData = localStorage.getItem('userLocalData');
 
             console.log(str_UserLocalData);
+
+            if (str_UserLocalData == null){
+                this.userLocalData = {
+                    'avatar' : 1,
+                }
+            }
 
             var userLocalData = JSON.parse(str_UserLocalData);
 
