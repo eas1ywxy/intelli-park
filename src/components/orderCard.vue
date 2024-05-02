@@ -1,5 +1,5 @@
 <template>
-    <ion-card href=''>
+    <ion-card href='/tabs/DetailPage'>
         <ion-card-header>
             <ion-card-title>
                 <span id="startTime">{{ msg.startTime }}</span>

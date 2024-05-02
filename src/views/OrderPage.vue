@@ -4,7 +4,7 @@
             <ion-toolbar>
                 <ion-title style="text-align: center; margin-right: 12px;">
                     <span style="float: left;" @click="goBack()">
-                        <ion-icon id="backBtn":icon="chevronBackOutline" slot="end"></ion-icon>
+                        <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
                     <span>详情信息</span>
                 </ion-title>
@@ -39,7 +39,7 @@
 <script setup>
 import {IonPage, IonHeader, IonToolbar, IonTitle, IonSegment, IonSegmentButton, IonLabel, IonIcon} from '@ionic/vue';
 import { 
-    chevronBackOutline,
+    arrowBackOutline,
  } from 'ionicons/icons';
  import orderCard from '@/components/orderCard.vue';
 </script>
