@@ -43,7 +43,7 @@
                         <ion-label>个人信息</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
-                    <ion-item button="true" href=''>
+                    <ion-item button="true" href='/tabs/OrderPage'>
                         <ion-icon :icon="documentTextOutline" color="warning" slot="start" size="large"></ion-icon>
                         <ion-label>订单记录</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
