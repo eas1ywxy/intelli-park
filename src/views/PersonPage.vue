@@ -48,7 +48,7 @@
                         <ion-label>订单记录</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
-                    <ion-item button="true" href=''>
+                    <ion-item button="true" href='/tabs/VehiclePage'>
                         <ion-icon :icon="carSportOutline" color="success" slot="start" size="large"></ion-icon>
                         <ion-label>车辆登记</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
@@ -77,10 +77,12 @@ import {
     carSportOutline,
     pencil,
 } from 'ionicons/icons';
+import axios from 'axios';
 </script>
 
 <script>
 export default {
+    name: "PersonPage",
     components: {
 
     },
@@ -113,6 +115,16 @@ export default {
             this.userLocalData = userLocalData;
             
             return userLocalData;
+            // axios.get("../../resources/localData.json")
+            // .then(response => {
+            //     const d = response.data;
+            //     console.log(d);
+            //     this.userLocalData = d;
+
+            // })
+            // .catch(error => {
+            //     console.error('读取Json文件失败',error);
+            // })
         },
         putUserLocalData: function(userAvatar){
             var userLocalData = {
@@ -126,7 +138,7 @@ export default {
         }
     },
     mounted: function() {
-        this.getUserLocalData();
+        // this.getUserLocalData();
         // console.log(1);
     }
 }

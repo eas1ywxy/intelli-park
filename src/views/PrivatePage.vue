@@ -27,14 +27,22 @@
                 <ion-alert
                     trigger="avator-alert"
                     header="请选择你喜欢的头像"
-                    :buttons="alertButtons"
-                    :inputs="alertInputs"
+                    :buttons="alertButtons1"
+                    :inputs="alertInputs1"
                 ></ion-alert>
-                <ion-item button="true">
+
+                <ion-item id="name-alert" button="true">
                     <ion-label>用户名</ion-label>
                     <ion-note id="note" slot="end">{{ userMsg.name }}</ion-note>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
+                <ion-alert
+                    trigger="name-alert"
+                    header="重新设置用户名"
+                    :buttons="alertButtons2"
+                    :inputs="alertInputs2"
+                ></ion-alert>
+
                 <ion-item button="true">
                     <ion-label>密码</ion-label>
                     <span id="note">
@@ -64,12 +72,13 @@ import {
     chevronForward,
     arrowBackOutline,
  } from 'ionicons/icons';
-
+ import axios from 'axios';
 
 </script>
 
 <script>
 export default {
+    name: "PrivatePage",
     components: {
 
     },
@@ -87,32 +96,53 @@ export default {
                 vipDisableTime: "2024-6-30",
                 password: "123456789",
             },
-            alertButtons: [
+            alertButtons1: [
                 {
                     text: '确定',
                     handler: (data) => {
                         console.log('更新用户头像', data);
-                        var avatar = document.getElementById('avatar');
-                        if(data == 1) {
-                            avatar.setAttribute('src','../../resources/boy1.png');
-                        }else if(data == 2){
-                            avatar.setAttribute('src','../../resources/boy2.png');
-                        }else if(data == 3){
-                            avatar.setAttribute('src','../../resources/girl1.png');
-                        }else{
-                            avatar.setAttribute('src','../../resources/girl2.png');
-                        }
+                        // var avatar = document.getElementById('avatar');
+                        // if(data == 1) {
+                        //     avatar.setAttribute('src','../../resources/boy1.png');
+                        // }else if(data == 2){
+                        //     avatar.setAttribute('src','../../resources/boy2.png');
+                        // }else if(data == 3){
+                        //     avatar.setAttribute('src','../../resources/girl1.png');
+                        // }else{
+                        //     avatar.setAttribute('src','../../resources/girl2.png');
+                        // }
 
-                        var userLocalData = {
-                            'avatar' : data,
-                        }
-                        var str_userLocalData = JSON.stringify(userLocalData);
-                        console.log(str_userLocalData);
-                        localStorage.setItem('userLocalData', str_userLocalData);
+                        // var userLocalData = {
+                        //     'avatar' : data,
+                        // }
+                        // var str_userLocalData = JSON.stringify(userLocalData);
+                        // console.log(str_userLocalData);
+                        // localStorage.setItem('userLocalData', str_userLocalData);
+                        this.changeUserLocalData(data);
+                        // location.reload();
+                        // axios.get("../../resources/localData.json")
+                        // .then(response => {
+                        //     const d = response.data;
+                        //     console.log(d);
+                        //     // console.log(data);
+                        //     d.avatar = data;
+                        //     console.log(d);
+
+                        //     axios.put('../../resources/localData.json', d)
+                        //     .then(() => {
+                        //         console.log('Json文件更新成功');
+                        //     })
+                        //     .catch(error => {
+                        //         console.error('Json文件更新失败',error);
+                        //     })
+                        // })
+                        // .catch(error => {
+                        //     console.error('读取Json文件失败',error);
+                        // })
                     }
                 }
             ],
-            alertInputs: [
+            alertInputs1: [
                 {
                     label: '男一号头像',
                     type: 'radio',
@@ -135,9 +165,31 @@ export default {
                     value: 4,
                 },
             ],
+            alertButtons2: [
+                {
+                    text: '确定',
+                    handler: (data) => {
+                        console.log("更新用户名称",data[0]);
+                        this.userMsg.name = data[0];
+                    }
+                }
+            ],
+            alertInputs2: [
+                {
+                    placeholder: '不超过10个字符',
+                    attributes: {
+                        maxlength: 10,
+                    },
+                }
+            ],
         }
     },
     methods: {
+        changeUserLocalData: function(data){
+            this.userLocalData = {
+                'avatar' : data,
+            }
+        },
         getUserLocalData: function(){
             var str_UserLocalData = localStorage.getItem('userLocalData');
             
@@ -148,6 +200,16 @@ export default {
             this.userLocalData = userLocalData;
 
             return userLocalData;
+            // axios.get("../../resources/localData.json")
+            // .then(response => {
+            //     const d = response.data;
+            //     console.log(d);
+            //     this.userLocalData = d;
+
+            // })
+            // .catch(error => {
+            //     console.error('读取Json文件失败',error);
+            // })
         },
         putUserLocalData: function(userAvatar){
             var userLocalData = {
@@ -164,7 +226,7 @@ export default {
         }
     },
     mounted: function() {
-        this.getUserLocalData();
+        // this.getUserLocalData();
         // console.log(1);
     }
     

@@ -46,6 +46,7 @@ import {
 
 <script>
 export default {
+    name: "OrderPage",
     components: {
         orderCard,
     },

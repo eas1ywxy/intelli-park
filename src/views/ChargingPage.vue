@@ -22,6 +22,7 @@ import stationCard from '@/components/stationCard.vue';
 <script>
 
 export default {
+    name: "ChargingPage",
     components: {
         stationCard,
     },

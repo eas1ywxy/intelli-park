@@ -157,6 +157,7 @@ import equipmentCard from '@/components/equipmentCard.vue';
 
 <script>
 export default {
+    name: "StationPage",
     components: {
         equipmentCard,
     },
