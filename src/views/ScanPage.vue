@@ -13,21 +13,41 @@
 
         <ion-content>
             <div id="sanBox">
-                <!-- 扫码区域 -->
                 <video ref="video" id="video" autoplay></video>
-                <!-- 提示语 -->
                 <div v-show="tipShow" id="scan-tip">{{ tipMsg }}</div>
             </div>
         </ion-content>
+
+        <!-- <ion-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="6" :key="photo.filepath" v-for="photo in photos">
+                        <ion-img :src="photo.webviewPath"></ion-img>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+
+        </ion-content> -->
     </ion-page>
 </template>
 
 <script setup>
-import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon} from '@ionic/vue';
+import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,
+//   IonCol,
+//   IonFab,
+//   IonFabButton,
+//   IonGrid,
+//   IonImg,
+//   IonRow,
+} from '@ionic/vue';
 import { 
     arrowBackOutline,
  } from 'ionicons/icons';
 import { BrowserMultiFormatReader } from '@zxing/library';
+// import { camera, trash, close } from 'ionicons/icons';
+// import { usePhotoGallery, UserPhoto } from '@/composables/usePhotoGallery';
+
+// const { photos, takePhoto } = usePhotoGallery();
 </script>
 
 <script>
