@@ -62,7 +62,8 @@
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                    <span id="nowParkFee">{{ msg.parkFee.toFixed(4) }}</span>
+                    <!-- <span id="nowParkFee">{{ msg.parkFee.toFixed(4) }}</span> -->
+                    <span id="nowParkFee">{{ msg.parkFee }}</span>
                     <span id="pastParkFee">
                         <span id="pastParkFeeNum">{{ (1.5).toFixed(4) }}</span>元/度
                     </span>
@@ -136,7 +137,7 @@
 
             <hr class="line">
             
-            <equipment-card v-for="equipmentMsg in equipmentMsgs" :msg="equipmentMsg"></equipment-card>
+            <equipment-card v-for="equipmentMsg in msg.equipmentMsgs" :msg="equipmentMsg"></equipment-card>
 
         </ion-content>
     </ion-page>
@@ -153,6 +154,7 @@ import {
     closeCircle,
 } from 'ionicons/icons';
 import equipmentCard from '@/components/equipmentCard.vue';
+import request from '@/utils/require.ts';
 </script>
 
 <script>
@@ -169,124 +171,134 @@ export default {
                 userLng: 103.98748,
             },
             msg: {
-                stationName: "成都信息工程大学（航空港）南门充电站",
-                regionName: "成都信息工程大学（航空港）",
-                stationStatus: 50,
-                parkFee: 1.2350,
-                businessHours: "5:00~23:00",
-                stationAddress: "双流区学府路一段24号成都信息工程大学航空港校区",
-                serviceTel: "18x-xxxx-xxxx",
-                countryCode: "CD45476457",
-                areaCode: "SL03424563",
-                stationType: 1,
-                stationConstruction: 3,
-
-                stationLat: 30.5837,
-                stationLng: 103.98848,
+                // stationName: "成都信息工程大学（航空港）南门充电站",
+                stationName: String,
+                // regionName: "成都信息工程大学（航空港）",
+                regionName: String,
+                // stationStatus: 50,
+                stationStatus: Number,
+                // parkFee: 1.2350,
+                parkFee: Number,
+                // businessHours: "5:00~23:00",
+                businessHours: String,
+                // stationAddress: "双流区学府路一段24号成都信息工程大学航空港校区",
+                stationAddress: String,
+                // serviceTel: "18x-xxxx-xxxx",
+                serviceTel: String,
+                // countryCode: "CD45476457",
+                countryCode: String,
+                // areaCode: "SL03424563",
+                areaCode: String,
+                // stationType: 1,
+                stationType: Number,
+                // stationConstruction: 3,
+                stationConstruction: Number,
+                // stationLat: 30.5837,
+                // stationLng: 103.98848,
                 
+                // equipmentMsgs: [
+                //     {
+                //         equipmentName: "公牛智慧充电桩",
+                //         manufacturerName: "公牛",
+                //         equipmentModel: "A074",
+                //         equipmentType: 1,
+                //         power: 380,
+                //         connects: [
+                //             {
+                //                 connectorName: "1号接口",
+                //                 connectorType: "直流接口枪头",
+                //                 power: 300,
+                //                 matchCars: 1,
+                //                 state: 1,
+                //                 lockStatus: 10,
+                //             },
+                //             {
+                //                 connectorName: "2号接口",
+                //                 connectorType: "交流接口插头",
+                //                 power: 80,
+                //                 matchCars: 2,
+                //                 state: 2,
+                //                 lockStatus: 0,
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         equipmentName: "星星充电充电桩",
+                //         manufacturerName: "星星",
+                //         equipmentModel: "C038",
+                //         equipmentType: 2,
+                //         power: 380,
+                //         connects: [
+                //             {
+                //                 connectorName: "1号接口",
+                //                 connectorType: "直流接口枪头",
+                //                 power: 300,
+                //                 matchCars: "家用轿车",
+                //                 state: 1,
+                //                 lockStatus: 10,
+                //             },
+                //             {
+                //                 connectorName: "2号接口",
+                //                 connectorType: "交流接口插头",
+                //                 power: 80,
+                //                 matchCars: "小型客车",
+                //                 state: 2,
+                //                 lockStatus: 0,
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         equipmentName: "公牛智慧充电桩",
+                //         manufacturerName: "公牛",
+                //         equipmentModel: "A074",
+                //         equipmentType: 1,
+                //         power: 380,
+                //         connects: [
+                //             {
+                //                 connectorName: "1号接口",
+                //                 connectorType: "直流接口枪头",
+                //                 power: 300,
+                //                 matchCars: 1,
+                //                 state: 1,
+                //                 lockStatus: 10,
+                //             },
+                //             {
+                //                 connectorName: "2号接口",
+                //                 connectorType: "交流接口插头",
+                //                 power: 80,
+                //                 matchCars: 2,
+                //                 state: 2,
+                //                 lockStatus: 0,
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         equipmentName: "星星充电充电桩",
+                //         manufacturerName: "星星",
+                //         equipmentModel: "C038",
+                //         equipmentType: 2,
+                //         power: 380,
+                //         connects: [
+                //             {
+                //                 connectorName: "1号接口",
+                //                 connectorType: "直流接口枪头",
+                //                 power: 300,
+                //                 matchCars: "家用轿车",
+                //                 state: 1,
+                //                 lockStatus: 10,
+                //             },
+                //             {
+                //                 connectorName: "2号接口",
+                //                 connectorType: "交流接口插头",
+                //                 power: 80,
+                //                 matchCars: "小型客车",
+                //                 state: 2,
+                //                 lockStatus: 0,
+                //             }
+                //         ]
+                //     },
+                // ]
             },
-            equipmentMsgs: [
-                {
-                    equipmentName: "公牛智慧充电桩",
-                    manufacturerName: "公牛",
-                    equipmentModel: "A074",
-                    equipmentType: 1,
-                    power: 380,
-                    connects: [
-                        {
-                            connectorName: "1号接口",
-                            connectorType: "直流接口枪头",
-                            power: 300,
-                            matchCars: 1,
-                            state: 1,
-                            lockStatus: 10,
-                        },
-                        {
-                            connectorName: "2号接口",
-                            connectorType: "交流接口插头",
-                            power: 80,
-                            matchCars: 2,
-                            state: 2,
-                            lockStatus: 0,
-                        }
-                    ]
-                },
-                {
-                    equipmentName: "星星充电充电桩",
-                    manufacturerName: "星星",
-                    equipmentModel: "C038",
-                    equipmentType: 2,
-                    power: 380,
-                    connects: [
-                        {
-                            connectorName: "1号接口",
-                            connectorType: "直流接口枪头",
-                            power: 300,
-                            matchCars: "家用轿车",
-                            state: 1,
-                            lockStatus: 10,
-                        },
-                        {
-                            connectorName: "2号接口",
-                            connectorType: "交流接口插头",
-                            power: 80,
-                            matchCars: "小型客车",
-                            state: 2,
-                            lockStatus: 0,
-                        }
-                    ]
-                },
-                {
-                    equipmentName: "公牛智慧充电桩",
-                    manufacturerName: "公牛",
-                    equipmentModel: "A074",
-                    equipmentType: 1,
-                    power: 380,
-                    connects: [
-                        {
-                            connectorName: "1号接口",
-                            connectorType: "直流接口枪头",
-                            power: 300,
-                            matchCars: 1,
-                            state: 1,
-                            lockStatus: 10,
-                        },
-                        {
-                            connectorName: "2号接口",
-                            connectorType: "交流接口插头",
-                            power: 80,
-                            matchCars: 2,
-                            state: 2,
-                            lockStatus: 0,
-                        }
-                    ]
-                },
-                {
-                    equipmentName: "星星充电充电桩",
-                    manufacturerName: "星星",
-                    equipmentModel: "C038",
-                    equipmentType: 2,
-                    power: 380,
-                    connects: [
-                        {
-                            connectorName: "1号接口",
-                            connectorType: "直流接口枪头",
-                            power: 300,
-                            matchCars: "家用轿车",
-                            state: 1,
-                            lockStatus: 10,
-                        },
-                        {
-                            connectorName: "2号接口",
-                            connectorType: "交流接口插头",
-                            power: 80,
-                            matchCars: "小型客车",
-                            state: 2,
-                            lockStatus: 0,
-                        }
-                    ]
-                },
-            ]
         }
     },
     methods: {
@@ -311,7 +323,26 @@ export default {
         },
         goBack: function(){
             history.go(-1);
-        }
+        },
+        async getMsg() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const request = await this.getService({stationId: urlParams.get('stationId') || ''});
+            console.log(request.data.data);
+            this.msg = request.data.data;
+            console.log(this.msg.stationName.length);
+            console.log(this.msg.stationAddress.length);
+            
+        },
+        getService:function(pageData) {
+            return request({
+                url: '/tabs/StationPage',
+                params: pageData
+            })
+        },
+        
+    },
+    mounted: function() {
+        this.getMsg();
     }
 }
 </script>

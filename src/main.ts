@@ -34,6 +34,9 @@ import '@ionic/vue/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 
+// import axios from 'axios';
+// Vue.prototype.$axios = axios;
+
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 defineCustomElements(window);
 
@@ -41,6 +44,10 @@ const app = createApp(App)
   .use(IonicVue)
   .use(router);
 
+// app.config.globalProperties.axios = axios;
+
 router.isReady().then(() => {
   app.mount('#app');
 });
+
+

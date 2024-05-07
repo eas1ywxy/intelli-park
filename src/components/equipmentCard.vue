@@ -22,11 +22,14 @@
             <br>
             <span class="connectMsgs">充电设备总功率：{{ msg.power }}W</span>
             <br>
-
+            <hr>
+            
 
             <div class="equipmentConnectBtn" v-for="(connect, index) in msg.connects" :key="index">
-                <ion-button @click="connectBtnOnclick(index)">{{ connect.connectorName }}</ion-button>
+                <ion-button @click="connectBtnOnclick(index)">{{ connectorName[index] }}</ion-button>
             </div>
+            <hr>
+            <br>
             <br>
             <div class="connectMsgs" v-if="connectMsg">
                 <span>充电接口类型：{{ getConnectMsg(index).connectorType }}</span>
@@ -78,6 +81,7 @@ export default {
             msg: this.msg,
             connectMsg: false,
             index: 0,
+            connectorName: ["1号接口","2号接口"],
         }
     },
     methods: {

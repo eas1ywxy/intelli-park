@@ -45,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'ScanPage',
-        component: () => import('@/views/ScanPage2.vue')
+        component: () => import('@/views/ScanPage.vue')
       }
     ]
   }
