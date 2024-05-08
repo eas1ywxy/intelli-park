@@ -7,7 +7,7 @@
         </ion-header>
         <ion-content color="light">
 
-            <ion-card href='/tabs/PrivatePage'>
+            <ion-card :href='`/tabs/PrivatePage?id=${userMsg.id}`'>
                 <ion-card-content>
                     <div id="userBox">
                         <span id="avatarImg">
@@ -17,9 +17,9 @@
                             <img v-else="userLocalData.avatar == 1" alt="boy1" src="../../resources/boy1.png" />
                         </span>
                         <ion-icon id="userMsgBtn" :icon="chevronForward" slot="end"></ion-icon>
-                        <span v-if="userMsg.name!=null" id="userMsgOnline">
+                        <span v-if="userMsg.username!=null" id="userMsgOnline">
                             <div id="userName">
-                                {{ userMsg.name }}
+                                {{ userMsg.username }}
                                 <ion-icon id="pencil" :icon="pencil" slot="end"></ion-icon>
                             </div>
                             <div id="userRole">
@@ -37,13 +37,13 @@
             
             <ion-card>
                 <ion-list inset="true">
-                    <ion-item button="true" href='/tabs/PrivatePage'>
+                    <ion-item button="true" :href='`/tabs/PrivatePage?id=${userMsg.id}`'>
                         <!-- color: danger红, tertiary蓝, success绿, warning黄 -->
                         <ion-icon :icon="personCircleOutline" color="tertiary" slot="start" size="large"></ion-icon>
                         <ion-label>个人信息</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
-                    <ion-item button="true" href='/tabs/OrderPage'>
+                    <ion-item button="true" :href='`/tabs/OrderPage?id=${userMsg.id}`'>
                         <ion-icon :icon="documentTextOutline" color="warning" slot="start" size="large"></ion-icon>
                         <ion-label>订单记录</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
@@ -78,6 +78,7 @@ import {
     pencil,
 } from 'ionicons/icons';
 import axios from 'axios';
+import request from '@/utils/require.ts';
 </script>
 
 <script>
@@ -92,9 +93,10 @@ export default {
                 avatar: 1,
             },
             userMsg: {
-                role: "user",
-                id: "006909112525",
-                name: "18108070530",
+                // role: "user",
+                // id: "006909112525",
+                // username: "18108070530",
+                username: String,
             }
         }
     },
@@ -135,11 +137,23 @@ export default {
             console.log(str_userLocalData);
 
             localStorage.setItem('userLocalData', str_userLocalData);
+        },
+        async getUserMsgs()  {
+            const request = await this.getService({id:1});
+            console.log(request.data.data);
+            this.userMsg = request.data.data;
+        },
+        getService:function(pageData) {
+            return request({
+                url: '/tabs/PersonPage',
+                params: pageData
+            })
         }
     },
     mounted: function() {
         // this.getUserLocalData();
         // console.log(1);
+        this.getUserMsgs();
     }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <ion-card href='/tabs/DetailPage'>
+    <ion-card :href='`/tabs/DetailPage?chargeId=${msg.chargeId}`'>
         <ion-card-header>
             <ion-card-title>
                 <span id="startTime">{{ msg.startTime }}</span>
@@ -31,7 +31,7 @@
             
             <span v-if="msg.state != 4">
                 <span v-if="msg.endElectricity==0" id="electricity">开始电量：{{ msg.startElectricity }}%</span>
-                <span v-if="msg.endElectricity!=0" id="electricity">开始电量：{{ msg.startElectricity }}% => {{ msg.endElectricity }}</span>
+                <span v-if="msg.endElectricity!=0" id="electricity">开始电量：{{ msg.startElectricity }}% => {{ msg.endElectricity }}%</span>
             </span>
             
         </ion-card-content>

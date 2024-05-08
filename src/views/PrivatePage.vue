@@ -33,7 +33,7 @@
 
                 <ion-item id="name-alert" button="true">
                     <ion-label>用户名</ion-label>
-                    <ion-note id="note" slot="end">{{ userMsg.name }}</ion-note>
+                    <ion-note id="note" slot="end">{{ userMsg.username }}</ion-note>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
@@ -73,7 +73,7 @@ import {
     arrowBackOutline,
  } from 'ionicons/icons';
  import axios from 'axios';
-
+ import request from '@/utils/require.ts';
 </script>
 
 <script>
@@ -88,13 +88,13 @@ export default {
                 avatar: 1,
             },
             userMsg: {
-                role: "user",
-                id: "006909112525",
-                name: "18108070530",
-                phoneNum: "18108070530",
-                vip: 1,
-                vipDisableTime: "2024-6-30",
-                password: "123456789",
+                // role: "user",
+                // id: "006909112525",
+                // name: "18108070530",
+                // phoneNum: "18108070530",
+                // vip: 1,
+                // vipDisableTime: "2024-6-30",
+                // password: "123456789",
             },
             alertButtons1: [
                 {
@@ -223,11 +223,25 @@ export default {
         },
         goBack: function(){
             history.go(-1);
-        }
+        },
+        async getUserMsg() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const request = await this.getService({id: urlParams.get('id') || ''});
+            console.log(request.data.data);
+            this.userMsg = request.data.data;
+            
+        },
+        getService:function(pageData) {
+            return request({
+                url: '/tabs/PrivatePage',
+                params: pageData
+            })
+        },
     },
     mounted: function() {
         // this.getUserLocalData();
         // console.log(1);
+        this.getUserMsg();
     }
     
 }

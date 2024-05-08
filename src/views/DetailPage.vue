@@ -20,6 +20,7 @@
                 <ion-card-header>
                     <ion-card-title>
                         <span id="chargingInformation">充电信息</span>
+                        <span id="chargeId">ID:{{ msg.chargeId }}</span>
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content id="chargingContent">
@@ -37,7 +38,7 @@
                     <br>
                     <hr style="border: 0px;">
                     <div id="electricityTime">
-                        <span>时间：{{ msg.startElectricity }} {{ "--->" }} {{ msg.endElectricity }}</span>
+                        <span>时间：{{ msg.startTime }} {{ "--->" }} {{ msg.endTime }}</span>
                     </div>
                     <hr id="line">
                     <div style="line-height: 20px;">
@@ -108,7 +109,6 @@
                 <ion-card-header>
                     <ion-card-title>
                         <span id="stationInformation">站点信息</span>
-                        <span id="chargeId">ID:{{ msg.chargeId }}</span>
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content id="stationDetails">
@@ -132,7 +132,8 @@ import {
     starOutline,
     star,
     arrowBackOutline,
- } from 'ionicons/icons';
+} from 'ionicons/icons';
+import request from '@/utils/require.ts';
 </script>
 
 <script>
@@ -141,28 +142,43 @@ export default {
     data() {
         return{
             msg: {
-                stationName: "成都信息工程大学（航空港）南门充电站",
-                equipmentModel: "A074",
-                connectorName: "1号接口",
-                serviceTel: "18x-xxxx-xxxx",
-                star: 4,
-                chargeId: 1223234,
-                feedbackNote: "充电迅速，体验感好",
-                createTime: "2024-04-25",
-                state: 4,
-                vehicleModel: 1,
-                licencePlate: "川A98D3A",
-                startElectricity: "2024-04-05 12:30:00",
-                endElectricity: "2024-04-05 13:30:00",
-                electricity: 13.53,
-                cost: 8.43,
+                // stationName: "成都信息工程大学（航空港）南门充电站",
+                // equipmentModel: "A074",
+                // connectorName: "1号接口",
+                // serviceTel: "18x-xxxx-xxxx",
+                // star: 4,
+                // chargeId: 1223234,
+                // feedbackNote: "充电迅速，体验感好",
+                // createTime: "2024-04-25",
+                // state: 4,
+                // vehicleModel: 1,
+                // licencePlate: "川A98D3A",
+                // startTime: "2024-04-05 12:30:00",
+                // endTime: "2024-04-05 13:30:00",
+                // electricity: 13.53,
+                // cost: 8.43,
             }
         }
     },
     methods: {
         goBack: function(){
             history.go(-1);
-        }
+        },
+        async getMsg() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const request = await this.getService({chargeId: urlParams.get('chargeId') || ''});
+            console.log(request.data.data);
+            this.msg = request.data.data;
+        },
+        getService:function(pageData) {
+            return request({
+                url: '/tabs/DetailPage',
+                params: pageData
+            })
+        },
+    },
+    mounted: function(){
+        this.getMsg();
     }
 }
 </script>

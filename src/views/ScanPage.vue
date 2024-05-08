@@ -12,42 +12,27 @@
         </ion-header>
 
         <ion-content>
+            <!-- <span>{{ strToJson(virtualData)[0].equipmentId }}</span> -->
             <div id="sanBox">
                 <video ref="video" id="video" autoplay></video>
                 <div v-show="tipShow" id="scan-tip">{{ tipMsg }}</div>
+                <ion-button id="open-toast" expand="block" :disabled="true">查看识别结果</ion-button>
             </div>
+            
+            <ion-toast id="toast" trigger="open-toast" message="识别出错" :duration="5000"></ion-toast>
+  
+
         </ion-content>
-
-        <!-- <ion-content>
-            <ion-grid>
-                <ion-row>
-                    <ion-col size="6" :key="photo.filepath" v-for="photo in photos">
-                        <ion-img :src="photo.webviewPath"></ion-img>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-
-        </ion-content> -->
     </ion-page>
 </template>
 
 <script setup>
-import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,
-//   IonCol,
-//   IonFab,
-//   IonFabButton,
-//   IonGrid,
-//   IonImg,
-//   IonRow,
+import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonToast, IonButton,
 } from '@ionic/vue';
 import { 
     arrowBackOutline,
  } from 'ionicons/icons';
 import { BrowserMultiFormatReader } from '@zxing/library';
-// import { camera, trash, close } from 'ionicons/icons';
-// import { usePhotoGallery, UserPhoto } from '@/composables/usePhotoGallery';
-
-// const { photos, takePhoto } = usePhotoGallery();
 </script>
 
 <script>
@@ -59,6 +44,9 @@ export default {
             tipShow: false,  // 是否展示提示
             tipMsg: '',  // 提示文本内容
             scanText: '',  // 扫码结果文本内容
+            // virtualData: '{"equipmentId":"325345","stationId":"34534535","equipmentModel":"A074","equipmentType":"1","power":"380","equipmntName":"一号设备"}', //二维码虚拟数据
+            // virtualData: '{"sex":"男","info":"我是好人"},{"sex":"女","info":"我是好人",}',
+            jn: JSON,
         }
     },
     created() {
@@ -105,25 +93,28 @@ export default {
             this.codeReader.decodeFromInputVideoDeviceContinuously(firstDeviceId, 'video', (result, err) => {
             this.tipMsg = '正在尝试识别...';
             if (result) {
-                // this.tipMsg = '识别成功';
-                console.log('扫码结果', result);
+                
+                console.log('扫码结果', result.text);
                 this.scanText = result.text;
-                if (this.scanText) {
-                this.tipShow = false;
-                Dialog.confirm({  // 获取到扫码结果进行弹窗提示，这部分接下去的代码根据需要，读者自行编写了
-                    title: '扫码结果',
-                    message: this.scanText,
-                }).then(() => {  // 点击确认
-    
-                }).catch(() => {  // 点击取消
-    
-                });
-                }
+                console.log(this.scanText);
+                this.jn = this.strToJson(this.scanText);
+                console.log(this.jn[0].equipmentId);
+                this.tipMsg = '识别成功';
+
+                let btn = document.getElementById('open-toast');
+                btn.setAttribute('disabled', false);
+
+                let toast = document.getElementById('toast');
+                toast.setAttribute('message', result.text);
             }
             });
         },
         goBack: function(){
             history.go(-1);
+        },
+        strToJson: function(str){ 
+        var json = (new Function("return [" + str+"]"))(); 
+        return json; 
         }
     },
 }
