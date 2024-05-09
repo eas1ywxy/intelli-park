@@ -43,18 +43,32 @@
                     :inputs="alertInputs2"
                 ></ion-alert>
 
-                <ion-item button="true">
+                <ion-item id="passward-alert" button="true">
                     <ion-label>密码</ion-label>
                     <span id="note">
                         <ion-note id="passward" slot="end" v-for="p in userMsg.password">{{ "·" }}</ion-note>
                     </span>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
-                <ion-item button="true">
+                <ion-alert
+                    trigger="passward-alert"
+                    header="重新设置用户密码"
+                    :buttons="alertButtons3"
+                    :inputs="alertInputs3"
+                ></ion-alert>
+
+                <ion-item id="phoneNum-alert" button="true">
                     <ion-label>绑定手机</ion-label>
                     <ion-note id="note" slot="end">{{ userMsg.phoneNum }}</ion-note>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
+                <ion-alert
+                    trigger="phoneNum-alert"
+                    header="重新绑定用户手机号"
+                    :buttons="alertButtons4"
+                    :inputs="alertInputs4"
+                ></ion-alert>
+
                 <ion-item button="true">
                     <ion-label>会员到期时间</ion-label>
                     <ion-note id="note" v-if="userMsg.vip==1" slot="end">{{ userMsg.vipDisableTime }}</ion-note>
@@ -62,12 +76,12 @@
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
             </ion-list>
-        </ion-content>
+        </ion-content> 
     </ion-page>
 </template>
 
 <script setup>
-import {IonHeader, IonToolbar, IonTitle, IonLabel, IonPage, IonContent, IonAlert, IonList, IonIcon, IonItem, IonNote, IonAvatar} from '@ionic/vue';
+import {IonHeader, IonToolbar, IonTitle, IonLabel, IonPage, IonContent, IonAlert, IonList, IonIcon, IonItem, IonNote, IonAvatar, alertController } from '@ionic/vue';
 import { 
     chevronForward,
     arrowBackOutline,
@@ -96,6 +110,12 @@ export default {
                 // password: "123456789",
             },
             alertButtons1: [
+                {
+                    text: '取消',
+                    handler: () => {
+                        console.log('取消更新用户头像');
+                    }
+                },
                 {
                     text: '确定',
                     handler: (data) => {
@@ -166,10 +186,17 @@ export default {
             ],
             alertButtons2: [
                 {
+                    text: '取消',
+                    handler: () => {
+                        console.log('取消更改用户名称');
+                    }
+                },
+                {
                     text: '确定',
                     handler: (data) => {
                         console.log("更新用户名称",data[0]);
-                        this.userMsg.name = data[0];
+                        this.userMsg.username = data[0];
+                        this.changeSuccess();
                     }
                 }
             ],
@@ -178,6 +205,74 @@ export default {
                     placeholder: '不超过10个字符',
                     attributes: {
                         maxlength: 10,
+                    },
+                }
+            ],
+            alertButtons3: [
+                {
+                    text: '取消',
+                    handler: () => {
+                        console.log('取消更改用户密码');
+                    }
+                },
+                {
+                    text: '确定',
+                    handler: (data) => {
+                        console.log("更新用户密码", data[0], data[1]);
+                        if(data[0]==''||data[1]==''){
+                            console.log('缺少数据');
+                            this.changePasswordFailure();
+                        }else{
+                            if(data[0]!=data[1]){
+                                console.log('两次密码不相同');
+                                this.changePasswordFailure();
+                            }else{
+                                this.userMsg.password = data[1];
+                                this.changeSuccess();
+                            }
+                        } 
+                    }
+                }
+            ],
+            alertInputs3: [
+                {
+                    placeholder: '不超过20个字符',
+                    attributes: {
+                        maxlength: 20,
+                    },
+                },
+                {
+                    placeholder: '再次输入相同的密码',
+                    attributes: {
+                        maxlength: 20,
+                    },
+                }
+            ],
+            alertButtons4: [
+                {
+                    text: '取消',
+                    handler: () => {
+                        console.log('取消更改用户手机号');
+                    }
+                },
+                {
+                    text: '确定',
+                    handler: (data) => {
+                        console.log("更新用户手机号",data[0]);
+                        if(data[0]!=''&&data[0].length==11){
+                            this.userMsg.phoneNum = data[0];
+                            this.changeSuccess();
+                        }else{
+                            this.changePhoneNumFailure();
+                        }
+                    }
+                }
+            ],
+            alertInputs4: [
+                {
+                    placeholder: '请输入11位的手机号',
+                    attributes: {
+                        maxlength: 11,
                     },
                 }
             ],
@@ -235,6 +330,29 @@ export default {
                 url: '/tabs/PrivatePage',
                 params: pageData
             })
+        },
+        changePasswordFailure :async() => {
+            const alert = await alertController.create({
+                header: '修改失败',
+                message: '请确保两次密码均填写且相同',
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
+        changePhoneNumFailure :async() => {
+            const alert = await alertController.create({
+                header: '修改失败',
+                message: '请输入11位手机号',
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
+        changeSuccess :async() => {
+            const alert = await alertController.create({
+                header: '修改成功',
+                buttons: ['确定'],
+            });
+            await alert.present();
         },
     },
     mounted: function() {

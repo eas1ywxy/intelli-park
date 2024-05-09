@@ -2,12 +2,7 @@
     <ion-page>
         <ion-header>
             <ion-toolbar>
-                <ion-title style="text-align: center; margin-right: 12px;">
-                    <span style="float: left;" @click="goBack()">
-                        <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
-                    </span>
-                    <span>扫描</span>
-                </ion-title>
+                <ion-title style="text-align: center; margin-right: 12px;">请对准设备二维码</ion-title>
             </ion-toolbar>
         </ion-header>
 
@@ -17,6 +12,7 @@
                 <video ref="video" id="video" autoplay></video>
                 <div v-show="tipShow" id="scan-tip">{{ tipMsg }}</div>
                 <ion-button id="open-toast" expand="block" :disabled="true">查看识别结果</ion-button>
+                <ion-button id="drawGunBtn" expand="block" :disabled="true" :href='`/tabs/DrawGunPage?id=${equipmentId}`'>>> 前往拔枪 <<</ion-button>
             </div>
             
             <ion-toast id="toast" trigger="open-toast" message="识别出错" :duration="5000"></ion-toast>
@@ -47,6 +43,7 @@ export default {
             // virtualData: '{"equipmentId":"325345","stationId":"34534535","equipmentModel":"A074","equipmentType":"1","power":"380","equipmntName":"一号设备"}', //二维码虚拟数据
             // virtualData: '{"sex":"男","info":"我是好人"},{"sex":"女","info":"我是好人",}',
             jn: JSON,
+            equipmentId: '',
         }
     },
     created() {
@@ -98,6 +95,7 @@ export default {
                 this.scanText = result.text;
                 console.log(this.scanText);
                 this.jn = this.strToJson(this.scanText);
+                this.equipmentId = this.jn[0].equipmentId;
                 console.log(this.jn[0].equipmentId);
                 this.tipMsg = '识别成功';
 
@@ -106,11 +104,11 @@ export default {
 
                 let toast = document.getElementById('toast');
                 toast.setAttribute('message', result.text);
+
+                let drawGunBtn = document.getElementById('drawGunBtn');
+                drawGunBtn.setAttribute('disabled', false);
             }
             });
-        },
-        goBack: function(){
-            history.go(-1);
         },
         strToJson: function(str){ 
         var json = (new Function("return [" + str+"]"))(); 
