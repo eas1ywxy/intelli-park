@@ -72,7 +72,6 @@ import {
     chevronForward,
     arrowBackOutline,
  } from 'ionicons/icons';
- import axios from 'axios';
  import request from '@/utils/require.ts';
 </script>
 

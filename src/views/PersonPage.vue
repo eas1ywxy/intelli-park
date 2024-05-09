@@ -77,7 +77,6 @@ import {
     carSportOutline,
     pencil,
 } from 'ionicons/icons';
-import axios from 'axios';
 import request from '@/utils/require.ts';
 </script>
 
