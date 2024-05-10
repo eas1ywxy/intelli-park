@@ -36,7 +36,7 @@ import {IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent} f
 <script>
 
 export default {
-    name: "chargingStation",
+    name: "chargingCard",
     props: {
         userMsg: Array,
         msg: Array,

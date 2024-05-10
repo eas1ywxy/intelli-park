@@ -32,7 +32,15 @@
             <br>
             <br>
             <div class="connectMsgs" v-if="connectMsg">
-                <span>充电接口类型：{{ getConnectMsg(index).connectorType }}</span>
+                <!-- 1:家用插座（模式2）; 2:交流接口插座（模式3,连 接方式B）; 3:交流接口插头（带枪线， 模式3,连接方式C）; 4:直流接口枪头（带枪线， 模式4）; 5:无线充电座； 6:其他 -->
+                <span>充电接口类型：
+                    <span v-if="getConnectMsg(index).connectorType==1">家用插座（模式2）</span>
+                    <span v-else-if="getConnectMsg(index).connectorType==2">交流接口插座（模式3,连 接方式B）</span>
+                    <span v-else-if="getConnectMsg(index).connectorType==3">交流接口插头（带枪线， 模式3,连接方式C）</span>
+                    <span v-else-if="getConnectMsg(index).connectorType==4">直流接口枪头（带枪线， 模式4）</span>
+                    <span v-else-if="getConnectMsg(index).connectorType==5">无线充电座</span>
+                    <span v-else="getConnectMsg(index).connectorType==6">其他</span>
+                </span>
                 <br>
                 <span>额定功率：{{ getConnectMsg(index).power }}W</span>
                 <br>

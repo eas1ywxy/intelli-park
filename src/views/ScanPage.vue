@@ -12,12 +12,13 @@
                 <video ref="video" id="video" autoplay></video>
                 <div v-show="tipShow" id="scan-tip">{{ tipMsg }}</div>
                 <ion-button id="open-toast" expand="block" :disabled="true">查看识别结果</ion-button>
-                <ion-button id="drawGunBtn" expand="block" :disabled="true" :href='`/tabs/DrawGunPage?id=${equipmentId}`'>>> 前往拔枪 <<</ion-button>
+                <ion-button id="drawGunBtn" expand="block" :disabled="true" :href='`/tabs/DrawGunPage?equipmentId=${equipmentMsg.equipmentId}`'>>> 前往拔枪 <<</ion-button>
+                
             </div>
             
             <ion-toast id="toast" trigger="open-toast" message="识别出错" :duration="5000"></ion-toast>
   
-
+            
         </ion-content>
     </ion-page>
 </template>
@@ -25,9 +26,6 @@
 <script setup>
 import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonToast, IonButton,
 } from '@ionic/vue';
-import { 
-    arrowBackOutline,
- } from 'ionicons/icons';
 import { BrowserMultiFormatReader } from '@zxing/library';
 </script>
 
@@ -43,7 +41,14 @@ export default {
             // virtualData: '{"equipmentId":"325345","stationId":"34534535","equipmentModel":"A074","equipmentType":"1","power":"380","equipmntName":"一号设备"}', //二维码虚拟数据
             // virtualData: '{"sex":"男","info":"我是好人"},{"sex":"女","info":"我是好人",}',
             jn: JSON,
-            equipmentId: '',
+            equipmentMsg: {
+                equipmentId: Number,
+                stationId: Number,
+                equipmentModel: String,
+                equipmentType: Number,
+                power: Number,
+                equipmntName: String,
+            },
         }
     },
     created() {
@@ -95,8 +100,13 @@ export default {
                 this.scanText = result.text;
                 console.log(this.scanText);
                 this.jn = this.strToJson(this.scanText);
-                this.equipmentId = this.jn[0].equipmentId;
-                console.log(this.jn[0].equipmentId);
+                this.equipmentMsg.equipmentId = this.jn[0].equipmentId;
+                this.equipmentMsg.stationId = this.jn[0].stationId;
+                this.equipmentMsg.equipmentModel = this.jn[0].equipmentModel;
+                this.equipmentMsg.equipmentType = this.jn[0].equipmentType;
+                this.equipmentMsg.power = this.jn[0].power;
+                this.equipmentMsg.equipmntName = this.jn[0].equipmntName;
+                console.log(this.equipmentMsg.equipmentId);
                 this.tipMsg = '识别成功';
 
                 let btn = document.getElementById('open-toast');
