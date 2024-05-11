@@ -48,7 +48,7 @@
                         <ion-label>订单记录</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
-                    <ion-item button="true" href='/tabs/VehiclePage'>
+                    <ion-item button="true" :href='`/tabs/VehiclePage?id=${userMsg.id}`'>
                         <ion-icon :icon="carSportOutline" color="success" slot="start" size="large"></ion-icon>
                         <ion-label>车辆登记</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
@@ -100,6 +100,7 @@ export default {
         }
     },
     methods: {
+        //locolStorage本地存储用户头像
         getUserLocalData: function(){
             var str_UserLocalData = localStorage.getItem('userLocalData');
 
@@ -137,6 +138,8 @@ export default {
 
             localStorage.setItem('userLocalData', str_userLocalData);
         },
+
+        //GET 获取用户个人信息
         async getUserMsgs()  {
             const request = await this.getService({id:1});
             console.log(request.data.data);

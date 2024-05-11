@@ -161,9 +161,12 @@ export default {
         }
     },
     methods: {
+        //返回上一页
         goBack: function(){
             history.go(-1);
         },
+
+        //GET 获取订单详情信息
         async getMsg() {
             const urlParams = new URLSearchParams(window.location.search);
             const request = await this.getService({chargeId: urlParams.get('chargeId') || ''});

@@ -51,6 +51,10 @@ const routes: Array<RouteRecordRaw> = [
         path: 'DrawGunPage',
         component: () => import('@/views/DrawGunPage.vue')
       },
+      {
+        path: 'RegisterPage',
+        component: () => import('@/views/RegisterPage.vue')
+      }
     ]
   }
 ]

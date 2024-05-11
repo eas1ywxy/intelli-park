@@ -302,9 +302,12 @@ export default {
         }
     },
     methods: {
+        //打开/关闭更多信息按钮
         changingDetailsFold() {
             this.detailsFold = !this.detailsFold;
         },
+
+
         //通过经纬度求两地间的距离
         getDistance(lat1, lng1, lat2, lng2) {
             lat1 = lat1 || 0;
@@ -321,9 +324,13 @@ export default {
 
             return Math.ceil(distance);
         },
+
+        //返回上一页
         goBack: function(){
             history.go(-1);
         },
+
+        //GET 获取充电站信息
         async getMsg() {
             const urlParams = new URLSearchParams(window.location.search);
             const request = await this.getService({stationId: urlParams.get('stationId') || ''});

@@ -109,6 +109,8 @@ export default {
                 // vipDisableTime: "2024-6-30",
                 // password: "123456789",
             },
+
+            //修改用户头像选择提示框
             alertButtons1: [
                 {
                     text: '取消',
@@ -184,6 +186,8 @@ export default {
                     value: 4,
                 },
             ],
+
+            //修改用户名称选择提示框
             alertButtons2: [
                 {
                     text: '取消',
@@ -195,8 +199,10 @@ export default {
                     text: '确定',
                     handler: (data) => {
                         console.log("更新用户名称",data[0]);
-                        this.userMsg.username = data[0];
-                        this.changeSuccess();
+                        const post = this.postUsername(data[0]);
+                        if(post==0){
+                            this.userMsg.username = data[0];
+                        }
                     }
                 }
             ],
@@ -208,6 +214,8 @@ export default {
                     },
                 }
             ],
+
+            //修改用户密码选择提示框
             alertButtons3: [
                 {
                     text: '取消',
@@ -248,6 +256,8 @@ export default {
                     },
                 }
             ],
+
+            //修改用户手机号选择提示框
             alertButtons4: [
                 {
                     text: '取消',
@@ -279,6 +289,7 @@ export default {
         }
     },
     methods: {
+        //localStorage本地存储用户头像
         changeUserLocalData: function(data){
             this.userLocalData = {
                 'avatar' : data,
@@ -315,9 +326,13 @@ export default {
 
             localStorage.setItem('userLocalData', str_userLocalData);
         },
+
+        //返回上一页
         goBack: function(){
             history.go(-1);
         },
+
+        //GET 获取用户个人信息
         async getUserMsg() {
             const urlParams = new URLSearchParams(window.location.search);
             const request = await this.getService({id: urlParams.get('id') || ''});
@@ -331,6 +346,56 @@ export default {
                 params: pageData
             })
         },
+
+        //POST 修改用户名称
+        postUsername: function(username)  {
+            const urlParams = new URLSearchParams(window.location.search);
+            let userId = urlParams.get('id') || '';
+            let info = {
+                id: userId,
+                username: username,
+            }
+            if(username != ''){
+                const request = this.postVehicleInformation(info);
+                console.log('request:',request);
+                if(request){
+                    this.changeSuccess();
+                    return 0;
+                }else{
+                    this.changeFailure();
+                    return -1;
+                }
+            }else{
+                this.changeUsernameFailure();
+                return -1;
+            }
+        },
+        postVehicleInformation: function(info) {
+            return request({
+                url: '/tabs/PrivatePage/username',
+                method: 'POST',
+                data: info,
+            })
+        },
+
+        //修改失败弹窗
+        changeFailure :async() => {
+            const alert = await alertController.create({
+                header: '修改失败',
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
+        //修该用户名失败
+        changeUsernameFailure :async() => {
+            const alert = await alertController.create({
+                header: '修改失败',
+                message: '请确保用户名不为空',
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
+        //修改用户密码失败
         changePasswordFailure :async() => {
             const alert = await alertController.create({
                 header: '修改失败',
@@ -339,6 +404,7 @@ export default {
             });
             await alert.present();
         },
+        //修改手机号失败
         changePhoneNumFailure :async() => {
             const alert = await alertController.create({
                 header: '修改失败',
@@ -347,6 +413,7 @@ export default {
             });
             await alert.present();
         },
+        //修改成功
         changeSuccess :async() => {
             const alert = await alertController.create({
                 header: '修改成功',

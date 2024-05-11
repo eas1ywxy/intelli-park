@@ -99,6 +99,7 @@ export default {
         }
     },
     methods: {
+        //GET 获取充电站信息
         async getStationMsgs()  {
             const request = await this.getService({pageNum:1,pageSize:10,stationType:1});
             console.log(request.data.data.records);

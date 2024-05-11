@@ -66,7 +66,8 @@ export default {
       this.codeReader = null;
     },
     methods: {
-        async openScan() {  // 初始化摄像头
+        // 初始化摄像头
+        async openScan() {  
             this.codeReader = await new BrowserMultiFormatReader();
             this.codeReader.getVideoInputDevices().then(videoDevices => {
             this.tipMsg = '正在调用摄像头...';
@@ -90,7 +91,8 @@ export default {
             console.error(err);
             });
         },
-        decodeFromInputVideoFunc(firstDeviceId) {  // 使用摄像头扫描
+        // 使用摄像头扫描
+        decodeFromInputVideoFunc(firstDeviceId) { 
             this.codeReader.reset(); // 重置
             this.codeReader.decodeFromInputVideoDeviceContinuously(firstDeviceId, 'video', (result, err) => {
             this.tipMsg = '正在尝试识别...';
@@ -120,6 +122,8 @@ export default {
             }
             });
         },
+
+        //将扫描的结果转换为Json格式
         strToJson: function(str){ 
         var json = (new Function("return [" + str+"]"))(); 
         return json; 

@@ -218,13 +218,18 @@ export default {
         }
     },
     methods: {
+        //修改订单类别
         changeOption: function(data){
             this.option = data;
             console.log("option改为"+data);
         },
+
+        //返回上一页
         goBack: function(){
             history.go(-1);
         },
+
+        //GET 获取用户订单信息
         async getOrdersMsg() {
             const urlParams = new URLSearchParams(window.location.search);
             const request = await this.getService({id: urlParams.get('id') || ''});

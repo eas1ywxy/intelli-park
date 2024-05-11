@@ -78,9 +78,12 @@ export default {
         }
     },
     methods: {
+        //返回上一页
         goBack: function(){
             history.go(-1);
         },
+
+        //GET 获取充电桩设备信息
         async getEquipmentMsg() {
             const urlParams = new URLSearchParams(window.location.search);
             const request = await this.getService({equipmentId: urlParams.get('equipmentId') || ''});

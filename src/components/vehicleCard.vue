@@ -16,7 +16,7 @@
                 <span class="licencePlates">{{ lp }}</span>
             </div>
             <br>
-            <span id="electricity">{{ msg.electricity }}</span>
+            <span id="electricity">{{ msg.electricity }}W</span>
         </ion-card-content>
     </ion-card>
 </template>
