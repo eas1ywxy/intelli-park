@@ -58,6 +58,14 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'ReviewPage',
         component: () => import('@/views/ReviewPage.vue')
+      },
+      {
+        path: 'SettingPage',
+        component: () => import('@/views/SettingPage.vue')
+      },
+      {
+        path: 'WalletPage',
+        component: () => import('@/views/WalletPage.vue')
       }
     ]
   }

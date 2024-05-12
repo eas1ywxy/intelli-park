@@ -53,7 +53,7 @@
                         <ion-label>车辆登记</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
-                    <ion-item button="true">
+                    <ion-item button="true" :href="`/tabs/SettingPage?id=${userMsg.id}`">
                         <ion-icon :icon="listCircleOutline" color="danger" slot="start" size="large"></ion-icon>
                         <ion-label>其他设置</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>

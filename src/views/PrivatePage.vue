@@ -70,6 +70,12 @@
                 ></ion-alert>
 
                 <ion-item button="true">
+                    <ion-label>账户余额</ion-label>
+                    <ion-note id="note" slot="end">{{ userMsg.balance }}</ion-note>
+                    <ion-icon :icon="chevronForward" slot="end"></ion-icon>
+                </ion-item>
+
+                <ion-item button="true">
                     <ion-label>会员到期时间</ion-label>
                     <ion-note id="note" v-if="userMsg.vip==1" slot="end">{{ userMsg.vipDisableTime }}</ion-note>
                     <ion-note id="note" v-else="userMsg.vip==0" slot="end">未开通</ion-note>
