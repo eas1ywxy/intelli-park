@@ -75,8 +75,8 @@
                         <span class="Stars" v-for="s in 5"><ion-icon :icon="starOutline" slot="start" size="large"></ion-icon></span>
                     </div>
                     <br>
-                    <div id="gpMark">
-                        <span>还未评分，前往评分>></span>
+                    <div>
+                        <a id="gpMark" :href="`/tabs/ReviewPage?chargeId=${msg.chargeId}`">还未评分，前往评分>></a>
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -361,16 +361,19 @@ export default {
 
 #feedbackNote{
     float: left;
+    margin-top: 10px;
     position: relative;
     left: 10px;
+    bottom: 10px;
     font-size: 14px;
     color: #636363;
 }
 
 #gpMark{
     float: right;
-    color: #ffc409;
     padding-bottom: 10px;
+    text-decoration: none;
+    color: #ffca22;
 }
 
 #backBtn{

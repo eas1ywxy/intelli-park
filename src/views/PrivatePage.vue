@@ -235,10 +235,13 @@ export default {
                                 console.log('两次密码不相同');
                                 this.changePasswordFailure();
                             }else{
-                                this.userMsg.password = data[1];
-                                this.changeSuccess();
+                                const post = this.postPassword(data[1]);
+                                if(post==0){
+                                    this.userMsg.password = data[1];
+                                }
                             }
                         } 
+                        
                     }
                 }
             ],
@@ -269,11 +272,15 @@ export default {
                     text: '确定',
                     handler: (data) => {
                         console.log("更新用户手机号",data[0]);
-                        if(data[0]!=''&&data[0].length==11){
+                        // if(data[0]!=''&&data[0].length==11){
+                        //     this.userMsg.phoneNum = data[0];
+                        //     this.changeSuccess();
+                        // }else{
+                        //     this.changePhoneNumFailure();
+                        // }
+                        const post = this.postPhoneNum(data[0]);
+                        if(post==0){
                             this.userMsg.phoneNum = data[0];
-                            this.changeSuccess();
-                        }else{
-                            this.changePhoneNumFailure();
                         }
                     }
                 }
@@ -350,13 +357,14 @@ export default {
         //POST 修改用户名称
         postUsername: function(username)  {
             const urlParams = new URLSearchParams(window.location.search);
-            let userId = urlParams.get('id') || '';
+            let id = urlParams.get('id') || '';
             let info = {
-                id: userId,
+                id: id,
                 username: username,
             }
+            console.log(info);
             if(username != ''){
-                const request = this.postVehicleInformation(info);
+                const request = this.postUsernameInformation(info);
                 console.log('request:',request);
                 if(request){
                     this.changeSuccess();
@@ -370,9 +378,71 @@ export default {
                 return -1;
             }
         },
-        postVehicleInformation: function(info) {
+        postUsernameInformation: function(info) {
             return request({
                 url: '/tabs/PrivatePage/username',
+                method: 'POST',
+                data: info,
+            })
+        },
+
+        //POST 修改用户密码
+        postPassword: function(password)  {
+            const urlParams = new URLSearchParams(window.location.search);
+            let id = urlParams.get('id') || '';
+            let info = {
+                id: id,
+                password: password,
+            }
+            if(password != ''){
+                const request = this.postPasswordInformation(info);
+                console.log('request:',request);
+                if(request){
+                    this.changeSuccess();
+                    return 0;
+                }else{
+                    this.changeFailure();
+                    return -1;
+                }
+            }else{
+                this.changePasswordFailure();
+                return -1;
+            }
+        },
+        postPasswordInformation: function(info) {
+            return request({
+                url: '/tabs/PrivatePage/password',
+                method: 'POST',
+                data: info,
+            })
+        },
+
+        //POST 修改用户手机号
+        postPhoneNum: function(phoneNum)  {
+            const urlParams = new URLSearchParams(window.location.search);
+            let id = urlParams.get('id') || '';
+            let info = {
+                id: id,
+                phoneNum: phoneNum,
+            }
+            if(phoneNum != ''){
+                const request = this.postPhoneNumInformation(info);
+                console.log('request:',request);
+                if(request){
+                    this.changeSuccess();
+                    return 0;
+                }else{
+                    this.changeFailure();
+                    return -1;
+                }
+            }else{
+                this.changePhoneNumFailure();
+                return -1;
+            }
+        },
+        postPhoneNumInformation: function(info) {
+            return request({
+                url: '/tabs/PrivatePage/phoneNum',
                 method: 'POST',
                 data: info,
             })
@@ -382,6 +452,7 @@ export default {
         changeFailure :async() => {
             const alert = await alertController.create({
                 header: '修改失败',
+                message: '请稍后重试',
                 buttons: ['确定'],
             });
             await alert.present();

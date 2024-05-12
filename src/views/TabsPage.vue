@@ -18,6 +18,12 @@
           <ion-icon aria-hidden="true" :icon="accessibilityOutline" />
           <ion-label>我的</ion-label>
         </ion-tab-button>
+
+        <!-- <ion-tab-button tab="tab4" href="/tabs/ReviewPage">
+          <ion-icon aria-hidden="true" :icon="accessibilityOutline" />
+          <ion-label>测试</ion-label>
+        </ion-tab-button> -->
+        
       </ion-tab-bar>
     </ion-tabs>
   </ion-page>

@@ -19,14 +19,6 @@
                 <ion-input id="electricity" label="车辆牌照" label-placement="floating" fill="solid" placeholder="请输入有效车牌号"></ion-input>
             </ion-card>
             <ion-button id="addCarBtn" expand="block" @click="keepVehicleMsg">保存信息</ion-button>
-            <!-- <ion-alert
-                :is-open="isOpen"
-                header="A Short Title Is Best"
-                sub-header="A Sub Header Is Optional"
-                message="A message should be a short, complete sentence."
-                :buttons="alertButtons"
-                @didDismiss="setOpen(false)"
-            ></ion-alert> -->
         </ion-content>
     </ion-page>
 </template>
@@ -92,8 +84,6 @@ export default {
                 this.registerElectricityFailure()
             }else{
                 this.postVehicleMsg(this.vehicleMsg);
-                let str = (String)("/tabs/VehiclePage?id=" + this.vehicleMsg.userId);
-                window.open(str);
             }
         },
 
@@ -111,7 +101,7 @@ export default {
                 const request = this.postVehicleInformation(registerMsg);
                 console.log(request);
                 if(request){
-                    this.registerSuccess();
+                    this.registerSuccess(this.vehicleMsg.userId);
                 }else{
                     this.registerFailure();
                 }
@@ -126,9 +116,34 @@ export default {
         },
 
         //登记成功
-        registerSuccess :async() => {
+        registerSuccess :async(userId) => {
             const alert = await alertController.create({
                 header: '登记成功',
+                // buttons: ['确定'],
+                // handler: () => {
+                //     let str = (String)("/tabs/VehiclePage?id=" + this.vehicleMsg.userId);
+                //     console.log('str',str);
+                //     window.open(str);
+                // }
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            let str = (String)("/tabs/VehiclePage?id=" + userId);
+                            console.log('str',str);
+                            window.open(str);
+                        }
+                    }
+                ]
+            });
+            await alert.present();
+        },
+        
+        //修改失败弹窗
+        registerFailure :async() => {
+            const alert = await alertController.create({
+                header: '修改失败',
+                message: '请稍后重试',
                 buttons: ['确定'],
             });
             await alert.present();
