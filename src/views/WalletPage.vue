@@ -15,14 +15,10 @@
             <ion-card>
                 <ion-card-header>
                     <ion-card-title>
-                        我的余额：
+                        <span>我的余额：</span>
+                        <span id="userBalance">{{ Number(userMsg.balance).toFixed(2) }}</span>
                     </ion-card-title>
                 </ion-card-header>
-                <!-- <ion-card-content>
-                    <span>
-
-                    </span>
-                </ion-card-content> -->
             </ion-card>
 
             <ion-card>
@@ -79,6 +75,7 @@ import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, alertCont
 import { 
     arrowBackOutline,
 } from 'ionicons/icons';
+import request from '@/utils/require.ts';
 </script>
 
 <script>
@@ -88,6 +85,12 @@ export default {
         return {
             amount: 0,
             amountList:[50, 80, 100, 200, 500, 600, 800],
+
+
+            userMsg:{
+                // id: 111111,
+                // balance: 10000,
+            },
 
             //输入其他面额
             alertButtons: [
@@ -139,11 +142,6 @@ export default {
             }
         },
 
-        //其他面额
-        otherAmount(){
-
-        },
-
         //自定义面额无效
         changeFailure :async() => {
             const alert = await alertController.create({
@@ -153,6 +151,24 @@ export default {
             });
             await alert.present();
         },
+
+        //GET 获取用户信息
+        async getUserMsg() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const request = await this.getService({id: urlParams.get('id') || ''});
+            console.log(request.data.data);
+            this.userMsg = request.data.data;
+            
+        },
+        getService:function(pageData) {
+            return request({
+                url: '/tabs/WalletPage',
+                params: pageData
+            })
+        },
+    },
+    mounted: function(){
+        this.getUserMsg();
     }
 }
 </script>
@@ -203,5 +219,9 @@ export default {
 #otherAmount{
     position: relative;
     right: 0%;
+}
+
+#userBalance{
+    float: right;
 }
 </style>

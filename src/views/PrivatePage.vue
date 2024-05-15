@@ -69,7 +69,7 @@
                     :inputs="alertInputs4"
                 ></ion-alert>
 
-                <ion-item button="true">
+                <ion-item button="true" :href="`/tabs/WalletPage?id=${userMsg.id}`">
                     <ion-label>账户余额</ion-label>
                     <ion-note id="note" slot="end">{{ userMsg.balance }}</ion-note>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
@@ -463,7 +463,7 @@ export default {
             });
             await alert.present();
         },
-        //修该用户名失败
+        //修改用户名失败
         changeUsernameFailure :async() => {
             const alert = await alertController.create({
                 header: '修改失败',

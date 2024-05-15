@@ -19,7 +19,7 @@
           <ion-label>我的</ion-label>
         </ion-tab-button>
 
-        <ion-tab-button tab="tab4" href="/tabs/WalletPage">
+        <ion-tab-button tab="tab4" href="/tabs/PaymentPage">
           <ion-icon aria-hidden="true" :icon="accessibilityOutline" />
           <ion-label>测试</ion-label>
         </ion-tab-button>

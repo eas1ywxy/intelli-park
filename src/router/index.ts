@@ -66,6 +66,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'WalletPage',
         component: () => import('@/views/WalletPage.vue')
+      },
+      {
+        path: 'PaymentPage',
+        component: () => import('@/views/PaymentPage.vue')
       }
     ]
   }
