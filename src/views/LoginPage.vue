@@ -21,27 +21,35 @@
                     <ion-card-title id="loginTitle">
                     </ion-card-title>
                 </ion-card-header>
-                <ion-card-content>
-                    <ion-input class="input" label="用户名" label-placement="floating" fill="solid" placeholder="请输入用户名"></ion-input>
+                <ion-card-content v-if="hasAccount">
+                    <ion-input class="input" id="username1" label="用户名" label-placement="floating" fill="solid" placeholder="请输入用户名"></ion-input>
                     <br>
-                    <ion-input class="input" label="密码" label-placement="floating" fill="solid" placeholder="请输入密码"></ion-input>
+                    <ion-input class="input" id="password1" label="密码" label-placement="floating" fill="solid" placeholder="请输入密码"></ion-input>
+                </ion-card-content>
+                <ion-card-content v-else="!hasAccount">
+                    <ion-input class="input" id="username2" label="用户名" label-placement="floating" fill="solid" placeholder="请输入用户名"></ion-input>
+                    <br>
+                    <ion-input class="input" id="phoneNum" label="手机号" label-placement="floating" fill="solid" placeholder="请输入手机号"></ion-input>
+                    <br>
+                    <ion-input class="input" id="password2" label="密码" label-placement="floating" fill="solid" placeholder="请输入密码"></ion-input>
                 </ion-card-content>
             </ion-card>
 
-            <ion-button v-if="hasAccount" class="mainButton" expand="block">登录</ion-button>
-            <ion-button v-else="!hasAccount" class="mainButton" expand="block">注册</ion-button>
-            <ion-button v-if="hasAccount" class="secondButton" expand="block">没有账号？前往登录</ion-button>
-            <ion-button v-else="!hasAccount" class="secondButton" expand="block">已有账号，去登陆</ion-button>
+            <ion-button v-if="hasAccount" class="mainButton" @click="postLoginMsg" expand="block">登录</ion-button>
+            <ion-button v-else="!hasAccount" class="mainButton" @click="postRegistrationMsg" expand="block">注册</ion-button>
+            <ion-button v-if="hasAccount" class="secondButton" @click="RegisterOrLogin" expand="block">没有账号？前往登录</ion-button>
+            <ion-button v-else="!hasAccount" class="secondButton" @click="RegisterOrLogin" expand="block">已有账号，去登陆</ion-button>
         </ion-content>
     </ion-page>
 </template>
 
 <script setup>
-import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonInput, IonButton,
+import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonInput, IonButton, alertController,
 } from '@ionic/vue';
 import { 
     arrowBackOutline,
 } from 'ionicons/icons';
+import request from '@/utils/require.ts';
 </script>
 
 <script>
@@ -50,12 +58,110 @@ export default {
     data(){
         return{
             hasAccount: true,
+            loginMsg: {
+                username: String,
+                password: String,
+            },
+            registrationMsg: {
+                username: String,
+                password: String,
+                phoneNum: Number,
+            }
         }
     },
     methods:{
         //返回行一页
         goBack: function(){
             history.go(-1);
+        },
+
+        //注册或者登录
+        RegisterOrLogin(){
+            this.hasAccount = !this.hasAccount;
+        },
+
+        //POST 用户登录
+        async postLoginMsg()  {
+            let username = document.getElementById("username1");
+            this.loginMsg.username = username.value;
+
+            let password = document.getElementById("password1");
+            this.loginMsg.password = password.value; 
+
+            const request = await this.postLoginInformation(this.loginMsg);
+            console.log(request.data);
+
+            if (request.data.code==200){
+                
+            }else{
+                this.loginFailure(request.data.message);
+            }
+        },
+        postLoginInformation: function(info) {
+            return request({
+                url: '/login/user',
+                method: 'POST',
+                data: info,
+            })
+        },
+
+        //POST 用户注册
+        async postRegistrationMsg()  {
+            let username = document.getElementById("username2");
+            this.registrationMsg.username = username.value;
+
+            let phoneNum = document.getElementById("phoneNum");
+            this.registrationMsg.phoneNum = phoneNum.value;
+
+            let password = document.getElementById("password2");
+            this.registrationMsg.password = password.value; 
+
+            const request = await this.postRegistrationInformation(this.registrationMsg);
+            console.log(request.data);
+
+            if (request.data.code==200){
+                this.registrationSuccess();
+                this.hasAccount = true;
+            }else{
+                this.registrationFailure(request.data.message);
+            }
+        },
+        postRegistrationInformation: function(info) {
+            return request({
+                url: '/person/register/user',
+                method: 'POST',
+                data: info,
+            })
+        },
+
+        //登录失败
+        loginFailure :async(message) => {
+            const alert = await alertController.create({
+                header: '登录失败',
+                message: message,
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
+
+        //注册失败
+        registrationFailure :async(message) => {
+            const alert = await alertController.create({
+                header: '注册失败',
+                message: message,
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
+
+        //注册成功
+        registrationSuccess :async() => {
+            const alert = await alertController.create({
+                header: '注册成功',
+                message: '请登录',
+                buttons: ['确定'],
+            });
+            await alert.present();
         },
     }
 }
@@ -71,7 +177,7 @@ export default {
 #logo{
     width: 80px;
     height: 80px;
-    margin: 10% 40%
+    margin: 20% 40% 10% 40%;
 }
 
 #login{

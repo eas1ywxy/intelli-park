@@ -151,6 +151,7 @@ export default {
                 params: pageData
             })
         }
+
     },
     mounted: function() {
         // this.getUserLocalData();

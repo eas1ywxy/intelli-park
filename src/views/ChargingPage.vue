@@ -99,18 +99,18 @@ export default {
         }
     },
     methods: {
-        //GET 获取充电站信息
-        async getStationMsgs()  {
-            const request = await this.getService({pageNum:1,pageSize:10,stationType:1});
-            console.log(request.data.data.records);
-            this.stationMsgs = request.data.data.records;
-        },
-        getService:function(pageData) {
-            return request({
-                url: '/tabs/ChargingPage',
-                params: pageData
-            })
-        },
+        // //GET 获取充电站信息
+        // async getStationMsgs()  {
+        //     const request = await this.getService({pageNum:1,pageSize:10,stationType:1});
+        //     console.log(request.data.data.records);
+        //     this.stationMsgs = request.data.data.records;
+        // },
+        // getService:function(pageData) {
+        //     return request({
+        //         url: '/tabs/ChargingPage',
+        //         params: pageData
+        //     })
+        // },
 
         
         // getLongitudeLatitude() {
@@ -142,18 +142,18 @@ export default {
         //     }
         // }
 
-        // //GET 获取充电站信息
-        // async getStationMsgs()  {
-        //     const request = await this.getService({maxDistance: 1000, longitude: 103.98748, latitude:30.5817});
-        //     console.log(request.data.data.records);
-        //     // this.stationMsgs = request.data.data.records;
-        // },
-        // getService:function(pageData) {
-        //     return request({
-        //         url: '/stations/near',
-        //         params: pageData
-        //     })
-        // }
+        //GET 获取充电站信息
+        async getStationMsgs()  {
+            const request = await this.getService({maxDistance: 1000, longitude: 103.98748, latitude:30.5817, isNormal:true, isPublic:true, maxKW:1000, isHS: false});
+            console.log(request.data);
+            // this.stationMsgs = request.data.data.records;
+        },
+        getService:function(pageData) {
+            return request({
+                url: '/stations/near',
+                params: pageData
+            })
+        }
     },
     mounted: function() {
         this.getStationMsgs();

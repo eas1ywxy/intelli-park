@@ -92,6 +92,39 @@ export default {
             });
         },
         // 使用摄像头扫描
+        // decodeFromInputVideoFunc(firstDeviceId) { 
+        //     this.codeReader.reset(); // 重置
+        //     this.codeReader.decodeFromInputVideoDeviceContinuously(firstDeviceId, 'video', (result, err) => {
+        //     this.tipMsg = '正在尝试识别...';
+        //     if (result) {
+                
+        //         console.log('扫码结果', result.text);
+        //         this.scanText = result.text;
+        //         console.log(this.scanText);
+        //         this.jn = this.strToJson(this.scanText);
+        //         this.equipmentMsg.equipmentId = this.jn[0].equipmentId;
+        //         this.equipmentMsg.stationId = this.jn[0].stationId;
+        //         this.equipmentMsg.equipmentModel = this.jn[0].equipmentModel;
+        //         this.equipmentMsg.equipmentType = this.jn[0].equipmentType;
+        //         this.equipmentMsg.power = this.jn[0].power;
+        //         this.equipmentMsg.equipmntName = this.jn[0].equipmntName;
+        //         console.log(this.equipmentMsg.equipmentId);
+        //         this.tipMsg = '识别成功';
+
+        //         let btn = document.getElementById('open-toast');
+        //         btn.setAttribute('disabled', false);
+
+        //         let toast = document.getElementById('toast');
+        //         toast.setAttribute('message', result.text);
+
+        //         let drawGunBtn = document.getElementById('drawGunBtn');
+        //         drawGunBtn.setAttribute('disabled', false);
+        //     }
+        //     });
+        // },
+
+        
+        // 使用摄像头扫描
         decodeFromInputVideoFunc(firstDeviceId) { 
             this.codeReader.reset(); // 重置
             this.codeReader.decodeFromInputVideoDeviceContinuously(firstDeviceId, 'video', (result, err) => {
@@ -101,24 +134,28 @@ export default {
                 console.log('扫码结果', result.text);
                 this.scanText = result.text;
                 console.log(this.scanText);
-                this.jn = this.strToJson(this.scanText);
-                this.equipmentMsg.equipmentId = this.jn[0].equipmentId;
-                this.equipmentMsg.stationId = this.jn[0].stationId;
-                this.equipmentMsg.equipmentModel = this.jn[0].equipmentModel;
-                this.equipmentMsg.equipmentType = this.jn[0].equipmentType;
-                this.equipmentMsg.power = this.jn[0].power;
-                this.equipmentMsg.equipmntName = this.jn[0].equipmntName;
-                console.log(this.equipmentMsg.equipmentId);
-                this.tipMsg = '识别成功';
+                // this.jn = this.strToJson(this.scanText);
+                // this.equipmentMsg.equipmentId = this.jn[0].equipmentId;
+                // this.equipmentMsg.stationId = this.jn[0].stationId;
+                // this.equipmentMsg.equipmentModel = this.jn[0].equipmentModel;
+                // this.equipmentMsg.equipmentType = this.jn[0].equipmentType;
+                // this.equipmentMsg.power = this.jn[0].power;
+                // this.equipmentMsg.equipmntName = this.jn[0].equipmntName;
+                // console.log(this.equipmentMsg.equipmentId);
+                // this.tipMsg = '识别成功';
 
-                let btn = document.getElementById('open-toast');
-                btn.setAttribute('disabled', false);
+                // let btn = document.getElementById('open-toast');
+                // btn.setAttribute('disabled', false);
 
-                let toast = document.getElementById('toast');
-                toast.setAttribute('message', result.text);
+                // let toast = document.getElementById('toast');
+                // toast.setAttribute('message', result.text);
 
-                let drawGunBtn = document.getElementById('drawGunBtn');
-                drawGunBtn.setAttribute('disabled', false);
+                // let drawGunBtn = document.getElementById('drawGunBtn');
+                // drawGunBtn.setAttribute('disabled', false);
+
+                let request = (String)("/tabs/DrawGunPage?request=" + this.scanText);
+                console.log('request',request);
+                window.open(request);
             }
             });
         },

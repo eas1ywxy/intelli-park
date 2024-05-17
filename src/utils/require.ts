@@ -2,9 +2,9 @@ import axios, { AxiosInstance } from 'axios';
 import router from '@/router';
 
 // 定义基础地址
-const baseURL = 'https://mock.apifox.com/m1/4245692-3886994-default';
+// const baseURL = 'https://mock.apifox.com/m1/4245692-3886994-default';
 
-// const baseURL = 'https://intellipark.2ndtool.top';
+const baseURL = 'https://intellipark.2ndtool.top';
 
 // 创建 axios 实例
 const request: AxiosInstance = axios.create({
@@ -16,6 +16,7 @@ const request: AxiosInstance = axios.create({
 // 响应拦截器
 request.interceptors.response.use(
   (response) => {
+    // console.log('th1');
     // 摘取核心响应数据
     const res = response.data;
     if (res.code === 200) {
@@ -30,9 +31,11 @@ request.interceptors.response.use(
 
     // 处理业务失败, 给错误提示，抛出错误
     console.log(res.message || '服务异常');
-    return Promise.reject(res);
+    // return Promise.reject(res);
+    return response;
   },
   (error) => {
+    // console.log('th2');
     // 错误的特殊情况 => 401 权限不足 或 token 过期 => 拦截到登录
     if (error.response?.status === 401) {
       console.log('请重新登录');
