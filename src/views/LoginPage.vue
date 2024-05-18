@@ -66,7 +66,8 @@ export default {
                 username: String,
                 password: String,
                 phoneNum: Number,
-            }
+            },
+            userId: Number,
         }
     },
     methods:{
@@ -89,10 +90,13 @@ export default {
             this.loginMsg.password = password.value; 
 
             const request = await this.postLoginInformation(this.loginMsg);
-            console.log(request.data);
+            console.log(request);
+
+            this.userId = request.data.data.id;
 
             if (request.data.code==200){
-                
+                this.setLocalUserMsg(this.userId, request.headers.authorization);
+                this.loginSuccess(this.loginMsg.username);
             }else{
                 this.loginFailure(request.data.message);
             }
@@ -101,7 +105,8 @@ export default {
             return request({
                 url: '/login/user',
                 method: 'POST',
-                data: info,
+                headers: { 'content-type': 'application/x-www-form-urlencoded' },
+                data: Object.keys(info).map(key => `${key}=${encodeURI(info[key])}`).join('&'),
             })
         },
 
@@ -144,6 +149,23 @@ export default {
             await alert.present();
         },
 
+        //登录成功
+        loginSuccess :async(message) => {
+            const alert = await alertController.create({
+                header: '登录成功',
+                message: '欢迎登录，'+message,
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/PersonPage";
+                        }
+                    }
+                ],
+            });
+            await alert.present();
+        },
+
         //注册失败
         registrationFailure :async(message) => {
             const alert = await alertController.create({
@@ -163,6 +185,16 @@ export default {
             });
             await alert.present();
         },
+
+        //localStorage 保存用户登录信息
+        setLocalUserMsg(userId, authorization){
+            let token = authorization.replace('Bearer','').trim();
+            localStorage.setItem('token', token);
+            localStorage.setItem('isLogin', 1);
+        },
+
+    },
+    mounted: function() {
     }
 }
 </script>

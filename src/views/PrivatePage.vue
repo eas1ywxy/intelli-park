@@ -17,10 +17,10 @@
                     <!-- color: danger红, tertiary蓝, success绿, warning黄 -->
                     <ion-label>头像</ion-label>
                     <ion-avatar aria-hidden="true" slot="end">
-                        <img v-if="userLocalData.avatar == 4" id="avatar" alt="girl2" src="../../resources/girl2.png" />
-                        <img v-else-if="userLocalData.avatar == 3" id="avatar" alt="girl1" src="../../resources/girl1.png" />
-                        <img v-else-if="userLocalData.avatar == 2" id="avatar" alt="boy2" src="../../resources/boy2.png" />
-                        <img v-else="userLocalData.avatar == 1" id="avatar" alt="boy1" src="../../resources/boy1.png" />
+                        <img v-if="avatar == 4" id="avatar" alt="girl2" src="../../resources/girl2.png" />
+                        <img v-else-if="avatar == 3" id="avatar" alt="girl1" src="../../resources/girl1.png" />
+                        <img v-else-if="avatar == 2" id="avatar" alt="boy2" src="../../resources/boy2.png" />
+                        <img v-else="avatar == 1" id="avatar" alt="boy1" src="../../resources/boy1.png" />
                     </ion-avatar>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
@@ -44,10 +44,10 @@
                 ></ion-alert>
 
                 <ion-item id="passward-alert" button="true">
-                    <ion-label>密码</ion-label>
-                    <span id="note">
+                    <ion-label>修改密码</ion-label>
+                    <!-- <span id="note">
                         <ion-note id="passward" slot="end" v-for="p in userMsg.password">{{ "·" }}</ion-note>
-                    </span>
+                    </span> -->
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
@@ -103,18 +103,8 @@ export default {
     },
     data() {
         return {
-            userLocalData: {
-                avatar: 1,
-            },
-            userMsg: {
-                // role: "user",
-                // id: "006909112525",
-                // name: "18108070530",
-                // phoneNum: "18108070530",
-                // vip: 1,
-                // vipDisableTime: "2024-6-30",
-                // password: "123456789",
-            },
+            avatar: Number,
+            userMsg: {},
 
             //修改用户头像选择提示框
             alertButtons1: [
@@ -128,66 +118,30 @@ export default {
                     text: '确定',
                     handler: (data) => {
                         console.log('更新用户头像', data);
-                        // var avatar = document.getElementById('avatar');
-                        // if(data == 1) {
-                        //     avatar.setAttribute('src','../../resources/boy1.png');
-                        // }else if(data == 2){
-                        //     avatar.setAttribute('src','../../resources/boy2.png');
-                        // }else if(data == 3){
-                        //     avatar.setAttribute('src','../../resources/girl1.png');
-                        // }else{
-                        //     avatar.setAttribute('src','../../resources/girl2.png');
-                        // }
-
-                        // var userLocalData = {
-                        //     'avatar' : data,
-                        // }
-                        // var str_userLocalData = JSON.stringify(userLocalData);
-                        // console.log(str_userLocalData);
-                        // localStorage.setItem('userLocalData', str_userLocalData);
-                        this.changeUserLocalData(data);
-                        // location.reload();
-                        // axios.get("../../resources/localData.json")
-                        // .then(response => {
-                        //     const d = response.data;
-                        //     console.log(d);
-                        //     // console.log(data);
-                        //     d.avatar = data;
-                        //     console.log(d);
-
-                        //     axios.put('../../resources/localData.json', d)
-                        //     .then(() => {
-                        //         console.log('Json文件更新成功');
-                        //     })
-                        //     .catch(error => {
-                        //         console.error('Json文件更新失败',error);
-                        //     })
-                        // })
-                        // .catch(error => {
-                        //     console.error('读取Json文件失败',error);
-                        // })
+                        this.setUserAvatar(data);
+                        this.avatar = this.getUserAvatar();
                     }
                 }
             ],
             alertInputs1: [
                 {
-                    label: '男一号头像',
+                    label: '一号头像-男',
                     type: 'radio',
                     value: 1,
                     id: 'avatar1',
                 },
                 {
-                    label: '男二号头像',
+                    label: '二号头像-男',
                     type: 'radio',
                     value: 2,
                 },
                 {
-                    label: '女一号头像',
+                    label: '三号头像-女',
                     type: 'radio',
                     value: 3,
                 },
                 {
-                    label: '女二号头像',
+                    label: '四号头像-女',
                     type: 'radio',
                     value: 4,
                 },
@@ -205,10 +159,7 @@ export default {
                     text: '确定',
                     handler: (data) => {
                         console.log("更新用户名称",data[0]);
-                        const post = this.postUsername(data[0]);
-                        if(post==0){
-                            this.userMsg.username = data[0];
-                        }
+                        this.putUsername(data[0]);
                     }
                 }
             ],
@@ -233,33 +184,19 @@ export default {
                     text: '确定',
                     handler: (data) => {
                         console.log("更新用户密码", data[0], data[1]);
-                        if(data[0]==''||data[1]==''){
-                            console.log('缺少数据');
-                            this.changePasswordFailure();
-                        }else{
-                            if(data[0]!=data[1]){
-                                console.log('两次密码不相同');
-                                this.changePasswordFailure();
-                            }else{
-                                const post = this.postPassword(data[1]);
-                                if(post==0){
-                                    this.userMsg.password = data[1];
-                                }
-                            }
-                        } 
-                        
+                        this.postPassword(data[0], data[1]);
                     }
                 }
             ],
             alertInputs3: [
                 {
-                    placeholder: '不超过20个字符',
+                    placeholder: '请输入旧密码',
                     attributes: {
                         maxlength: 20,
                     },
                 },
                 {
-                    placeholder: '再次输入相同的密码',
+                    placeholder: '请输入新密码',
                     attributes: {
                         maxlength: 20,
                     },
@@ -278,16 +215,7 @@ export default {
                     text: '确定',
                     handler: (data) => {
                         console.log("更新用户手机号",data[0]);
-                        // if(data[0]!=''&&data[0].length==11){
-                        //     this.userMsg.phoneNum = data[0];
-                        //     this.changeSuccess();
-                        // }else{
-                        //     this.changePhoneNumFailure();
-                        // }
-                        const post = this.postPhoneNum(data[0]);
-                        if(post==0){
-                            this.userMsg.phoneNum = data[0];
-                        }
+                        this.putPhoneNum(data[0]);
                     }
                 }
             ],
@@ -302,190 +230,106 @@ export default {
         }
     },
     methods: {
-        //localStorage本地存储用户头像
-        changeUserLocalData: function(data){
-            this.userLocalData = {
-                'avatar' : data,
-            }
-        },
-        getUserLocalData: function(){
-            var str_UserLocalData = localStorage.getItem('userLocalData');
-            
-            console.log(str_UserLocalData);
-
-            var userLocalData = JSON.parse(str_UserLocalData);
-            
-            this.userLocalData = userLocalData;
-
-            return userLocalData;
-            // axios.get("../../resources/localData.json")
-            // .then(response => {
-            //     const d = response.data;
-            //     console.log(d);
-            //     this.userLocalData = d;
-
-            // })
-            // .catch(error => {
-            //     console.error('读取Json文件失败',error);
-            // })
-        },
-        putUserLocalData: function(userAvatar){
-            var userLocalData = {
-                'avatar' :  userAvatar,
-            }
-
-            var str_userLocalData = JSON.stringify(userLocalData);
-            console.log(str_userLocalData);
-
-            localStorage.setItem('userLocalData', str_userLocalData);
-        },
-
         //返回上一页
         goBack: function(){
             history.go(-1);
         },
 
-        //GET 获取用户个人信息
-        async getUserMsg() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const request = await this.getService({id: urlParams.get('id') || ''});
-            console.log(request.data.data);
-            this.userMsg = request.data.data;
-            
+        //获取用户头像
+        getUserAvatar(){
+            return localStorage.getItem('avatar');
         },
-        getService:function(pageData) {
+
+        //设置用户头像
+        setUserAvatar(data){
+            localStorage.setItem('avatar', data);
+        },
+
+        //GET 获取用户个人信息
+        async getUserMsg()  {
+            const request = await this.getService();
+            console.log(request.data);
+            this.userMsg = request.data.data;
+        },
+        getService:function() {
             return request({
-                url: '/tabs/PrivatePage',
-                params: pageData
+                url: '/person/getInfo',
+                method: 'GET',
             })
         },
 
-        //POST 修改用户名称
-        postUsername: function(username)  {
-            const urlParams = new URLSearchParams(window.location.search);
-            let id = urlParams.get('id') || '';
+        //PUT 修改用户名称
+        async putUsername(username){
             let info = {
-                id: id,
                 username: username,
             }
-            console.log(info);
-            if(username != ''){
-                const request = this.postUsernameInformation(info);
-                console.log('request:',request);
-                if(request){
-                    this.changeSuccess();
-                    return 0;
-                }else{
-                    this.changeFailure();
-                    return -1;
-                }
+            const request = await this.updateUsername(info);
+            console.log(request.data);
+            if(request.data.code==200){
+                this.changeSuccess();
+                this.getUserMsg();
             }else{
-                this.changeUsernameFailure();
-                return -1;
+                this.changeFailure(request.data.message);
             }
         },
-        postUsernameInformation: function(info) {
+        updateUsername: function(info) {
             return request({
-                url: '/tabs/PrivatePage/username',
-                method: 'POST',
+                url: '/person/update/' + this.userMsg.id,
+                method: 'PUT',
                 data: info,
             })
         },
 
         //POST 修改用户密码
-        postPassword: function(password)  {
-            const urlParams = new URLSearchParams(window.location.search);
-            let id = urlParams.get('id') || '';
+        async postPassword(oldP, newP)  {
             let info = {
-                id: id,
-                password: password,
+                oldPassword: oldP,
+                newPassword: newP,
             }
-            if(password != ''){
-                const request = this.postPasswordInformation(info);
-                console.log('request:',request);
-                if(request){
-                    this.changeSuccess();
-                    return 0;
-                }else{
-                    this.changeFailure();
-                    return -1;
-                }
+            const request = await this.updatePassword(info);
+            console.log(request.data);
+            if(request.data.code==200){
+                this.changeSuccess();
+                this.getUserMsg();
             }else{
-                this.changePasswordFailure();
-                return -1;
+                this.changeFailure(request.data.message);
             }
         },
-        postPasswordInformation: function(info) {
+        updatePassword: function(info) {
             return request({
-                url: '/tabs/PrivatePage/password',
+                url: '/person/updatePassword',
                 method: 'POST',
                 data: info,
             })
         },
-
-        //POST 修改用户手机号
-        postPhoneNum: function(phoneNum)  {
-            const urlParams = new URLSearchParams(window.location.search);
-            let id = urlParams.get('id') || '';
+        
+        //PUT 修改用户手机号
+        async putPhoneNum(phoneNum){
             let info = {
-                id: id,
                 phoneNum: phoneNum,
             }
-            if(phoneNum != ''){
-                const request = this.postPhoneNumInformation(info);
-                console.log('request:',request);
-                if(request){
-                    this.changeSuccess();
-                    return 0;
-                }else{
-                    this.changeFailure();
-                    return -1;
-                }
+            const request = await this.updatePhoneNum(info);
+            console.log(request.data);
+            if(request.data.code==200){
+                this.changeSuccess();
+                this.getUserMsg();
             }else{
-                this.changePhoneNumFailure();
-                return -1;
+                this.changeFailure(request.data.message);
             }
         },
-        postPhoneNumInformation: function(info) {
+        updatePhoneNum: function(info) {
             return request({
-                url: '/tabs/PrivatePage/phoneNum',
-                method: 'POST',
+                url: '/person/update/' + this.userMsg.id,
+                method: 'PUT',
                 data: info,
             })
         },
 
         //修改失败弹窗
-        changeFailure :async() => {
+        changeFailure :async(message) => {
             const alert = await alertController.create({
                 header: '修改失败',
-                message: '请稍后重试',
-                buttons: ['确定'],
-            });
-            await alert.present();
-        },
-        //修改用户名失败
-        changeUsernameFailure :async() => {
-            const alert = await alertController.create({
-                header: '修改失败',
-                message: '请确保用户名不为空',
-                buttons: ['确定'],
-            });
-            await alert.present();
-        },
-        //修改用户密码失败
-        changePasswordFailure :async() => {
-            const alert = await alertController.create({
-                header: '修改失败',
-                message: '请确保两次密码均填写且相同',
-                buttons: ['确定'],
-            });
-            await alert.present();
-        },
-        //修改手机号失败
-        changePhoneNumFailure :async() => {
-            const alert = await alertController.create({
-                header: '修改失败',
-                message: '请输入11位手机号',
+                message: message,
                 buttons: ['确定'],
             });
             await alert.present();
@@ -500,8 +344,7 @@ export default {
         },
     },
     mounted: function() {
-        // this.getUserLocalData();
-        // console.log(1);
+        this.avatar = this.getUserAvatar();
         this.getUserMsg();
     }
     

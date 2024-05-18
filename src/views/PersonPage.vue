@@ -7,17 +7,17 @@
         </ion-header>
         <ion-content color="light">
 
-            <ion-card :href='`/tabs/PrivatePage?id=${userMsg.id}`'>
+            <ion-card v-if="isLongin" href='/tabs/PrivatePage'>
                 <ion-card-content>
                     <div id="userBox">
                         <span id="avatarImg">
-                            <img v-if="userLocalData.avatar == 4" alt="girl2" src="../../resources/girl2.png" />
-                            <img v-else-if="userLocalData.avatar == 3" alt="girl1" src="../../resources/girl1.png" />
-                            <img v-else-if="userLocalData.avatar == 2" alt="boy2" src="../../resources/boy2.png" />
-                            <img v-else="userLocalData.avatar == 1" alt="boy1" src="../../resources/boy1.png" />
+                            <img v-if="avatar == 4" alt="girl2" src="../../resources/girl2.png" />
+                            <img v-else-if="avatar == 3" alt="girl1" src="../../resources/girl1.png" />
+                            <img v-else-if="avatar == 2" alt="boy2" src="../../resources/boy2.png" />
+                            <img v-else="avatar == 1" alt="boy1" src="../../resources/boy1.png" />
                         </span>
                         <ion-icon id="userMsgBtn" :icon="chevronForward" slot="end"></ion-icon>
-                        <span v-if="userMsg.username!=null" id="userMsgOnline">
+                        <span id="userMsgOnline">
                             <div id="userName">
                                 {{ userMsg.username }}
                                 <ion-icon id="pencil" :icon="pencil" slot="end"></ion-icon>
@@ -26,16 +26,29 @@
                                 <div v-if="userMsg.role=='user'">普通用户</div>
                                 <div v-if="userMsg.role=='admin'">系统管理员</div> 
                             </div>
-                            <div id="userId">{{ userMsg.id }}</div>
+                            <div id="userId">ID:{{ userMsg.id }}</div>
                         </span>
-                        <span v-else="userMsg.name==null" id="userMsgOutline">
-                            <div id="noName">请登录</div>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+            <ion-card v-if="!isLongin" href='/tabs/LoginPage'>
+                <ion-card-content>
+                    <div id="userBox">
+                        <span id="avatarImg">
+                            <img v-if="avatar == 4" alt="girl2" src="../../resources/girl2.png" />
+                            <img v-else-if="avatar == 3" alt="girl1" src="../../resources/girl1.png" />
+                            <img v-else-if="avatar == 2" alt="boy2" src="../../resources/boy2.png" />
+                            <img v-else="avatar == 1" alt="boy1" src="../../resources/boy1.png" />
+                        </span>
+                        <ion-icon id="userMsgBtn" :icon="chevronForward" slot="end"></ion-icon>
+                        <span id="userMsgOutline">
+                            <div id="noName">登录</div>
                         </span>
                     </div>
                 </ion-card-content>
             </ion-card>
             
-            <ion-card>
+            <ion-card v-if="isLongin">
                 <ion-list inset="true">
                     <ion-item button="true" :href='`/tabs/PrivatePage?id=${userMsg.id}`'>
                         <!-- color: danger红, tertiary蓝, success绿, warning黄 -->
@@ -53,7 +66,7 @@
                         <ion-label>车辆登记</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
-                    <ion-item button="true" :href="`/tabs/SettingPage?id=${userMsg.id}`">
+                    <ion-item button="true" href="/tabs/SettingPage">
                         <ion-icon :icon="listCircleOutline" color="danger" slot="start" size="large"></ion-icon>
                         <ion-label>其他设置</ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
@@ -88,75 +101,43 @@ export default {
     },
     data() {
         return {
-            userLocalData: {
-                avatar: 1,
-            },
-            userMsg: {
-                // role: "user",
-                // id: "006909112525",
-                // username: "18108070530",
-                username: String,
-            }
+            isLongin: false,
+            avatar: Number,
+            userMsg: {}
         }
     },
     methods: {
-        //locolStorage本地存储用户头像
-        getUserLocalData: function(){
-            var str_UserLocalData = localStorage.getItem('userLocalData');
-
-            console.log(str_UserLocalData);
-
-            if (str_UserLocalData == null){
-                this.userLocalData = {
-                    'avatar' : 1,
-                }
-            }
-
-            var userLocalData = JSON.parse(str_UserLocalData);
-
-            this.userLocalData = userLocalData;
-            
-            return userLocalData;
-            // axios.get("../../resources/localData.json")
-            // .then(response => {
-            //     const d = response.data;
-            //     console.log(d);
-            //     this.userLocalData = d;
-
-            // })
-            // .catch(error => {
-            //     console.error('读取Json文件失败',error);
-            // })
+        //获取用户头像
+        getUserAvatar(){
+            return localStorage.getItem('avatar');
         },
-        putUserLocalData: function(userAvatar){
-            var userLocalData = {
-                'avatar' :  userAvatar,
+
+        //判断是否登录了
+        getLocalIsLogin(){
+            if(localStorage.getItem('isLogin')==1){
+                this.isLongin = true;
+                this.getUserMsg();
+            }else{
+                this.isLongin = false;
             }
-
-            var str_userLocalData = JSON.stringify(userLocalData);
-            console.log(str_userLocalData);
-
-            localStorage.setItem('userLocalData', str_userLocalData);
         },
 
         //GET 获取用户个人信息
-        async getUserMsgs()  {
-            const request = await this.getService({id:1});
-            console.log(request.data.data);
+        async getUserMsg()  {
+            const request = await this.getService();
+            console.log(request.data);
             this.userMsg = request.data.data;
         },
-        getService:function(pageData) {
+        getService:function() {
             return request({
-                url: '/tabs/PersonPage',
-                params: pageData
+                url: '/person/getInfo',
+                methods: 'GET',
             })
         }
-
     },
     mounted: function() {
-        // this.getUserLocalData();
-        // console.log(1);
-        this.getUserMsgs();
+        this.avatar = this.getUserAvatar();
+        this.getLocalIsLogin();
     }
 }
 </script>
@@ -221,7 +202,7 @@ ion-label ion-note {
     width: 100%;
     height: 100px;
     position: relative;
-    left: 10px;
+    left: 5px;
 }
 
 #userName{
@@ -252,8 +233,8 @@ ion-label ion-note {
     font-size: 20px;
     color: #2f2f2f;
     position: relative;
-    top: 30px;
-    left: 20px;
+    top: 35px;
+    left: 70px;
 }
 
 #userMsgBtn{

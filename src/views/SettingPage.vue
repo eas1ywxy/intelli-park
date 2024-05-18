@@ -21,7 +21,7 @@
             </ion-list>
 
             <ion-list inset="true">
-                <ion-item id="quitBtn" button="true" href="\tabs\LoginPage">
+                <ion-item id="quitBtn" button="true" @click="quit">
                     <ion-label id="quitwords">退出登录</ion-label>
                 </ion-item>
             </ion-list>
@@ -36,6 +36,7 @@ import {
     arrowBackOutline,
     chevronForward,
  } from 'ionicons/icons';
+ import request from '@/utils/require.ts';
 </script>
 
 <script>
@@ -51,6 +52,25 @@ export default {
         goBack: function(){
             history.go(-1);
         },
+
+        //GET 用户退出
+        async quit()  {
+            const request = await this.getQuitMsg();
+            console.log(request.data);
+            this.setLocalIsLoginFalse();
+            window.location.href = "/tabs/PersonPage";
+        },
+        getQuitMsg:function() {
+            return request({
+                url: '/logout',
+                methods: 'GET',
+            })
+        },
+
+        //设置isLogin为false
+        setLocalIsLoginFalse(){
+            localStorage.setItem('isLogin', 0);
+        }
     }
 }
 </script>

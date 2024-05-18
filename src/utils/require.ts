@@ -10,8 +10,22 @@ const baseURL = 'https://intellipark.2ndtool.top';
 const request: AxiosInstance = axios.create({
   // 设置基础地址和超时时间
   baseURL,
-  timeout: 8000
+  timeout: 8000,
+  withCredentials: true, //确保请求时发送Cookie
 });
+
+// 请求拦截器
+request.interceptors.request.use(
+  (config) => {
+    // 1. 从pinia获取token数据
+    const userStore = localStorage.getItem('token');
+    // 2. 按照后端的要求拼接token数据
+    if (userStore) config.headers.Authorization = `Bearer ${userStore}`;
+
+    return config
+  },
+  (e) => Promise.reject(e)
+)
 
 // 响应拦截器
 request.interceptors.response.use(
@@ -26,7 +40,7 @@ request.interceptors.response.use(
     // 错误的特殊情况 => 401 权限不足 或 token 过期 => 拦截到登录
     if (res.code === 401) {
       console.log('请重新登录');
-      router.push('/login');
+      router.push('/tabs/LoginPage');
     }
 
     // 处理业务失败, 给错误提示，抛出错误
@@ -39,7 +53,7 @@ request.interceptors.response.use(
     // 错误的特殊情况 => 401 权限不足 或 token 过期 => 拦截到登录
     if (error.response?.status === 401) {
       console.log('请重新登录');
-      router.push('/login');
+      router.push('/tabs/LoginPage');
     }
 
     // 错误的特殊情况404

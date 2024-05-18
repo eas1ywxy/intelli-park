@@ -229,25 +229,39 @@ export default {
             history.go(-1);
         },
 
-        //GET 获取用户订单信息
-        async getOrdersMsg() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const request = await this.getService({id: urlParams.get('id') || ''});
-            console.log(request.data.data);
-            this.conductOrders = request.data.data.conductOrders;
-            this.unpaidOrders = request.data.data.unpaidOrders;
-            this.completedOrders = request.data.data.completedOrders;
-            this.pendingOrders = request.data.data.pendingOrders;
+        // //GET 获取用户订单信息
+        // async getOrdersMsg() {
+        //     const urlParams = new URLSearchParams(window.location.search);
+        //     const request = await this.getService({id: urlParams.get('id') || ''});
+        //     console.log(request.data.data);
+        //     this.conductOrders = request.data.data.conductOrders;
+        //     this.unpaidOrders = request.data.data.unpaidOrders;
+        //     this.completedOrders = request.data.data.completedOrders;
+        //     this.pendingOrders = request.data.data.pendingOrders;
+        // },
+        // getService:function(pageData) {
+        //     return request({
+        //         url: '/tabs/OrderPage',
+        //         params: pageData
+        //     })
+        // },
+
+        //GET 获取用户充电记录
+        async getOrderMsg()  {
+            const request = await this.getChargingRecords();
+            console.log(request.data);
+            // this.userMsg = request.data.data;
         },
-        getService:function(pageData) {
+        getChargingRecords:function() {
             return request({
-                url: '/tabs/OrderPage',
-                params: pageData
+                url: '/chargingRecords',
+                method: 'GET',
             })
         },
     },
     mounted: function() {
-        this.getOrdersMsg();
+        // this.getOrdersMsg();
+        this.getOrderMsg();
     }
 }
 </script>
