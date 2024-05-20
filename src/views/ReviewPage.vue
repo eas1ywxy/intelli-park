@@ -89,55 +89,41 @@ export default {
         },
 
         //POST 提交用户反馈信息
-        postFeedbackNote: function()  {
+        async postFeedbackNote() {
             const urlParams = new URLSearchParams(window.location.search);
             let chargeId = urlParams.get('chargeId') || '';
-            let feedbackNote = document.getElementById("feedbackNote").innerHTML;
-            let createTime = new Date();
+            let userId = urlParams.get('userId') || '';
+            let feedbackNote = document.getElementById("feedbackNote").value;
+            let createTime =  new Date().toISOString().split('.')[0].replace('T', ' ');
             let info = {
                 chargeId: chargeId,
-                starNum: this.starNum,
+                userId: userId,
+                star: this.starNum-1,    
                 feedbackNote: feedbackNote,
                 createTime: createTime,
             }
             console.log(info);
-            if(info.starNum > 0){
-                const request = this.postReviewInformation(info);
-                console.log('request:',request);
-                if(request){
-                    this.keepSuccess();
-                    return 0;
-                }else{
-                    this.keepFailure();
-                    return -1;
-                }
+            const request = await this.postReviewInformation(info);
+            console.log('request:',request.data);
+            if(request.data.code==200){
+                this.keepSuccess();
             }else{
-                this.markFailure();
-                return -1;
+                this.keepFailure(request.data.message);
             }
         },
         postReviewInformation: function(info) {
             return request({
-                url: '/tabs/ReviewPage',
+                url: '/feedback',
                 method: 'POST',
                 data: info,
             })
         },
 
         //保存失败弹窗
-        keepFailure :async() => {
+        keepFailure :async(message) => {
             const alert = await alertController.create({
                 header: '保存失败',
-                message: '请稍后重试',
-                buttons: ['确定'],
-            });
-            await alert.present();
-        },
-        //订单打分失败
-        markFailure :async() => {
-            const alert = await alertController.create({
-                header: '保存失败',
-                message: '请确保您已对本订单打分',
+                message: message,
                 buttons: ['确定'],
             });
             await alert.present();
@@ -146,7 +132,14 @@ export default {
         keepSuccess :async() => {
             const alert = await alertController.create({
                 header: '保存成功',
-                buttons: ['确定'],
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/OrderPage";
+                        }
+                    }
+                ],
             });
             await alert.present();
         },

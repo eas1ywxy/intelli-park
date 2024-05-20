@@ -73,43 +73,52 @@ export default {
             let electricity = document.getElementById('electricity');
             this.vehicleMsg.electricity = Number(electricity.value);
 
-            if(this.vehicleMsg.vehicleBrand==''){
-                this.registerBrandFailure();
-            }else if(this.vehicleMsg.vehicleModel<0){
-                this.registerModelFailure();
-            }else if(this.vehicleMsg.licencePlate==''){
-                this.registerPlateFailure();
-            }else if(!(this.vehicleMsg.electricity>0)){
-                // console.log(this.vehicleMsg.electricity);
-                this.registerElectricityFailure()
-            }else{
-                this.postVehicleMsg(this.vehicleMsg);
-            }
+            this.postVehicleMsg();
+
+            // if(this.vehicleMsg.vehicleBrand==''){
+            //     this.registerBrandFailure();
+            // }else if(this.vehicleMsg.vehicleModel<0){
+            //     this.registerModelFailure();
+            // }else if(this.vehicleMsg.licencePlate==''){
+            //     this.registerPlateFailure();
+            // }else if(!(this.vehicleMsg.electricity>0)){
+            //     // console.log(this.vehicleMsg.electricity);
+            //     this.registerElectricityFailure()
+            // }else{
+            //     this.postVehicleMsg(this.vehicleMsg);
+            // }
         },
 
         //POST 登记用户车辆
-        postVehicleMsg: function(registerMsg)  {
+        async postVehicleMsg(){
             const urlParams = new URLSearchParams(window.location.search);
             this.vehicleMsg.userId = urlParams.get('id') || '';
             console.log(this.vehicleMsg);
-            if(!this.vehicleMsg.userId){
-                console.log('获取userId失败');
-                this.registerFailure();
-            }else{
-                console.log('获取到userId');
+            // if(!this.vehicleMsg.userId){
+            //     console.log('获取userId失败');
+            //     this.registerFailure();
+            // }else{
+            //     console.log('获取到userId');
                 
-                const request = this.postVehicleInformation(registerMsg);
-                console.log(request);
-                if(request){
-                    this.registerSuccess(this.vehicleMsg.userId);
-                }else{
-                    this.registerFailure();
-                }
+            //     const request = this.postVehicleInformation(registerMsg);
+            //     console.log(request);
+            //     if(request){
+            //         this.registerSuccess(this.vehicleMsg.userId);
+            //     }else{
+            //         this.registerFailure();
+            //     }
+            // }
+            const request = await this.postVehicleInformation(this.vehicleMsg);
+            console.log(request.data);
+            if(request.data.code==200){
+                this.registerSuccess(this.vehicleMsg.userId);
+            }else{
+                this.registerFailure(request.data.message);
             }
         },
         postVehicleInformation: function(info) {
             return request({
-                url: '/tabs/RegisterPage',
+                url: '/vehicle',
                 method: 'POST',
                 data: info,
             })
@@ -119,19 +128,11 @@ export default {
         registerSuccess :async(userId) => {
             const alert = await alertController.create({
                 header: '登记成功',
-                // buttons: ['确定'],
-                // handler: () => {
-                //     let str = (String)("/tabs/VehiclePage?id=" + this.vehicleMsg.userId);
-                //     console.log('str',str);
-                //     window.open(str);
-                // }
                 buttons: [
                     {
                         text: '确定',
                         handler: () => {
-                            let str = (String)("/tabs/VehiclePage?id=" + userId);
-                            console.log('str',str);
-                            window.open(str);
+                            window.location.href = "/tabs/VehiclePage?id=" + userId;
                         }
                     }
                 ]
@@ -140,46 +141,10 @@ export default {
         },
         
         //修改失败弹窗
-        registerFailure :async() => {
+        registerFailure :async(message) => {
             const alert = await alertController.create({
                 header: '修改失败',
-                message: '请稍后重试',
-                buttons: ['确定'],
-            });
-            await alert.present();
-        },
-        //登记车辆品牌失败
-        registerBrandFailure :async() => {
-            const alert = await alertController.create({
-                header: '登记失败',
-                message: '请确保车辆品牌信息不为空',
-                buttons: ['确定'],
-            });
-            await alert.present();
-        },
-        //登记车辆类型失败
-        registerModelFailure :async() => {
-            const alert = await alertController.create({
-                header: '登记失败',
-                message: '请确保充电车型为：直流快充/交流快充/交直流混合充电',
-                buttons: ['确定'],
-            });
-            await alert.present();
-        },
-        //登记车辆牌照失败
-        registerPlateFailure :async() => {
-            const alert = await alertController.create({
-                header: '登记失败',
-                message: '请确保车辆牌照不为空',
-                buttons: ['确定'],
-            });
-            await alert.present();
-        },
-        //登记车辆电池容量失败
-        registerElectricityFailure :async() => {
-            const alert = await alertController.create({
-                header: '登记失败',
-                message: '请确保电池容量不为空',
+                message: message,
                 buttons: ['确定'],
             });
             await alert.present();

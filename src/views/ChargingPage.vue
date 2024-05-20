@@ -144,9 +144,9 @@ export default {
 
         //GET 获取充电站信息
         async getStationMsgs()  {
-            const request = await this.getService({maxDistance: 1000, longitude: 103.98748, latitude:30.5817, isNormal:true, isPublic:true, maxKW:1000, isHS: false});
+            const request = await this.getService({maxDistance: 10000, longitude: 103.98748, latitude:30.5817, isNormal:true, isPublic:true, maxKW:1000, isHS: false});
             console.log(request.data);
-            // this.stationMsgs = request.data.data.records;
+            this.stationMsgs = request.data.data;
         },
         getService:function(pageData) {
             return request({

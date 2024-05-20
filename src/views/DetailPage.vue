@@ -65,7 +65,7 @@
                     </div>
                     <br>
                     <div id="feedbackNote">
-                        <span>备注：{{ msg.feedbackNote.length>20 ? msg.feedbackNote.slice(0,30)+"..." : msg.feedbackNote }}</span>
+                        <span>备注：{{ String(msg.feedbackNote).length>20 ? msg.feedbackNote.slice(0,30)+"..." : msg.feedbackNote }}</span>
                     </div>
                     <br>
                     <br>
@@ -76,7 +76,7 @@
                     </div>
                     <br>
                     <div>
-                        <a id="gpMark" :href="`/tabs/ReviewPage?chargeId=${msg.chargeId}`">还未评分，前往评分>></a>
+                        <a id="gpMark" :href="`/tabs/ReviewPage?chargeId=${msg.chargeId}&userId=${msg.userId}`">还未评分，前往评分>></a>
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -169,14 +169,15 @@ export default {
         //GET 获取订单详情信息
         async getMsg() {
             const urlParams = new URLSearchParams(window.location.search);
-            const request = await this.getService({chargeId: urlParams.get('chargeId') || ''});
-            console.log(request.data.data);
+            let chargeId = urlParams.get('chargeId') || '';
+            const request = await this.getService(chargeId);
+            console.log(request.data);
             this.msg = request.data.data;
         },
-        getService:function(pageData) {
+        getService:function(chargeId) {
             return request({
-                url: '/tabs/DetailPage',
-                params: pageData
+                url: '/chargingRecords/detail/' + chargeId,
+                mothod: 'GET',
             })
         },
     },
@@ -363,7 +364,8 @@ export default {
     float: left;
     margin-top: 10px;
     position: relative;
-    left: 10px;
+    top: 10px;
+    left:-180px;
     bottom: 10px;
     font-size: 14px;
     color: #636363;

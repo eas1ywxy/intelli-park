@@ -92,10 +92,8 @@ export default {
             const request = await this.postLoginInformation(this.loginMsg);
             console.log(request);
 
-            this.userId = request.data.data.id;
-
             if (request.data.code==200){
-                this.setLocalUserMsg(this.userId, request.headers.authorization);
+                this.setLocalUserMsg(request.headers.authorization);
                 this.loginSuccess(this.loginMsg.username);
             }else{
                 this.loginFailure(request.data.message);
@@ -187,7 +185,7 @@ export default {
         },
 
         //localStorage 保存用户登录信息
-        setLocalUserMsg(userId, authorization){
+        setLocalUserMsg(authorization){
             let token = authorization.replace('Bearer','').trim();
             localStorage.setItem('token', token);
             localStorage.setItem('isLogin', 1);

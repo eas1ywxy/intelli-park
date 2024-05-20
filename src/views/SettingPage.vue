@@ -14,23 +14,32 @@
         <ion-content>
             <ion-list inset="true">
                 <ion-item button="true">
-                    <ion-label>注销账号</ion-label>
-                    <!-- <ion-note id="note" slot="end">{{ userMsg.username }}</ion-note> -->
+                    <ion-label id="signOut">注销账号</ion-label>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
+                <ion-alert
+                    trigger="signOut"
+                    header="请确认是否注销"
+                    :buttons="signOutButtons"
+                ></ion-alert>
             </ion-list>
 
             <ion-list inset="true">
-                <ion-item id="quitBtn" button="true" @click="quit">
+                <ion-item id="quitBtn" button="true" @click="">
                     <ion-label id="quitwords">退出登录</ion-label>
                 </ion-item>
+                <ion-alert
+                    trigger="quitBtn"
+                    header="请确认是否退出"
+                    :buttons="quitButtons"
+                ></ion-alert>
             </ion-list>
         </ion-content>
     </ion-page>
 </template>
 
 <script setup>
-import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, alertController, IonButton, IonList, IonItem
+import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, alertController, IonList, IonItem, IonLabel, IonAlert
 } from '@ionic/vue';
 import { 
     arrowBackOutline,
@@ -44,7 +53,31 @@ export default {
     name: 'SettingPage',
     data(){
         return{
+            //退出提示框
+            quitButtons: [
+                {
+                    text: '取消',
+                },
+                {
+                    text: '确定',
+                    handler: () => {
+                        this.quit();
+                    },
+                },
+            ],
 
+            //注销提示框
+            signOutButtons: [
+                {
+                    text: '取消',
+                },
+                {
+                    text: '确定',
+                    handler: () => {
+                        this.signOut();
+                    },
+                },
+            ],
         }
     },
     methods: {
@@ -54,11 +87,15 @@ export default {
         },
 
         //GET 用户退出
-        async quit()  {
+        async quit() {
             const request = await this.getQuitMsg();
             console.log(request.data);
-            this.setLocalIsLoginFalse();
-            window.location.href = "/tabs/PersonPage";
+            if(request.data.code==200){
+                this.setLocalIsLoginFalse();
+                this.quitSuccess();
+            }else{
+                this.quitFailure(request.data.message);
+            }
         },
         getQuitMsg:function() {
             return request({
@@ -67,10 +104,81 @@ export default {
             })
         },
 
+        //DELET 用户注销
+        async signOut()  {
+            const request = await this.deletSignOut();
+            console.log(request.data);
+            if(request.data.code==200){
+                this.setLocalIsLoginFalse();
+                this.signOutSuccess();
+            }else{
+                this.signOutFailure(request.data.message);
+            }
+        },
+        deletSignOut:function() {
+            return request({
+                url: '/person',
+                method: 'DELETE',
+            })
+        },
+
         //设置isLogin为false
-        setLocalIsLoginFalse(){
+        setLocalIsLoginFalse: function(){
             localStorage.setItem('isLogin', 0);
-        }
+        },
+
+        //退出成功弹窗
+        quitSuccess :async() => {
+            const alert = await alertController.create({
+                header: '退出成功',
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            
+                            window.location.href = "/tabs/PersonPage";
+                        }
+                    }
+                ]
+            });
+            await alert.present();
+        },
+
+        //退出失败弹窗
+        quitFailure :async(message) => {
+            const alert = await alertController.create({
+                header: '退出失败',
+                message: message,
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
+
+        //注销成功弹窗
+        signOutSuccess :async() => {
+            const alert = await alertController.create({
+                header: '注销成功',
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/PersonPage";
+                        }
+                    }
+                ]
+            });
+            await alert.present();
+        },
+
+        //注销失败弹窗
+        signOutFailure :async(message) => {
+            const alert = await alertController.create({
+                header: '注销失败',
+                message: message,
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
     }
 }
 </script>

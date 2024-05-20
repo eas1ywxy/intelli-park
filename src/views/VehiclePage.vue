@@ -14,7 +14,7 @@
         <ion-content>
             <ion-button id="addCarBtn" expand="block" :href='`/tabs/RegisterPage?id=${userId}`'>+</ion-button>
 
-            <vehicle-card v-for="vehicleMsg in vehicleMsgs" :msg="vehicleMsg"></vehicle-card>
+            <vehicle-card v-for="vehicleMsg in vehiclelist" :msg="vehicleMsg"></vehicle-card>
         </ion-content>
     </ion-page>
 </template>
@@ -36,49 +36,33 @@ export default {
     },
     data() {
         return {
-            vehicleMsgs: [
-                // {
-                //     vehicleBrand: "红旗",
-                //     vehicleModel: 1,
-                //     licencePlate: "川A5235A9",
-                //     electricity: 100
-                // },
-                // {
-                //     vehicleBrand: "五凌红光",
-                //     vehicleModel: 2,
-                //     licencePlate: "川A5585d9",
-                //     electricity: 100
-                // },
-            ],
-            userId: Number,
+            vehiclelist: Array,
+            userId: 0,
         }
     },
     methods: {
-        //返回行一页
+        //返回上一页
         goBack: function(){
-            // history.go(-1);
-            window.open('/tabs/PersonPage');
+            window.location.href = "/tabs/PersonPage";
         },
-
         
-        //GET获取用户车辆信息
-        async getVehicleMsg() {
+        //GET 获取用户车辆信息
+        async getUserVehicle()  {
             const urlParams = new URLSearchParams(window.location.search);
-            const request = await this.getService({id: urlParams.get('id') || ''});
-            console.log(request.data.data.vehicleMsgs);
-            this.vehicleMsgs = request.data.data.vehicleMsgs;
-            console.log(request.data.data.id);
-            this.userId = request.data.data.id; 
+            this.userId = urlParams.get('id') || '';
+            const request = await this.getVehicle({userId: urlParams.get('id') || '', pageNum:1, pageSize: 20});
+            this.vehiclelist = request.data.data.records;
         },
-        getService:function(pageData) {
+        getVehicle:function(info) {
             return request({
-                url: '/tabs/VehiclePage',
-                params: pageData
-            })
+                url: '/vehicle/list',
+                method: 'GET',
+                params: info
+            }) 
         },
     },
     mounted: function(){
-        this.getVehicleMsg();
+        this.getUserVehicle();
     }
 }
 </script>

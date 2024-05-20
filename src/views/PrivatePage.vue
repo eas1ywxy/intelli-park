@@ -262,11 +262,12 @@ export default {
         async putUsername(username){
             let info = {
                 username: username,
-            }
+            };
             const request = await this.updateUsername(info);
-            console.log(request.data);
+            console.log(request);
             if(request.data.code==200){
                 this.changeSuccess();
+                this.setLocalUserMsg(request.headers.authorization);
                 this.getUserMsg();
             }else{
                 this.changeFailure(request.data.message);
@@ -285,11 +286,11 @@ export default {
             let info = {
                 oldPassword: oldP,
                 newPassword: newP,
-            }
+            };
             const request = await this.updatePassword(info);
             console.log(request.data);
             if(request.data.code==200){
-                this.changeSuccess();
+                this.changePasswordSuccess();
                 this.getUserMsg();
             }else{
                 this.changeFailure(request.data.message);
@@ -325,12 +326,28 @@ export default {
             })
         },
 
-        //修改失败弹窗
+        //修改失败
         changeFailure :async(message) => {
             const alert = await alertController.create({
                 header: '修改失败',
                 message: message,
                 buttons: ['确定'],
+            });
+            await alert.present();
+        },
+        //修改成功
+        changePasswordSuccess :async() => {
+            const alert = await alertController.create({
+                header: '修改成功',
+                message: '请重新登录',
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/LoginPage";
+                        }
+                    }
+                ],
             });
             await alert.present();
         },
@@ -341,6 +358,12 @@ export default {
                 buttons: ['确定'],
             });
             await alert.present();
+        },
+
+        //localStorage 保存用户登录信息
+        setLocalUserMsg(authorization){
+            let token = authorization.replace('Bearer','').trim();
+            localStorage.setItem('token', token);
         },
     },
     mounted: function() {

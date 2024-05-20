@@ -54,167 +54,10 @@ export default {
     data() {
         return{
             option: 1,
-            conductOrders: [
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 0,
-                //     cost: 0,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 0,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "",
-                //     state: 1,
-                // },
-            ],
-            unpaidOrders: [
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 100,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 90,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 2,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 100,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 90,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 2,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 100,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 90,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 2,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 100,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 90,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 2,
-                // },
-            ],
-            completedOrders: [
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 100,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 90,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 3,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 100,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 90,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 3,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 100,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 90,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 3,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 100,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 90,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 3,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     connectorId: 24242525,
-                //     electricity: 100,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startElectricity: 30,
-                //     endElectricity: 90,
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 3,
-                // },
-
-            ],
-            pendingOrders: [
-                // {
-                //     chargeId: 1223234,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 4,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 4,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 4,
-                // },
-                // {
-                //     chargeId: 1223234,
-                //     cost: 15.7,
-                //     licencePlate: "川A98D3A",
-                //     startTime: "2024-4-25-10:30",
-                //     endTime: "2024-4-25-12:30",
-                //     state: 4,
-                // },
-            ]
+            conductOrders: [],
+            unpaidOrders: [],
+            completedOrders: [],
+            pendingOrders: [],
         }
     },
     methods: {
@@ -226,7 +69,7 @@ export default {
 
         //返回上一页
         goBack: function(){
-            history.go(-1);
+            window.location.href = "/tabs/PersonPage";
         },
 
         // //GET 获取用户订单信息
@@ -247,21 +90,32 @@ export default {
         // },
 
         //GET 获取用户充电记录
-        async getOrderMsg()  {
-            const request = await this.getChargingRecords();
-            console.log(request.data);
-            // this.userMsg = request.data.data;
+        async getOrderMsg(state)  {
+            const request = await this.getChargingRecords({state: state});
+            console.log(state, request.data.data);
+            if(state == 1){
+                this.conductOrders = request.data.data;
+            }else if(state == 2){
+                this.unpaidOrders = request.data.data;
+            }else if(state == 3){
+                this.completedOrders = request.data.data;
+            }else if(state == 4){
+                this.pendingOrders = request.data.data;
+            }
         },
-        getChargingRecords:function() {
+        getChargingRecords:function(info) {
             return request({
                 url: '/chargingRecords',
                 method: 'GET',
+                params: info,
             })
         },
     },
     mounted: function() {
-        // this.getOrdersMsg();
-        this.getOrderMsg();
+        this.getOrderMsg(1);
+        this.getOrderMsg(2);
+        this.getOrderMsg(3);
+        this.getOrderMsg(4);
     }
 }
 </script>
