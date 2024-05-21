@@ -114,6 +114,7 @@ export default {
 
         //判断是否登录了
         getLocalIsLogin(){
+            console.log('login',localStorage.getItem('isLogin'));
             if(localStorage.getItem('isLogin')==1){
                 this.isLongin = true;
                 this.getUserMsg();
@@ -126,7 +127,11 @@ export default {
         async getUserMsg()  {
             const request = await this.getService();
             console.log(request.data);
-            this.userMsg = request.data.data;
+            if(request.data.code==200){
+                this.userMsg = request.data.data;
+            }else{
+                localStorage.setItem('isLogin',0);
+            }
         },
         getService:function() {
             return request({

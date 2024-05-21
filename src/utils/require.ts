@@ -40,7 +40,9 @@ request.interceptors.response.use(
     // 错误的特殊情况 => 401 权限不足 或 token 过期 => 拦截到登录
     if (res.code === 401) {
       console.log('请重新登录');
-      router.push('/tabs/LoginPage');
+      localStorage.removeItem('isLogin');
+      // router.push('/tabs/LoginPage');
+      window.location.href = "/tabs/LoginPage";
     }
 
     // 处理业务失败, 给错误提示，抛出错误
@@ -53,7 +55,9 @@ request.interceptors.response.use(
     // 错误的特殊情况 => 401 权限不足 或 token 过期 => 拦截到登录
     if (error.response?.status === 401) {
       console.log('请重新登录');
-      router.push('/tabs/LoginPage');
+      localStorage.removeItem('isLogin');
+      // router.push('/tabs/LoginPage');
+      window.location.href = "/tabs/LoginPage";
     }
 
     // 错误的特殊情况404

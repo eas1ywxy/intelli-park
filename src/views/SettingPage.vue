@@ -135,7 +135,6 @@ export default {
                     {
                         text: '确定',
                         handler: () => {
-                            
                             window.location.href = "/tabs/PersonPage";
                         }
                     }

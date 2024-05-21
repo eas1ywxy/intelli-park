@@ -1,5 +1,5 @@
 <template>
-    <ion-card :href='`/tabs/StationPage?stationId=${msg.stationId}`'>
+    <ion-card :href='`/tabs/StationPage?stationId=${msg.stationId}&longitude=${userMsg.userLng}&latitude=${userMsg.userLat}`'>
         <ion-card-header>
             <ion-card-title class="stationTitle">{{ msg.stationName.length>12 ? msg.stationName.slice(0,12)+"..." : msg.stationName  }}
                 <span class="regionName">
@@ -21,8 +21,8 @@
         <ion-card-content>
             <span class="stationStressMsg">
                 距离当前 
-                <span class="stationDistance">{{ (getDistance(msg.stationLat, msg.stationLng, userMsg.userLat, userMsg.userLng)/1000).toFixed(1) }}</span>
-                km，服务电话：
+                <span class="stationDistance">{{ msg.distance }}</span>
+                m，服务电话：
                 <span class="stationPhoneNumber">{{ msg.serviceTel }}</span>
             </span>
         </ion-card-content>
@@ -48,22 +48,7 @@ export default {
         }
     },
     methods: {
-        //通过经纬度求两地间的距离
-        getDistance(lat1, lng1, lat2, lng2) {
-            lat1 = lat1 || 0;
-            lng1 = lng1 || 0;
-            lat2 = lat2 || 0;
-            lng2 = lng2 || 0;
 
-            var rad1 = lat1 * Math.PI / 180.0;
-            var rad2 = lat2 * Math.PI / 180.0;
-            var a = rad1 - rad2;
-            var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
-            var r = 6378137;
-            var distance = r * 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(rad1) * Math.cos(rad2) * Math.pow(Math.sin(b / 2), 2)));
-
-            return Math.ceil(distance);
-        }
     }
 }
 </script>

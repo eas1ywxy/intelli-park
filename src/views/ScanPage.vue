@@ -7,7 +7,6 @@
         </ion-header>
 
         <ion-content>
-            <!-- <span>{{ strToJson(virtualData)[0].equipmentId }}</span> -->
             <div id="sanBox">
                 <video ref="video" id="video" autoplay></video>
                 <div v-show="tipShow" id="scan-tip">{{ tipMsg }}</div>
@@ -24,9 +23,10 @@
 </template>
 
 <script setup>
-import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonToast, IonButton,
+import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonToast, IonButton, alertController
 } from '@ionic/vue';
 import { BrowserMultiFormatReader } from '@zxing/library';
+import request from '@/utils/require.ts';
 </script>
 
 <script>
@@ -49,6 +49,8 @@ export default {
                 power: Number,
                 equipmntName: String,
             },
+            isLongin: false,
+            userMsg: {},
         }
     },
     created() {
@@ -130,42 +132,73 @@ export default {
             this.codeReader.decodeFromInputVideoDeviceContinuously(firstDeviceId, 'video', (result, err) => {
             this.tipMsg = '正在尝试识别...';
             if (result) {
-                
                 console.log('扫码结果', result.text);
-                this.scanText = result.text;
-                console.log(this.scanText);
-                // this.jn = this.strToJson(this.scanText);
-                // this.equipmentMsg.equipmentId = this.jn[0].equipmentId;
-                // this.equipmentMsg.stationId = this.jn[0].stationId;
-                // this.equipmentMsg.equipmentModel = this.jn[0].equipmentModel;
-                // this.equipmentMsg.equipmentType = this.jn[0].equipmentType;
-                // this.equipmentMsg.power = this.jn[0].power;
-                // this.equipmentMsg.equipmntName = this.jn[0].equipmntName;
-                // console.log(this.equipmentMsg.equipmentId);
-                // this.tipMsg = '识别成功';
 
-                // let btn = document.getElementById('open-toast');
-                // btn.setAttribute('disabled', false);
+                console.log(this.isLongin);
 
-                // let toast = document.getElementById('toast');
-                // toast.setAttribute('message', result.text);
-
-                // let drawGunBtn = document.getElementById('drawGunBtn');
-                // drawGunBtn.setAttribute('disabled', false);
-
-                let request = (String)("/tabs/DrawGunPage?request=" + this.scanText);
-                console.log('request',request);
-                window.open(request);
+                if(this.isLongin==true){
+                    this.getUserMsg(result.text)
+                    
+                }else{
+                    this.needLogin();
+                }
             }
             });
         },
+        
+        //GET 获取用户个人信息
+        async getUserMsg(info)  {
+            const request = await this.getService();
+            console.log(request.data);
+            if(request.data.code==200){
+                this.userMsg = request.data.data;
+                window.location.href = "/tabs/DrawGunPage?request=" + info + "&id=" + this.userMsg.id;
+            }else{
+                localStorage.setItem('isLogin',0);
+            }
+        },
+        getService:function() {
+            return request({
+                url: '/person/getInfo',
+                methods: 'GET',
+            })
+        },
 
-        //将扫描的结果转换为Json格式
-        strToJson: function(str){ 
-        var json = (new Function("return [" + str+"]"))(); 
-        return json; 
-        }
+        //判断是否登录了
+        getLocalIsLogin(){
+            console.log('login',localStorage.getItem('isLogin'));
+            if(localStorage.getItem('isLogin')==1){
+                this.isLongin = true;
+            }else{
+                this.isLongin = false;
+            }
+        },
+
+        //需要登录弹窗
+        needLogin :async() => {
+            const alert = await alertController.create({
+                header: '请先登录',
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/LoginPage";
+                        }
+                    }
+                ],
+            });
+            await alert.present();
+        },
+
+        // //将扫描的结果转换为Json格式
+        // strToJson: function(str){ 
+        // var json = (new Function("return [" + str+"]"))(); 
+        // return json; 
+        // }
     },
+    mounted:function(){
+        this.getLocalIsLogin();
+    }
 }
 </script>
 

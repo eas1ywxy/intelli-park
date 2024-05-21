@@ -49,7 +49,7 @@
                     <span class="stationMsg">{{ msg.stationAddress.length>15 ? msg.stationAddress.slice(0,15)+"..." : msg.stationAddress }}</span>
                     <div id="distance">
                         <ion-icon aria-hidden="true" :icon="navigate" style="color: #fff;"/>
-                        <span>{{ (getDistance(msg.stationLat, msg.stationLng, userMsg.userLat, userMsg.userLng)/1000).toFixed(2) }} km</span>
+                        <span>{{ msg.distance }} m</span>
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -137,7 +137,7 @@
 
             <hr class="line">
             
-            <equipment-card v-for="equipmentMsg in msg.equipmentMsgs" :msg="equipmentMsg"></equipment-card>
+            <equipment-card v-for="equipmentMsg in msg.hasEquipments" :msg="equipmentMsg"></equipment-card>
 
         </ion-content>
     </ion-page>
@@ -171,133 +171,19 @@ export default {
                 userLng: 103.98748,
             },
             msg: {
-                // stationName: "成都信息工程大学（航空港）南门充电站",
                 stationName: String,
-                // regionName: "成都信息工程大学（航空港）",
                 regionName: String,
-                // stationStatus: 50,
                 stationStatus: Number,
-                // parkFee: 1.2350,
                 parkFee: Number,
-                // businessHours: "5:00~23:00",
                 businessHours: String,
-                // stationAddress: "双流区学府路一段24号成都信息工程大学航空港校区",
                 stationAddress: String,
-                // serviceTel: "18x-xxxx-xxxx",
                 serviceTel: String,
-                // countryCode: "CD45476457",
                 countryCode: String,
-                // areaCode: "SL03424563",
                 areaCode: String,
-                // stationType: 1,
                 stationType: Number,
-                // stationConstruction: 3,
                 stationConstruction: Number,
-                // stationLat: 30.5837,
-                // stationLng: 103.98848,
                 
-                // equipmentMsgs: [
-                //     {
-                //         equipmentName: "公牛智慧充电桩",
-                //         manufacturerName: "公牛",
-                //         equipmentModel: "A074",
-                //         equipmentType: 1,
-                //         power: 380,
-                //         connects: [
-                //             {
-                //                 connectorName: "1号接口",
-                //                 connectorType: "直流接口枪头",
-                //                 power: 300,
-                //                 matchCars: 1,
-                //                 state: 1,
-                //                 lockStatus: 10,
-                //             },
-                //             {
-                //                 connectorName: "2号接口",
-                //                 connectorType: "交流接口插头",
-                //                 power: 80,
-                //                 matchCars: 2,
-                //                 state: 2,
-                //                 lockStatus: 0,
-                //             }
-                //         ]
-                //     },
-                //     {
-                //         equipmentName: "星星充电充电桩",
-                //         manufacturerName: "星星",
-                //         equipmentModel: "C038",
-                //         equipmentType: 2,
-                //         power: 380,
-                //         connects: [
-                //             {
-                //                 connectorName: "1号接口",
-                //                 connectorType: "直流接口枪头",
-                //                 power: 300,
-                //                 matchCars: "家用轿车",
-                //                 state: 1,
-                //                 lockStatus: 10,
-                //             },
-                //             {
-                //                 connectorName: "2号接口",
-                //                 connectorType: "交流接口插头",
-                //                 power: 80,
-                //                 matchCars: "小型客车",
-                //                 state: 2,
-                //                 lockStatus: 0,
-                //             }
-                //         ]
-                //     },
-                //     {
-                //         equipmentName: "公牛智慧充电桩",
-                //         manufacturerName: "公牛",
-                //         equipmentModel: "A074",
-                //         equipmentType: 1,
-                //         power: 380,
-                //         connects: [
-                //             {
-                //                 connectorName: "1号接口",
-                //                 connectorType: "直流接口枪头",
-                //                 power: 300,
-                //                 matchCars: 1,
-                //                 state: 1,
-                //                 lockStatus: 10,
-                //             },
-                //             {
-                //                 connectorName: "2号接口",
-                //                 connectorType: "交流接口插头",
-                //                 power: 80,
-                //                 matchCars: 2,
-                //                 state: 2,
-                //                 lockStatus: 0,
-                //             }
-                //         ]
-                //     },
-                //     {
-                //         equipmentName: "星星充电充电桩",
-                //         manufacturerName: "星星",
-                //         equipmentModel: "C038",
-                //         equipmentType: 2,
-                //         power: 380,
-                //         connects: [
-                //             {
-                //                 connectorName: "1号接口",
-                //                 connectorType: "直流接口枪头",
-                //                 power: 300,
-                //                 matchCars: "家用轿车",
-                //                 state: 1,
-                //                 lockStatus: 10,
-                //             },
-                //             {
-                //                 connectorName: "2号接口",
-                //                 connectorType: "交流接口插头",
-                //                 power: 80,
-                //                 matchCars: "小型客车",
-                //                 state: 2,
-                //                 lockStatus: 0,
-                //             }
-                //         ]
-                //     },
-                // ]
+                equipmentMsgs:[],
             },
         }
     },
@@ -305,24 +191,6 @@ export default {
         //打开/关闭更多信息按钮
         changingDetailsFold() {
             this.detailsFold = !this.detailsFold;
-        },
-
-
-        //通过经纬度求两地间的距离
-        getDistance(lat1, lng1, lat2, lng2) {
-            lat1 = lat1 || 0;
-            lng1 = lng1 || 0;
-            lat2 = lat2 || 0;
-            lng2 = lng2 || 0;
-
-            var rad1 = lat1 * Math.PI / 180.0;
-            var rad2 = lat2 * Math.PI / 180.0;
-            var a = rad1 - rad2;
-            var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
-            var r = 6378137;
-            var distance = r * 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(rad1) * Math.cos(rad2) * Math.pow(Math.sin(b / 2), 2)));
-
-            return Math.ceil(distance);
         },
 
         //返回上一页
@@ -333,17 +201,18 @@ export default {
         //GET 获取充电站信息
         async getMsg() {
             const urlParams = new URLSearchParams(window.location.search);
-            const request = await this.getService({stationId: urlParams.get('stationId') || ''});
-            console.log(request.data.data);
+            let id = urlParams.get('stationId') || '';
+            let longitude = urlParams.get('longitude') || '';
+            let latitude = urlParams.get('latitude') || '';
+            const request = await this.getService(id, {longitude: longitude, latitude: latitude});
+            console.log(request.data);
             this.msg = request.data.data;
-            console.log(this.msg.stationName.length);
-            console.log(this.msg.stationAddress.length);
-            
         },
-        getService:function(pageData) {
+        getService:function(id, info) {
             return request({
-                url: '/tabs/StationPage',
-                params: pageData
+                url: '/stations/detail/' + id,
+                method: 'GET',
+                params: info,
             })
         },
         
