@@ -17,12 +17,15 @@
             </div>
             <br>
             <span id="electricity">{{ msg.electricity }}W</span>
+            <br>
+            <ion-button @click="deleteVehicleMsg">删除</ion-button>
         </ion-card-content>
     </ion-card>
 </template>
 
 <script>
-import {IonCard, IonCardHeader, IonCardTitle, IonCardContent, } from '@ionic/vue';
+import {IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton} from '@ionic/vue';
+import request from '@/utils/require.ts';
 
 export default {
     name: "vehicleCard",
@@ -33,6 +36,20 @@ export default {
         return{
             msg: this.msg,
         }
+    },
+    methods: {
+        //DELETE 登记用户车辆
+        async deleteVehicleMsg(){
+            const request = await this.postVehicleInformation([this.msg.vehicleId]);
+            console.log(request.data);
+        },
+        postVehicleInformation: function(info) {
+            return request({
+                url: '/vehicle',
+                method: 'DELETE',
+                data: info,
+            })
+        },
     }
 }
 </script>

@@ -16,14 +16,12 @@
                 <ion-card-header>
                     <ion-card-title>
                         <span id="costTitle">本次订单所需支付金额：</span>
-                        <span id="cost">{{ costMsg.cost }}元</span>
+                        <span id="cost">{{ msg.cost }}元</span>
                     </ion-card-title>
                 </ion-card-header>
 
                 <ion-card-content>
-                    <span>充电消费：{{ costMsg.chargingCost }}元</span>
-                    <br>
-                    <span>服务费：{{ costMsg.serviceCost }}元</span>
+                    <span>服务费：{{ msg.serviceCost }}元</span>
                 </ion-card-content>
             </ion-card>
 
@@ -36,8 +34,8 @@
                 </ion-card-header>
             </ion-card>
 
-            <ion-button v-if="costMsg.cost < userMsg.balance" id="open-toast" expand="block">确认支付</ion-button>
-            <ion-button v-else="costMsg.cost > userMsg.balance" id="open-toast" expand="block" :href="`/tabs/WalletPage?id=${userMsg.id}`">去充值</ion-button>
+            <ion-button v-if="msg.cost < userMsg.balance" id="open-toast" @click="postWalletRecharge(msg.cost)" expand="block">确认支付</ion-button>
+            <ion-button v-else="msg.cost > userMsg.balance" id="open-toast" expand="block" href="/tabs/WalletPage">去充值</ion-button>
         </ion-content>
     </ion-page>
 </template>
@@ -56,17 +54,8 @@ export default {
     name: "PaymentPage",
     data(){
         return{
-            costMsg:{
-                // chargeId: 1234235,
-                // cost: 12.50,
-                // chargingCost: 9.00,
-                // serviceCost: 3.50,
-            },
-            userMsg:{
-                // id: 1111,
-                // balance: 50.00,
-                // vip: 1,
-            }
+            msg:{},
+            userMsg:{},
         }
     },
     methods: {
@@ -75,24 +64,85 @@ export default {
             history.go(-1);
         },
 
-        //GET 获取用户信息
+        //GET 获取订单详情信息
         async getMsg() {
             const urlParams = new URLSearchParams(window.location.search);
-            const request = await this.getService({chargeId: urlParams.get('chargeId') || ''});
-            console.log(request.data.data);
-            this.userMsg = request.data.data.userMsg;
-            this.costMsg = request.data.data.costMsg;
-            
+            let chargeId = urlParams.get('chargeId') || '';
+            const request = await this.getService(chargeId);
+            console.log('charge',request.data);
+            this.msg = request.data.data;
         },
-        getService:function(pageData) {
+        getService:function(chargeId) {
             return request({
-                url: '/tabs/PaymentPage',
-                params: pageData
+                url: '/chargingRecords/detail/' + chargeId,
+                mothod: 'GET',
             })
+        },
+
+        //GET 获取用户个人信息
+        async getUserMsg()  {
+            const request = await this.getUserService();
+            console.log('user',request.data);
+            this.userMsg = request.data.data;
+        },
+        getUserService:function() {
+            return request({
+                url: '/person/getInfo',
+                method: 'GET',
+            })
+        },
+
+        //POST 充电费用支付
+        async postWalletRecharge(money)  {
+            console.log(money);
+            const urlParams = new URLSearchParams(window.location.search);
+            let chargeId = urlParams.get('chargeId') || '';
+            const request = await this.postWallet({money: money}, chargeId);
+            console.log(request.data);
+            if(request.data.code==200){
+                this.paySuccess();
+            }else{
+                this.payFailure(request.data.message);
+            }
+        },
+        postWallet:function(money, id) {
+            return request({
+                url: '/charging/pay/' + id,
+                method: 'POST',
+                params: money,
+                //data: chargeId
+            })
+        },
+
+        //支付成功
+        paySuccess :async() => {
+            const alert = await alertController.create({
+                header: '支付成功',
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/OrderPage";
+                        }
+                    }
+                ],
+            });
+            await alert.present();
+        },
+
+        //支付失败
+        payFailure :async(message) => {
+            const alert = await alertController.create({
+                header: '支付失败',
+                message: message,
+                buttons: ['确定'],
+            });
+            await alert.present();
         },
     },
     mounted: function(){
         this.getMsg();
+        this.getUserMsg();
     }
 }
 </script>

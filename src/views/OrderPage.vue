@@ -9,6 +9,9 @@
                     <span>订单信息</span>
                 </ion-title>
             </ion-toolbar>
+
+            <!-- <ion-progress-bar :value="progress" reversed="true"></ion-progress-bar> -->
+
             <ion-toolbar>
                 <ion-segment value="conduct">
                     <ion-segment-button @click="changeOption(1)" value="conduct">
@@ -37,19 +40,24 @@
 </template>
 
 <script setup>
-import {IonPage, IonHeader, IonToolbar, IonTitle, IonSegment, IonSegmentButton, IonLabel, IonIcon} from '@ionic/vue';
+import {IonPage, IonHeader, IonToolbar, IonTitle, IonSegment, IonSegmentButton, IonLabel, IonIcon } from '@ionic/vue';
 import { 
     arrowBackOutline,
  } from 'ionicons/icons';
+
+ import { IonProgressBar } from '@ionic/vue';
+  import { defineComponent, ref } from 'vue';
+
  import orderCard from '@/components/orderCard.vue';
  import request from '@/utils/require.ts';
 </script>
 
 <script>
-export default {
+export default defineComponent({
     name: "OrderPage",
     components: {
         orderCard,
+        IonProgressBar,
     },
     data() {
         return{
@@ -111,13 +119,29 @@ export default {
             })
         },
     },
+    // setup(){
+    //     let progress = ref(0);
+
+    //     return {
+    //         progress,
+    //     };
+    // },
     mounted: function() {
         this.getOrderMsg(1);
         this.getOrderMsg(2);
         this.getOrderMsg(3);
         this.getOrderMsg(4);
+
+        // setInterval(() => {
+        //     this.progress += 0.01;
+        //     if (this.progress > 1) {
+        //         setTimeout(() => {
+        //             this.progress = 0;
+        //         }, 1000);
+        //     }
+        // }, 50);
     }
-}
+})
 </script>
 
 <style>

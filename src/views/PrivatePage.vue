@@ -43,11 +43,8 @@
                     :inputs="alertInputs2"
                 ></ion-alert>
 
-                <ion-item id="passward-alert" button="true">
+                <!-- <ion-item id="passward-alert" button="true">
                     <ion-label>修改密码</ion-label>
-                    <!-- <span id="note">
-                        <ion-note id="passward" slot="end" v-for="p in userMsg.password">{{ "·" }}</ion-note>
-                    </span> -->
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
@@ -55,7 +52,7 @@
                     header="重新设置用户密码"
                     :buttons="alertButtons3"
                     :inputs="alertInputs3"
-                ></ion-alert>
+                ></ion-alert> -->
 
                 <ion-item id="phoneNum-alert" button="true">
                     <ion-label>绑定手机</ion-label>
@@ -69,7 +66,7 @@
                     :inputs="alertInputs4"
                 ></ion-alert>
 
-                <ion-item button="true" :href="`/tabs/WalletPage?id=${userMsg.id}`">
+                <ion-item button="true" :href="`/tabs/WalletPage`">
                     <ion-label>账户余额</ion-label>
                     <ion-note id="note" slot="end">{{ userMsg.balance }}</ion-note>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
@@ -79,7 +76,7 @@
                     <ion-label>会员到期时间</ion-label>
                     <ion-note id="note" v-if="userMsg.vip==1" slot="end">{{ userMsg.vipDisableTime }}</ion-note>
                     <ion-note id="note" v-else="userMsg.vip==0" slot="end">未开通</ion-note>
-                    <ion-icon :icon="chevronForward" slot="end"></ion-icon>
+                    <!-- <ion-icon :icon="chevronForward" slot="end"></ion-icon> -->
                 </ion-item>
             </ion-list>
         </ion-content> 
@@ -335,7 +332,7 @@ export default {
             });
             await alert.present();
         },
-        //修改成功
+        //修改密码成功
         changePasswordSuccess :async() => {
             const alert = await alertController.create({
                 header: '修改成功',

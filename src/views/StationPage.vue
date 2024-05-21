@@ -65,7 +65,8 @@
                     <!-- <span id="nowParkFee">{{ msg.parkFee.toFixed(4) }}</span> -->
                     <span id="nowParkFee">{{ msg.parkFee }}</span>
                     <span id="pastParkFee">
-                        <span id="pastParkFeeNum">{{ (1.5).toFixed(4) }}</span>元/度
+                        <!-- <span id="pastParkFeeNum">{{ (1.5).toFixed(4) }}</span> -->
+                        元/度
                     </span>
                     <hr class="line">
                     <div>

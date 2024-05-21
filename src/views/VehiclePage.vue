@@ -51,6 +51,7 @@ export default {
             const urlParams = new URLSearchParams(window.location.search);
             this.userId = urlParams.get('id') || '';
             const request = await this.getVehicle({userId: urlParams.get('id') || '', pageNum:1, pageSize: 20});
+            console.log(request.data);
             this.vehiclelist = request.data.data.records;
         },
         getVehicle:function(info) {

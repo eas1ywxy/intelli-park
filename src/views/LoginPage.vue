@@ -37,8 +37,8 @@
 
             <ion-button v-if="hasAccount" class="mainButton" @click="postLoginMsg" expand="block">登录</ion-button>
             <ion-button v-else="!hasAccount" class="mainButton" @click="postRegistrationMsg" expand="block">注册</ion-button>
-            <ion-button v-if="hasAccount" class="secondButton" @click="RegisterOrLogin" expand="block">没有账号？前往登录</ion-button>
-            <ion-button v-else="!hasAccount" class="secondButton" @click="RegisterOrLogin" expand="block">已有账号，去登陆</ion-button>
+            <ion-button v-if="hasAccount" class="secondButton" @click="RegisterOrLogin" expand="block">没有账号？前往注册</ion-button>
+            <ion-button v-else="!hasAccount" class="secondButton" @click="RegisterOrLogin" expand="block">已有账号，去登录</ion-button>
         </ion-content>
     </ion-page>
 </template>

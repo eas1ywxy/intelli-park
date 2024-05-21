@@ -9,9 +9,9 @@
         <ion-content>
             <div id="sanBox">
                 <video ref="video" id="video" autoplay></video>
-                <div v-show="tipShow" id="scan-tip">{{ tipMsg }}</div>
+                <!-- <div v-show="tipShow" id="scan-tip">{{ tipMsg }}</div>
                 <ion-button id="open-toast" expand="block" :disabled="true">查看识别结果</ion-button>
-                <ion-button id="drawGunBtn" expand="block" :disabled="true" :href='`/tabs/DrawGunPage?equipmentId=${equipmentMsg.equipmentId}`'>>> 前往拔枪 <<</ion-button>
+                <ion-button id="drawGunBtn" expand="block" :disabled="true" :href='`/tabs/DrawGunPage?equipmentId=${equipmentMsg.equipmentId}`'>>> 前往拔枪 <<</ion-button> -->
                 
             </div>
             
@@ -189,12 +189,6 @@ export default {
             });
             await alert.present();
         },
-
-        // //将扫描的结果转换为Json格式
-        // strToJson: function(str){ 
-        // var json = (new Function("return [" + str+"]"))(); 
-        // return json; 
-        // }
     },
     mounted:function(){
         this.getLocalIsLogin();
@@ -215,6 +209,8 @@ export default {
 }
 
 #sanBox{
+    width: 400px;
+    height: 800px;
     position: relative;
     top: 100px;
 }

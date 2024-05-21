@@ -11,7 +11,7 @@
             </ion-toolbar>
         </ion-header>
 
-        <ion-content>
+        <ion-content class="ion-padding">
             <div id="equipmentBox">
                 <img id="equipmentImg" src="../../resources/equipment.png" alt="充电桩"/>
                 <div id="equipmentMsg">
@@ -42,8 +42,21 @@
             <ion-button id="chooseVehicle" expand="block">选择充电车辆</ion-button>
             <ion-modal id="chooseVehicleBreakPoints" ref="modal" trigger="chooseVehicle" :initial-breakpoint="0.25" :breakpoints="[0, 0.25, 0.5, 0.75]">
                 <ion-content class="ion-padding">
-                    <ion-list v-for="(vehicle,index) in vehiclelist" @click="chooseVehicle(vehicle.vehicleId, index)">
-                        <ion-item button="true">
+                    <ion-list>
+                        <!-- <ion-item v-for="vehicle in vehiclelist" @click="chooseVehicle(vehicle.vehicleId, index)">
+                            <div id="vehicleDiv">
+                                <h2>{{ vehicle.licencePlate }}</h2>
+                                <p>充电车型：
+                                    <span v-if="vehicle.vehicleModel==1">直流快充</span>
+                                    <span v-else-if="vehicle.vehicleModel==2">交流慢充</span>
+                                    <span v-else="vehicle.vehicleModel==3">交直流混合充电</span>
+                                    ，电池容量：
+                                    <span>{{ vehicle.electricity }}</span>
+                                </p>
+                            </div>
+                        </ion-item> -->
+                        <!-- 不显示？？？ -->
+                        <ion-item v-for="(vehicle,index) in vehiclelist" @click="chooseVehicle(vehicle.vehicleId, index)">
                             <ion-label>
                                 <h2>{{ vehicle.licencePlate }}</h2>
                                 <p>充电车型：
@@ -68,7 +81,7 @@
 </template>
 
 <script setup>
-import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonButton, IonModal, IonList, IonItem, alertController, IonImg, IonLabel, IonSearchbar
+import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonButton, IonModal, IonList, IonItem, alertController, IonLabel,
 } from '@ionic/vue';
 import { 
     arrowBackOutline,
@@ -173,6 +186,7 @@ export default {
                 const request = await this.getStart(info);
                 if(request.data.code==200){
                     console.log('startCharing',request.data);
+                    this.charingSuccess(this.equipmentMsg.seq);
                 }else{
                     this.failure(request.data.message);
                 }
@@ -239,6 +253,22 @@ export default {
             await alert.present();
         },
 
+        //开始充电成功
+        charingSuccess :async(seq) => {
+            const alert = await alertController.create({
+                header: '开始充电成功',
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/TopupPage?chargeId=" + seq;
+                        }
+                    }
+                ],
+            });
+            await alert.present();
+        },
+
         //失败弹窗
         failure :async(message) => {
             const alert = await alertController.create({
@@ -250,7 +280,7 @@ export default {
         },
 
         //用户选择车辆
-        chooseVehicle: function(vehicleId, index){
+        chooseVehicle(vehicleId, index){
             this.chooseIndex = index;
             this.chooseVehicleId = vehicleId;
         }

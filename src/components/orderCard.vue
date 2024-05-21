@@ -25,13 +25,13 @@
             <span>
                 <span v-if="msg.electricity != 0 && msg.state != 3 &&msg.state != 4">本次充电量：{{ msg.electricity }}W<br></span>
             </span>
-            <span id="cost" v-if="msg.cost != 0 && msg.state != 4">
-                <span>充电费用：{{ msg.cost }}元<br></span>
-            </span>
-            
+
             <span v-if="msg.state != 4">
                 <span v-if="msg.endElectricity==0" id="electricity">开始电量：{{ msg.startElectricity }}%</span>
                 <span v-if="msg.endElectricity!=0" id="electricity">开始电量：{{ msg.startElectricity }}% => {{ msg.endElectricity }}%</span>
+            </span>
+            <span id="cost" v-if="msg.cost != 0 && msg.state != 4">
+                <span v-if="msg.state!=1">{{ msg.cost }}元</span>
             </span>
             
         </ion-card-content>
@@ -80,7 +80,12 @@ export default {
 }
 
 #cost{
-    font-size: 18px;
+    float: right;
+    font-size: 25px;
     color: #454545;
+    position: relative;
+    left: 100px;
+    top: 15px;
+    color: #ffca22;
 }
 </style>

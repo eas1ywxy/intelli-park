@@ -97,8 +97,8 @@
                     <span>
                         <span id="paymentStatus">支付状态</span>
                         <span id="status">
-                            <span id="chargeUnfinished" v-if="msg.state == 1">充电未结束</span>
-                            <span id="goPaid" v-else-if="msg.state == 2"><a :href="`/tabs/PaymentPage?id=${msg.id}&chargeId=${msg.chargeId}`">前往支付</a></span>
+                            <span id="chargeUnfinished" v-if="msg.state == 1"><a :href="`/tabs/TopupPage?chargeId=${msg.chargeId}`">充电未结束>></a></span>
+                            <span id="goPaid" v-else-if="msg.state == 2"><a :href="`/tabs/PaymentPage?id=${msg.id}&chargeId=${msg.chargeId}`">前往支付>></a></span>
                             <span id="havePaid" v-else="msg.state >= 3">已支付</span>
                         </span>
                     </span>
@@ -295,12 +295,18 @@ export default {
     float: right;
 }
 
-#chargeUnfinished{
+#chargeUnfinished a{
+    font-size: 18px;
+    text-decoration: none;
+    outline: none;
     color: #ffca22;
 }
 
-#goPaid{
-    color: #7045ff;
+#goPaid a{
+    font-size: 18px;
+    text-decoration: none;
+    outline: none;
+    color: #7045ff
 }
 
 .licencePlates{

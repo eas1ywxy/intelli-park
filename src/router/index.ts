@@ -74,6 +74,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'LoginPage',
         component: () => import('@/views/LoginPage.vue')
+      },
+      {
+        path: 'TopupPage',
+        component: () => import('@/views/TopupPage.vue')
       }
     ]
   }

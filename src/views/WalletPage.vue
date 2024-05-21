@@ -64,7 +64,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-button id="open-toast" expand="block">确认充值</ion-button>
+            <ion-button id="open-toast" expand="block" @click="postWalletRecharge(amount)">确认充值</ion-button>
         </ion-content>
     </ion-page>
 </template>
@@ -85,12 +85,7 @@ export default {
         return {
             amount: 0,
             amountList:[50, 80, 100, 200, 500, 600, 800],
-
-
-            userMsg:{
-                // id: 111111,
-                // balance: 10000,
-            },
+            userMsg:{},
 
             //输入其他面额
             alertButtons: [
@@ -104,7 +99,7 @@ export default {
                     text: '确定',
                     handler: (data) => {
                         console.log("自定义面额",data[0]);
-                        if(data[0]>1500||data[0]<=0){
+                        if(data[0]>5000||data[0]<=0){
                             this.changeFailure();
                             this.amount = 0;
                         }else{
@@ -115,7 +110,7 @@ export default {
             ],
             alertInputs: [
                 {
-                    placeholder: '最高不超过1500元',
+                    placeholder: '最高不超过5000元',
                     attributes: {
                         maxlength: 10,
                     },
@@ -152,19 +147,61 @@ export default {
             await alert.present();
         },
 
-        //GET 获取用户信息
-        async getUserMsg() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const request = await this.getService({id: urlParams.get('id') || ''});
-            console.log(request.data.data);
+        //GET 获取用户个人信息
+        async getUserMsg()  {
+            const request = await this.getService();
+            console.log(request.data);
             this.userMsg = request.data.data;
-            
         },
-        getService:function(pageData) {
+        getService:function() {
             return request({
-                url: '/tabs/WalletPage',
-                params: pageData
+                url: '/person/getInfo',
+                method: 'GET',
             })
+        },
+
+        //POST 用户充值
+        async postWalletRecharge(number)  {
+            const request = await this.postWallet({number: number});
+            console.log(request.data);
+            if(request.data.code==200){
+                this.chargeSuccess();
+            }else{
+                this.chargeFailure(request.data.message);
+            }
+        },
+        postWallet:function(info) {
+            return request({
+                url: '/person/recharge',
+                method: 'POST',
+                params: info
+            })
+        },
+
+        //充值成功
+        chargeSuccess :async() => {
+            const alert = await alertController.create({
+                header: '充值成功',
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/PrivatePage";
+                        }
+                    }
+                ],
+            });
+            await alert.present();
+        },
+
+        //修改失败
+        chargeFailure :async(message) => {
+            const alert = await alertController.create({
+                header: '修改失败',
+                message: message,
+                buttons: ['确定'],
+            });
+            await alert.present();
         },
     },
     mounted: function(){

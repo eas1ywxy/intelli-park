@@ -10,13 +10,13 @@
                 </ion-title>
             </ion-toolbar>
         </ion-header>
-
+        
         <ion-content>
             <ion-card>
                 <ion-input id="vehicleBrand" label="车辆品牌" label-placement="floating" fill="solid" placeholder="请输入车辆品牌"></ion-input>
                 <ion-input id="vehicleModel" label="充电车型" label-placement="floating" fill="solid" placeholder="直流快充/交流慢充/交直流混合充电"></ion-input>
-                <ion-input id="licencePlate" label="电池容量" label-placement="floating" fill="solid" placeholder="请输入车辆电池容量，单位：kw·h"></ion-input>
-                <ion-input id="electricity" label="车辆牌照" label-placement="floating" fill="solid" placeholder="请输入有效车牌号"></ion-input>
+                <ion-input id="electricity" label="电池容量" label-placement="floating" fill="solid" placeholder="请输入车辆电池容量，单位：kw·h"></ion-input>
+                <ion-input id="licencePlate" label="车辆牌照" label-placement="floating" fill="solid" placeholder="请输入有效车牌号"></ion-input>
             </ion-card>
             <ion-button id="addCarBtn" expand="block" @click="keepVehicleMsg">保存信息</ion-button>
         </ion-content>
@@ -94,20 +94,6 @@ export default {
             const urlParams = new URLSearchParams(window.location.search);
             this.vehicleMsg.userId = urlParams.get('id') || '';
             console.log(this.vehicleMsg);
-            // if(!this.vehicleMsg.userId){
-            //     console.log('获取userId失败');
-            //     this.registerFailure();
-            // }else{
-            //     console.log('获取到userId');
-                
-            //     const request = this.postVehicleInformation(registerMsg);
-            //     console.log(request);
-            //     if(request){
-            //         this.registerSuccess(this.vehicleMsg.userId);
-            //     }else{
-            //         this.registerFailure();
-            //     }
-            // }
             const request = await this.postVehicleInformation(this.vehicleMsg);
             console.log(request.data);
             if(request.data.code==200){

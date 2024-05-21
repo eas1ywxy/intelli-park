@@ -22,6 +22,20 @@
                     header="请确认是否注销"
                     :buttons="signOutButtons"
                 ></ion-alert>
+
+                <ion-item id="passward-alert" button="true">
+                    <ion-label>修改密码</ion-label>
+                    <!-- <span id="note">
+                        <ion-note id="passward" slot="end" v-for="p in userMsg.password">{{ "·" }}</ion-note>
+                    </span> -->
+                    <ion-icon :icon="chevronForward" slot="end"></ion-icon>
+                </ion-item>
+                <ion-alert
+                    trigger="passward-alert"
+                    header="重新设置用户密码"
+                    :buttons="alertButtons3"
+                    :inputs="alertInputs3"
+                ></ion-alert>
             </ion-list>
 
             <ion-list inset="true">
@@ -78,12 +92,66 @@ export default {
                     },
                 },
             ],
+
+            //修改用户密码选择提示框
+            alertButtons3: [
+                {
+                    text: '取消',
+                    handler: () => {
+                        console.log('取消更改用户密码');
+                    }
+                },
+                {
+                    text: '确定',
+                    handler: (data) => {
+                        console.log("更新用户密码", data[0], data[1]);
+                        this.postPassword(data[0], data[1]);
+                    }
+                }
+            ],
+            alertInputs3: [
+                {
+                    placeholder: '请输入旧密码',
+                    attributes: {
+                        maxlength: 20,
+                    },
+                },
+                {
+                    placeholder: '请输入新密码',
+                    attributes: {
+                        maxlength: 20,
+                    },
+                }
+            ],
         }
     },
     methods: {
         //返回行一页
         goBack: function(){
             history.go(-1);
+        },
+
+        //POST 修改用户密码
+        async postPassword(oldP, newP)  {
+            let info = {
+                oldPassword: oldP,
+                newPassword: newP,
+            };
+            const request = await this.updatePassword(info);
+            console.log(request.data);
+            if(request.data.code==200){
+                this.changePasswordSuccess();
+                // this.getUserMsg();
+            }else{
+                this.changeFailure(request.data.message);
+            }
+        },
+        updatePassword: function(info) {
+            return request({
+                url: '/person/updatePassword',
+                method: 'POST',
+                data: info,
+            })
         },
 
         //GET 用户退出
@@ -173,6 +241,33 @@ export default {
         signOutFailure :async(message) => {
             const alert = await alertController.create({
                 header: '注销失败',
+                message: message,
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
+
+        //修改密码成功
+        changePasswordSuccess :async() => {
+            const alert = await alertController.create({
+                header: '修改成功',
+                message: '请重新登录',
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/LoginPage";
+                        }
+                    }
+                ],
+            });
+            await alert.present();
+        },
+
+        //修改失败
+        changeFailure :async(message) => {
+            const alert = await alertController.create({
+                header: '修改失败',
                 message: message,
                 buttons: ['确定'],
             });
