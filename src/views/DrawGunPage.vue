@@ -41,22 +41,9 @@
 
             <ion-button id="chooseVehicle" expand="block">选择充电车辆</ion-button>
             <ion-modal id="chooseVehicleBreakPoints" ref="modal" trigger="chooseVehicle" :initial-breakpoint="0.25" :breakpoints="[0, 0.25, 0.5, 0.75]">
-                <ion-content class="ion-padding">
-                    <ion-list>
-                        <!-- <ion-item v-for="vehicle in vehiclelist" @click="chooseVehicle(vehicle.vehicleId, index)">
-                            <div id="vehicleDiv">
-                                <h2>{{ vehicle.licencePlate }}</h2>
-                                <p>充电车型：
-                                    <span v-if="vehicle.vehicleModel==1">直流快充</span>
-                                    <span v-else-if="vehicle.vehicleModel==2">交流慢充</span>
-                                    <span v-else="vehicle.vehicleModel==3">交直流混合充电</span>
-                                    ，电池容量：
-                                    <span>{{ vehicle.electricity }}</span>
-                                </p>
-                            </div>
-                        </ion-item> -->
-                        <!-- 不显示？？？ -->
-                        <ion-item v-for="(vehicle,index) in vehiclelist" @click="chooseVehicle(vehicle.vehicleId, index)">
+                <ion-content>
+                    <ion-list v-for="(vehicle,index) in vehiclelist">
+                        <ion-item  @click="chooseVehicle(vehicle.vehicleId, index)">
                             <ion-label>
                                 <h2>{{ vehicle.licencePlate }}</h2>
                                 <p>充电车型：
@@ -67,7 +54,7 @@
                                     <span>{{ vehicle.electricity }}</span>
                                 </p>
                             </ion-label>
-                            <ion-icon v-if="this.chooseIndex == index" id="chooseIcon" aria-hidden="true" slot="end" :icon="checkmarkOutline" />
+                            <ion-icon v-if="chooseIndex == index" id="chooseIcon" aria-hidden="true" slot="end" :icon="checkmarkOutline" />
                         </ion-item>
                     </ion-list>
                 </ion-content>

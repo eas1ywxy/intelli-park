@@ -10,8 +10,71 @@
                 </ion-title>
             </ion-toolbar>
         </ion-header>
-
+        
         <ion-content>
+            <!-- <span>111111</span> -->
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>
+                        <span>充电订单编号：{{ msg.startChargeSeq }}</span>
+                    </ion-card-title>
+                </ion-card-header>
+
+                <ion-card-content>
+                    <span>充电开始时间：{{ msg.StartTime }}</span>
+                    <br>
+                    <span>充电结束时间：{{ msg.EndTime }}</span>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-content>
+                    <span>
+                        <span id="totalMoney">累计费用：{{ msg.totalMoney }}元</span>
+                        <span id="totalPower">累计充电量：{{ msg.totalPower }}kw·h</span>
+                    </span>
+
+                    <div id="charging">
+                        <div id="charingBox">
+                            <div id="greenBox">
+                                <span id="soc">{{ (msg.soc*100).toFixed(2) }}%</span>
+                            </div>
+                        </div>
+                        <div id="charingBoxAfter"></div>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+            
+            <ion-button @click="postEndCharing" id="endCharing" expand="block">结束充电</ion-button>
+            <ion-button @click="changDetails" id="details" expand="block">计费详情</ion-button>
+
+            <ion-card v-if="ifDetails == true" v-for="detail in msg.chargeDetails">
+                <ion-card-header>
+                    <ion-card-title>
+                        <span>开始时间：{{ detail.DetailStartTime }}</span>
+                    </ion-card-title>
+                </ion-card-header>
+
+                <ion-card-content>
+                    <span>结束时间：{{ detail.DetailEndTime }}</span>
+                    <br>
+                    <span>时段电价：{{ detail.elecPrice }}</span>
+                    <br>
+                    <span>时段服务费价格：{{ detail.servicePrice }}</span>
+                    <br>
+                    <span>时段充电量：{{ detail.detailPower }}</span>
+                    <br>
+                    <span>时段电费：{{ detail.detailElecMoney }}</span>
+                    <br>
+                    <span>时段服务费：{{ detail.detailServiceMoney }}</span>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-button @click="getCode" id="endCharing" expand="block">手动停止充电</ion-button>
+
+        </ion-content>
+
+        <!-- <ion-content>
             <ion-card>
                 <ion-card-header>
                     <ion-card-title>
@@ -48,7 +111,7 @@
             <ion-button @click="postEndCharing" id="endCharing" expand="block">结束充电</ion-button>
             <ion-button @click="changDetails" id="details" expand="block">计费详情</ion-button>
 
-            <ion-card v-if="this.ifDetails == true" v-for="detail in this.msg.chargeDetails">
+            <ion-card v-if="ifDetails == true" v-for="detail in msg.chargeDetails">
                 <ion-card-header>
                     <ion-card-title>
                         <span>开始时间：{{ detail.DetailStartTime }}</span>
@@ -71,7 +134,7 @@
             </ion-card>
 
             <ion-button @click="getCode" id="endCharing" expand="block">手动停止充电</ion-button>
-        </ion-content>
+        </ion-content> -->
     </ion-page>
 </template>
 
