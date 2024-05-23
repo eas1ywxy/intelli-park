@@ -141,7 +141,6 @@ export default {
             console.log(request.data);
             if(request.data.code==200){
                 this.changePasswordSuccess();
-                // this.getUserMsg();
             }else{
                 this.changeFailure(request.data.message);
             }

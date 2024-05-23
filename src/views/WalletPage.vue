@@ -6,7 +6,7 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>充值</span>
+                    <span class="fontFamliy">充值</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
@@ -15,8 +15,8 @@
             <ion-card>
                 <ion-card-header>
                     <ion-card-title>
-                        <span>我的余额：</span>
-                        <span id="userBalance">{{ Number(userMsg.balance).toFixed(2) }}</span>
+                        <span class="fontFamliy">我的余额：</span>
+                        <span class="fontFamliy" id="userBalance">{{ Number(userMsg.balance).toFixed(2) }}</span>
                     </ion-card-title>
                 </ion-card-header>
             </ion-card>
@@ -24,12 +24,12 @@
             <ion-card>
                 <ion-card-header>
                     <ion-card-title>
-                        <span id="amountTitle">充值金额</span>
-                        <span id="amountNum">{{ amount!=0 ? amount : '--' }}</span>
+                        <span class="fontFamliy" id="amountTitle">充值金额</span>
+                        <span class="fontFamliy" id="amountNum">{{ amount!=0 ? amount : '--' }}</span>
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                    <div id="amountBox">
+                    <div class="fontFamliy" id="amountBox">
                         <div class="btn" @click="selectAmount(1)">
                             <span class="amount">￥50</span>
                         </div>
@@ -55,6 +55,7 @@
                             <span class="amount" id="otherAmount">其他面额</span>
                         </div>
                         <ion-alert
+                            cssClass="fontFamliy"
                             trigger="otherBtn"
                             header="请输入其他充值面额"
                             :buttons="alertButtons"
@@ -64,7 +65,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-button id="open-toast" expand="block" @click="postWalletRecharge(amount)">确认充值</ion-button>
+            <ion-button class="fontFamliy" id="verifyBtn" expand="block" @click="postWalletRecharge(amount)">确认充值</ion-button>
         </ion-content>
     </ion-page>
 </template>
@@ -162,12 +163,16 @@ export default {
 
         //POST 用户充值
         async postWalletRecharge(number)  {
-            const request = await this.postWallet({number: number});
-            console.log(request.data);
-            if(request.data.code==200){
-                this.chargeSuccess();
+            if(number<=0){
+                this.chargeFailure('请选择充值金额');
             }else{
-                this.chargeFailure(request.data.message);
+                const request = await this.postWallet({number: number});
+                console.log(request.data);
+                if(request.data.code==200){
+                    this.chargeSuccess();
+                }else{
+                    this.chargeFailure(request.data.message);
+                }
             }
         },
         postWallet:function(info) {
@@ -181,6 +186,7 @@ export default {
         //充值成功
         chargeSuccess :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '充值成功',
                 buttons: [
                     {
@@ -194,10 +200,11 @@ export default {
             await alert.present();
         },
 
-        //修改失败
+        //充值失败
         chargeFailure :async(message) => {
             const alert = await alertController.create({
-                header: '修改失败',
+                cssClass: 'fontFamliy',
+                header: '充值失败',
                 message: message,
                 buttons: ['确定'],
             });
@@ -211,6 +218,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: "楷体";
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;
@@ -230,7 +242,7 @@ export default {
     border-radius: 10px;
     font-size: 20px;
     text-align: center;
-    margin: 7px 7px
+    margin: 5px 5px
 }
 
 .amount{
@@ -250,7 +262,7 @@ export default {
 }
 
 #otherBtn{
-    width: 215px;
+    width: 210px;
 }
 
 #otherAmount{
@@ -260,5 +272,9 @@ export default {
 
 #userBalance{
     float: right;
+}
+
+#verifyBtn{
+    margin: 10px;
 }
 </style>

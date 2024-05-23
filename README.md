@@ -22,11 +22,6 @@ npm install @zxing/library --save
 npm install @ionic/pwa-elements
 ```
 
-### Ionic Secure Storage
-```
-npm install @ionic-enterprise/secure-storage
-```
-
 ## 启动项目
 
 ### 浏览器下启动

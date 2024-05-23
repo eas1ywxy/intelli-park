@@ -6,7 +6,7 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>个人信息</span>
+                    <span class="fontFamliy">个人信息</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
@@ -14,8 +14,7 @@
         <ion-content>
             <ion-list inset="true">
                 <ion-item id="avator-alert" button="true">
-                    <!-- color: danger红, tertiary蓝, success绿, warning黄 -->
-                    <ion-label>头像</ion-label>
+                    <ion-label><span class="fontFamliy">头像</span></ion-label>
                     <ion-avatar aria-hidden="true" slot="end">
                         <img v-if="avatar == 4" id="avatar" alt="girl2" src="../../resources/girl2.png" />
                         <img v-else-if="avatar == 3" id="avatar" alt="girl1" src="../../resources/girl1.png" />
@@ -25,6 +24,7 @@
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
+                    css-class="fontFamliy"
                     trigger="avator-alert"
                     header="请选择你喜欢的头像"
                     :buttons="alertButtons1"
@@ -32,34 +32,25 @@
                 ></ion-alert>
 
                 <ion-item id="name-alert" button="true">
-                    <ion-label>用户名</ion-label>
-                    <ion-note id="note" slot="end">{{ userMsg.username }}</ion-note>
+                    <ion-label><span class="fontFamliy">用户名</span></ion-label>
+                    <ion-note id="note" slot="end"><span class="fontFamliy">{{ userMsg.username }}</span></ion-note>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
+                    css-class="fontFamliy"
                     trigger="name-alert"
                     header="重新设置用户名"
                     :buttons="alertButtons2"
                     :inputs="alertInputs2"
                 ></ion-alert>
 
-                <!-- <ion-item id="passward-alert" button="true">
-                    <ion-label>修改密码</ion-label>
-                    <ion-icon :icon="chevronForward" slot="end"></ion-icon>
-                </ion-item>
-                <ion-alert
-                    trigger="passward-alert"
-                    header="重新设置用户密码"
-                    :buttons="alertButtons3"
-                    :inputs="alertInputs3"
-                ></ion-alert> -->
-
                 <ion-item id="phoneNum-alert" button="true">
-                    <ion-label>绑定手机</ion-label>
-                    <ion-note id="note" slot="end">{{ userMsg.phoneNum }}</ion-note>
+                    <ion-label><span class="fontFamliy">绑定手机</span></ion-label>
+                    <ion-note id="note" slot="end"><span class="fontFamliy">{{ userMsg.phoneNum }}</span></ion-note>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
+                    css-class="fontFamliy"
                     trigger="phoneNum-alert"
                     header="重新绑定用户手机号"
                     :buttons="alertButtons4"
@@ -67,15 +58,15 @@
                 ></ion-alert>
 
                 <ion-item button="true" :href="`/tabs/WalletPage`">
-                    <ion-label>账户余额</ion-label>
-                    <ion-note id="note" slot="end">{{ userMsg.balance }}</ion-note>
+                    <ion-label><span class="fontFamliy">账户余额</span></ion-label>
+                    <ion-note id="note" slot="end"><span class="fontFamliy">{{ userMsg.balance }}</span></ion-note>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
 
                 <ion-item button="true">
-                    <ion-label>会员到期时间</ion-label>
-                    <ion-note id="note" v-if="userMsg.vip==1" slot="end">{{ userMsg.vipDisableTime }}</ion-note>
-                    <ion-note id="note" v-else="userMsg.vip==0" slot="end">未开通</ion-note>
+                    <ion-label><span class="fontFamliy">会员到期时间</span></ion-label>
+                    <ion-note id="note" v-if="userMsg.vip==1" slot="end"><span class="fontFamliy">{{ userMsg.vipDisableTime }}</span></ion-note>
+                    <ion-note id="note" v-else="userMsg.vip==0" slot="end"><span class="fontFamliy">未开通</span></ion-note>
                     <!-- <ion-icon :icon="chevronForward" slot="end"></ion-icon> -->
                 </ion-item>
             </ion-list>
@@ -105,13 +96,13 @@ export default {
 
             //修改用户头像选择提示框
             alertButtons1: [
-                {
+                {   
                     text: '取消',
                     handler: () => {
                         console.log('取消更新用户头像');
                     }
                 },
-                {
+                {   
                     text: '确定',
                     handler: (data) => {
                         console.log('更新用户头像', data);
@@ -121,7 +112,7 @@ export default {
                 }
             ],
             alertInputs1: [
-                {
+                {   
                     label: '一号头像-男',
                     type: 'radio',
                     value: 1,
@@ -165,37 +156,6 @@ export default {
                     placeholder: '不超过10个字符',
                     attributes: {
                         maxlength: 10,
-                    },
-                }
-            ],
-
-            //修改用户密码选择提示框
-            alertButtons3: [
-                {
-                    text: '取消',
-                    handler: () => {
-                        console.log('取消更改用户密码');
-                    }
-                },
-                {
-                    text: '确定',
-                    handler: (data) => {
-                        console.log("更新用户密码", data[0], data[1]);
-                        this.postPassword(data[0], data[1]);
-                    }
-                }
-            ],
-            alertInputs3: [
-                {
-                    placeholder: '请输入旧密码',
-                    attributes: {
-                        maxlength: 20,
-                    },
-                },
-                {
-                    placeholder: '请输入新密码',
-                    attributes: {
-                        maxlength: 20,
                     },
                 }
             ],
@@ -277,29 +237,6 @@ export default {
                 data: info,
             })
         },
-
-        //POST 修改用户密码
-        async postPassword(oldP, newP)  {
-            let info = {
-                oldPassword: oldP,
-                newPassword: newP,
-            };
-            const request = await this.updatePassword(info);
-            console.log(request.data);
-            if(request.data.code==200){
-                this.changePasswordSuccess();
-                this.getUserMsg();
-            }else{
-                this.changeFailure(request.data.message);
-            }
-        },
-        updatePassword: function(info) {
-            return request({
-                url: '/person/updatePassword',
-                method: 'POST',
-                data: info,
-            })
-        },
         
         //PUT 修改用户手机号
         async putPhoneNum(phoneNum){
@@ -326,31 +263,17 @@ export default {
         //修改失败
         changeFailure :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '修改失败',
                 message: message,
                 buttons: ['确定'],
             });
             await alert.present();
         },
-        //修改密码成功
-        changePasswordSuccess :async() => {
-            const alert = await alertController.create({
-                header: '修改成功',
-                message: '请重新登录',
-                buttons: [
-                    {
-                        text: '确定',
-                        handler: () => {
-                            window.location.href = "/tabs/LoginPage";
-                        }
-                    }
-                ],
-            });
-            await alert.present();
-        },
         //修改成功
         changeSuccess :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '修改成功',
                 buttons: ['确定'],
             });
@@ -374,6 +297,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: "楷体";
+    font-weight: 500;
+}
+
 #note{
     font-size: 16px;
     margin-bottom: 5px;

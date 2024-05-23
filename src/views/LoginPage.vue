@@ -84,10 +84,10 @@ export default {
         //POST 用户登录
         async postLoginMsg()  {
             let username = document.getElementById("username1");
-            this.loginMsg.username = username.value;
+            this.loginMsg.username = username.value.trim();
 
             let password = document.getElementById("password1");
-            this.loginMsg.password = password.value; 
+            this.loginMsg.password = password.value.trim(); 
 
             const request = await this.postLoginInformation(this.loginMsg);
             console.log(request);
@@ -111,13 +111,13 @@ export default {
         //POST 用户注册
         async postRegistrationMsg()  {
             let username = document.getElementById("username2");
-            this.registrationMsg.username = username.value;
+            this.registrationMsg.username = username.value.trim();
 
             let phoneNum = document.getElementById("phoneNum");
-            this.registrationMsg.phoneNum = phoneNum.value;
+            this.registrationMsg.phoneNum = phoneNum.value.trim();
 
             let password = document.getElementById("password2");
-            this.registrationMsg.password = password.value; 
+            this.registrationMsg.password = password.value.trim(); 
 
             const request = await this.postRegistrationInformation(this.registrationMsg);
             console.log(request.data);

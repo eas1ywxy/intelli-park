@@ -2,7 +2,7 @@
     <ion-page>
         <ion-header>
             <ion-toolbar>
-                <ion-title style="text-align: center;">我的</ion-title>
+                <ion-title style="text-align: center;"><span class="fontFamliy">我的</span></ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content color="light">
@@ -18,15 +18,15 @@
                         </span>
                         <ion-icon id="userMsgBtn" :icon="chevronForward" slot="end"></ion-icon>
                         <span id="userMsgOnline">
-                            <div id="userName">
+                            <div id="userName" class="fontFamliy">
                                 {{ userMsg.username }}
                                 <ion-icon id="pencil" :icon="pencil" slot="end"></ion-icon>
                             </div>
-                            <div id="userRole">
+                            <div id="userRole" class="fontFamliy">
                                 <div v-if="userMsg.role=='user'">普通用户</div>
                                 <div v-if="userMsg.role=='admin'">系统管理员</div> 
                             </div>
-                            <div id="userId">ID:{{ userMsg.id }}</div>
+                            <div id="userId" class="fontFamliy">ID:{{ userMsg.id }}</div>
                         </span>
                     </div>
                 </ion-card-content>
@@ -53,22 +53,22 @@
                     <ion-item button="true" href='/tabs/PrivatePage'>
                         <!-- color: danger红, tertiary蓝, success绿, warning黄 -->
                         <ion-icon :icon="personCircleOutline" color="tertiary" slot="start" size="large"></ion-icon>
-                        <ion-label>个人信息</ion-label>
+                        <ion-label><span class="fontFamliy">个人信息</span></ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
                     <ion-item button="true" href='/tabs/OrderPage'>
                         <ion-icon :icon="documentTextOutline" color="warning" slot="start" size="large"></ion-icon>
-                        <ion-label>订单记录</ion-label>
+                        <ion-label><span class="fontFamliy">订单记录</span></ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
                     <ion-item button="true" :href='`/tabs/VehiclePage?id=${userMsg.id}`'>
                         <ion-icon :icon="carSportOutline" color="success" slot="start" size="large"></ion-icon>
-                        <ion-label>车辆登记</ion-label>
+                        <ion-label><span class="fontFamliy">车辆登记</span></ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
                     <ion-item button="true" href="/tabs/SettingPage">
                         <ion-icon :icon="listCircleOutline" color="danger" slot="start" size="large"></ion-icon>
-                        <ion-label>其他设置</ion-label>
+                        <ion-label><span class="fontFamliy">其他设置</span></ion-label>
                         <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                     </ion-item>
                 </ion-list>
@@ -114,7 +114,7 @@ export default {
 
         //判断是否登录了
         getLocalIsLogin(){
-            console.log('login',localStorage.getItem('isLogin'));
+            // console.log('login',localStorage.getItem('isLogin'));
             if(localStorage.getItem('isLogin')==1){
                 this.isLongin = true;
                 this.getUserMsg();
@@ -148,6 +148,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: "楷体";
+    font-weight: 500;
+}
+
 .unread-indicator {
     background: var(--ion-color-primary);
 
@@ -211,7 +216,7 @@ ion-label ion-note {
 }
 
 #userName{
-    font-size: 20px;
+    font-size: 22px;
     color: #2f2f2f;
     position: relative;
     top: 10px;
@@ -219,16 +224,16 @@ ion-label ion-note {
 }
 
 #userRole{
-    font-size: 16px;
-    color: #2f2f2f;
+    font-size: 14px;
+    color: #999999;
     position: relative;
     top: 15px;
     left: 20px;
 }
 
 #userId{
-    font-size: 16px;
-    color: #5f5f5f;
+    font-size: 14px;
+    color: #999999;
     position: relative;
     top: 17px;
     left: 20px;

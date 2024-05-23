@@ -2,38 +2,34 @@
     <ion-card :href='`/tabs/DetailPage?chargeId=${msg.chargeId}`'>
         <ion-card-header>
             <ion-card-title>
-                <span id="startTime">{{ msg.startTime }}</span>
-                <span id="orderState">
+                <span id="startTime" class="fontFamliy">{{ msg.startTime }}</span>
+                <span id="orderState" class="fontFamliy">
                     <span v-if="msg.state == 1" style="color: #2dd55b;">进行中</span>
                     <span v-else-if="msg.state == 2" style="color: #ffc409;">待支付</span>
                     <span v-else-if="msg.state == 3" style="color: #0054e9;">已完成</span>
                     <span v-else="msg.state == 4" style="color: #5f5f5f;">已评价</span>
+                    <br>
                 </span>
-                <br>
-                <span id="orderId">ID：{{ msg.chargeId }}</span>
+                <span id="orderId" class="fontFamliy">ID：{{ msg.chargeId }}</span>
             </ion-card-title>
         </ion-card-header>
-
-        <ion-card-content id="cardContent" style="float: left;">
-            <span>登记车牌：{{ msg.licencePlate }}<br></span>
-            <span>
+        <ion-card-content id="cardContent" >
+            <span class="fontFamliy">登记车牌：{{ msg.licencePlate }}<br></span>
+            <span class="fontFamliy">
                 <span v-if="msg.endTime != ''">结束时间：{{ msg.endTime }}</span>
                 <span v-else="msg.endTime == ''">结束时间：未结束</span>
                 <br>
             </span>
-            <span v-if="msg.state != 3 && msg.state != 4">接口编码：{{ msg.connectorId }}<br></span>
-            <span>
-                <span v-if="msg.electricity != 0 && msg.state != 3 &&msg.state != 4">本次充电量：{{ msg.electricity }}W<br></span>
+            <span class="fontFamliy">
+                <span v-if="msg.electricity != 0 && msg.state != 3 &&msg.state != 4">本次充电量：{{ msg.electricity }}KW·h<br></span>
             </span>
-
-            <span v-if="msg.state != 4">
+            <span class="fontFamliy" v-if="msg.state != 4">
                 <span v-if="msg.endElectricity==0" id="electricity">开始电量：{{ msg.startElectricity }}%</span>
-                <span v-if="msg.endElectricity!=0" id="electricity">开始电量：{{ msg.startElectricity }}% => {{ msg.endElectricity }}%</span>
+                <span v-if="msg.endElectricity!=0" id="electricity">本次充电：{{ msg.startElectricity }}% => {{ msg.endElectricity }}%</span>
             </span>
-            <span id="cost" v-if="msg.cost != 0 && msg.state != 4">
+            <span class="fontFamliy" id="cost" v-if="msg.cost != 0 && msg.state != 4">
                 <span v-if="msg.state!=1">{{ msg.cost }}元</span>
             </span>
-            
         </ion-card-content>
     </ion-card>
 </template>
@@ -55,14 +51,18 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: "楷体";
+    font-weight: 500;
+}
+
 #orderState{
     font-size: 18px;
     float: right;
-    /* color: #2dd55b; */
 }
 
 #startTime{
-    font-size: 22px;
+    font-size: 20px;
 }
 
 #orderId{
@@ -81,11 +81,10 @@ export default {
 
 #cost{
     float: right;
-    font-size: 25px;
+    font-size: 20px;
     color: #454545;
     position: relative;
-    left: 100px;
-    top: 15px;
-    color: #ffca22;
+    right: 15px;
+    color: #f9c521;
 }
 </style>

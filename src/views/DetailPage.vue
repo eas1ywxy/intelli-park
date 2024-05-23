@@ -6,7 +6,7 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>订单详情</span>
+                    <span class="fontFamliy">订单详情</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
@@ -19,33 +19,35 @@
            <ion-card>
                 <ion-card-header>
                     <ion-card-title>
-                        <span id="chargingInformation">充电信息</span>
-                        <span id="chargeId">ID:{{ msg.chargeId }}</span>
+                        <span class="fontFamliy" id="chargingInformation">充电信息</span>
+                        <span class="fontFamliy" id="chargeId">ID:{{ msg.chargeId }}</span>
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content id="chargingContent">
                     <div id="car">
                         <img src="../../resources/car.png" alt="车">
                     </div>
-                    <div id="vehicleModel">
+                    <div class="fontFamliy" id="vehicleModel">
                         <span v-if="msg.vehicleModel == 1">直流快充</span>
                         <span v-if="msg.vehicleModel == 2">交流漫充</span>
                         <span v-if="msg.vehicleModel == 3">交直流混合充电</span>
                     </div>
                     <div v-for="lp in msg.licencePlate">
-                        <span class="licencePlates">{{ lp }}</span>
+                        <span class="licencePlates fontFamliy">{{ lp }}</span>
                     </div>
                     <br>
                     <hr style="border: 0px;">
                     <div id="electricityTime">
-                        <span>时间：{{ msg.startTime }} {{ "--->" }} {{ msg.endTime }}</span>
+                        <span class="fontFamliy">开始时间：{{ msg.startTime }}</span>
+                        <br>
+                        <span class="fontFamliy">结束时间：{{ msg.endTime }}</span>
                     </div>
                     <hr id="line">
-                    <div style="line-height: 20px;">
+                    <div class="fontFamliy" style="line-height: 20px;">
                         <span id="totalElectricityWords">合计充电电量</span>
                         <span id="totalElectricity">
                             <span id="totalElectricityNumber">{{ msg.electricity }}</span>
-                            <span id="totalElectricityDegree">度</span>
+                            <span id="totalElectricityDegree">KW·h</span>
                         </span>
                     </div>
                 </ion-card-content>
@@ -54,29 +56,30 @@
             <ion-card v-if="msg.state >= 3">
                 <ion-card-header>
                     <ion-card-title>
-                        <span id="userEvaluate">用户体验评价</span>
-                        <span id="createTime">{{ msg.createTime }}</span>
+                        <span class="fontFamliy" id="userEvaluate">用户体验评价</span>
+                        <span class="fontFamliy" id="createTime">{{ msg.feedbackTime }}</span>
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content v-if="msg.state == 4">
-                    <div id="starBox">
+                    <p id="starBox">
                         <span class="stars" v-for="s in msg.star"><ion-icon :icon="star" slot="start" size="large"></ion-icon></span>
                         <span class="stars" v-for="s in (5-msg.star)"><ion-icon :icon="starOutline" slot="start" size="large"></ion-icon></span>
-                    </div>
+                    </p>
+                    <!-- <br>
                     <br>
-                    <div id="feedbackNote">
-                        <span>备注：{{ String(msg.feedbackNote).length>20 ? msg.feedbackNote.slice(0,30)+"..." : msg.feedbackNote }}</span>
-                    </div>
+                    <br> -->
+                    <p class="fontFamliy" id="feedbackNote">
+                        <span>备注：{{ String(msg.feedbackNote).length>40 ? msg.feedbackNote.slice(0,39)+"..." : msg.feedbackNote }}</span>
+                    </p>
                     <br>
                     <br>
                 </ion-card-content>
                 <ion-card-content v-if="msg.state ==3">
-                    <div id="darkStarBox">
-                        <span class="Stars" v-for="s in 5"><ion-icon :icon="starOutline" slot="start" size="large"></ion-icon></span>
+                    <div class="fontFamliy" id="darkStarBox">
+                        <span class="stars" v-for="s in 5"><ion-icon :icon="starOutline" slot="start" size="large"></ion-icon></span>
                     </div>
-                    <br>
-                    <div>
-                        <a id="gpMark" :href="`/tabs/ReviewPage?chargeId=${msg.chargeId}&userId=${msg.userId}`">还未评分，前往评分>></a>
+                    <div class="fontFamliy">
+                        <a id="gpMark" :href="`/tabs/ReviewPage?chargeId=${msg.chargeId}&userId=${msg.userId}`">还未评分，前往评分</a>
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -84,21 +87,22 @@
             <ion-card>
                 <ion-card-header>
                     <ion-card-title>
-                        <span id="costInformation">支付信息</span>
+                        <span class="fontFamliy" id="costInformation">支付信息</span>
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content id="costContent">
-                    <span id="amountCost">支付金额</span>
-                    <span id="cost">
-                        <span id="costNumber">{{ msg.cost }}</span>
+                    <span class="fontFamliy" id="amountCost">支付金额</span>
+                    <span class="fontFamliy" id="cost">
+                        <span id="costNumber" v-if="msg.cost">{{ msg.cost }}</span>
+                        <span id="costNumber" v-if="!msg.cost">--</span>
                         <span id="costWords">元</span>
                     </span>
                     <hr id="line">
                     <span>
-                        <span id="paymentStatus">支付状态</span>
-                        <span id="status">
-                            <span id="chargeUnfinished" v-if="msg.state == 1"><a :href="`/tabs/TopupPage?chargeId=${msg.chargeId}`">充电未结束>></a></span>
-                            <span id="goPaid" v-else-if="msg.state == 2"><a :href="`/tabs/PaymentPage?id=${msg.id}&chargeId=${msg.chargeId}`">前往支付>></a></span>
+                        <span class="fontFamliy" id="paymentStatus">支付状态</span>
+                        <span class="fontFamliy" id="status">
+                            <span id="chargeUnfinished" v-if="msg.state == 1"><a :href="`/tabs/TopupPage?chargeId=${msg.chargeId}`">查看充电状态</a></span>
+                            <span id="goPaid" v-else-if="msg.state == 2"><a :href="`/tabs/PaymentPage?id=${msg.id}&chargeId=${msg.chargeId}`">尚未支付，前往支付</a></span>
                             <span id="havePaid" v-else="msg.state >= 3">已支付</span>
                         </span>
                     </span>
@@ -108,10 +112,10 @@
             <ion-card>
                 <ion-card-header>
                     <ion-card-title>
-                        <span id="stationInformation">站点信息</span>
+                        <span class="fontFamliy" id="stationInformation">站点信息</span>
                     </ion-card-title>
                 </ion-card-header>
-                <ion-card-content id="stationDetails">
+                <ion-card-content class="fontFamliy" id="stationDetails">
                     <span>充电站：{{ msg.stationName }}</span>
                     <br>
                     <span>设备型号：{{ msg.equipmentModel }}</span>
@@ -141,23 +145,7 @@ export default {
     name: "DetailPage",
     data() {
         return{
-            msg: {
-                // stationName: "成都信息工程大学（航空港）南门充电站",
-                // equipmentModel: "A074",
-                // connectorName: "1号接口",
-                // serviceTel: "18x-xxxx-xxxx",
-                // star: 4,
-                // chargeId: 1223234,
-                // feedbackNote: "充电迅速，体验感好",
-                // createTime: "2024-04-25",
-                // state: 4,
-                // vehicleModel: 1,
-                // licencePlate: "川A98D3A",
-                // startTime: "2024-04-05 12:30:00",
-                // endTime: "2024-04-05 13:30:00",
-                // electricity: 13.53,
-                // cost: 8.43,
-            }
+            msg: {}
         }
     },
     methods: {
@@ -188,6 +176,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: "楷体";
+    font-weight: 500;
+}
+
 #chargingcar{
     position: relative;
     padding: 0.2rem;
@@ -226,7 +219,8 @@ export default {
     float: right;
     height:65px;
     position: relative;
-    right: 20px;
+    left: 45px;
+    bottom: 20px;
 }
 
 #electricityTime{
@@ -249,7 +243,7 @@ export default {
 }
 
 #totalElectricityNumber{
-    font-size: 20px;
+    font-size: 18px;
 }
 
 #totalElectricityDegree{
@@ -296,17 +290,21 @@ export default {
 }
 
 #chargeUnfinished a{
-    font-size: 18px;
+    font-size: 16px;
     text-decoration: none;
     outline: none;
-    color: #ffca22;
+    color: #f9c521;
 }
 
 #goPaid a{
-    font-size: 18px;
+    font-size: 16px;
     text-decoration: none;
     outline: none;
     color: #7045ff
+}
+
+#havePaid{
+    font-size: 16px;
 }
 
 .licencePlates{
@@ -343,7 +341,7 @@ export default {
 
 #createTime{
     float: right;
-    font-size: 14px;
+    font-size: 16px;
     color: #636363;
 }
 
@@ -351,7 +349,8 @@ export default {
     float: left;
     position: relative;
     left: 10px;
-    color: #ffc409;
+    bottom: 10px;
+    color: #f9c521;
 }
 
 .stars{
@@ -360,28 +359,26 @@ export default {
 }
 
 #darkStarBox{
-    float: left;
+    /* float: left; */
     position: relative;
     left: 10px;
     color: #6f6f6f;
 }
 
 #feedbackNote{
-    float: left;
-    margin-top: 10px;
-    position: relative;
-    top: 10px;
-    left:-180px;
-    bottom: 10px;
+    /* float: left; */
+    position: absolute;
+    top: 30px;
     font-size: 14px;
     color: #636363;
 }
 
 #gpMark{
+    font-size: 16px;
     float: right;
     padding-bottom: 10px;
     text-decoration: none;
-    color: #ffca22;
+    color: #f9c521;
 }
 
 #backBtn{

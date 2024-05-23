@@ -6,25 +6,23 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>订单信息</span>
+                    <span class="fontFamliy">订单信息</span>
                 </ion-title>
             </ion-toolbar>
 
-            <!-- <ion-progress-bar :value="progress" reversed="true"></ion-progress-bar> -->
-
             <ion-toolbar>
-                <ion-segment value="conduct">
+                <ion-segment :value="conductOrders.length>0 ? 'conduct' : (unpaidOrders.length>0 ? 'unpaid' : 'completed')">
                     <ion-segment-button @click="changeOption(1)" value="conduct">
-                        <ion-label>进行中</ion-label>
+                        <ion-label><span class="fontFamliy note">进行中</span></ion-label>
                     </ion-segment-button>
                     <ion-segment-button @click="changeOption(2)" value="unpaid">
-                        <ion-label>待支付</ion-label>
+                        <ion-label><span class="fontFamliy note">待支付</span></ion-label>
                     </ion-segment-button>
                     <ion-segment-button @click="changeOption(3)" value="completed">
-                        <ion-label>已完成</ion-label>
+                        <ion-label><span class="fontFamliy note">已完成</span></ion-label>
                     </ion-segment-button>
                     <ion-segment-button @click="changeOption(4)" value="pending">
-                        <ion-label>已评价</ion-label>
+                        <ion-label><span class="fontFamliy note">已评价</span></ion-label>
                     </ion-segment-button>
                 </ion-segment>
             </ion-toolbar>
@@ -69,6 +67,17 @@ export default defineComponent({
         }
     },
     methods: {
+        //判断有无充电中或者未支付的订单
+        isChargingOrUnpaid(){
+            if(this.conductOrders.length>0){
+                this.option = 1;
+            }else if(this.unpaidOrders.length>0){
+                this.option = 2;
+            }else{
+                this.option = 3;
+            }
+        },
+
         //修改订单类别
         changeOption: function(data){
             this.option = data;
@@ -79,23 +88,6 @@ export default defineComponent({
         goBack: function(){
             window.location.href = "/tabs/PersonPage";
         },
-
-        // //GET 获取用户订单信息
-        // async getOrdersMsg() {
-        //     const urlParams = new URLSearchParams(window.location.search);
-        //     const request = await this.getService({id: urlParams.get('id') || ''});
-        //     console.log(request.data.data);
-        //     this.conductOrders = request.data.data.conductOrders;
-        //     this.unpaidOrders = request.data.data.unpaidOrders;
-        //     this.completedOrders = request.data.data.completedOrders;
-        //     this.pendingOrders = request.data.data.pendingOrders;
-        // },
-        // getService:function(pageData) {
-        //     return request({
-        //         url: '/tabs/OrderPage',
-        //         params: pageData
-        //     })
-        // },
 
         //GET 获取用户充电记录
         async getOrderMsg(state)  {
@@ -110,6 +102,7 @@ export default defineComponent({
             }else if(state == 4){
                 this.pendingOrders = request.data.data;
             }
+            this.isChargingOrUnpaid();
         },
         getChargingRecords:function(info) {
             return request({
@@ -119,32 +112,25 @@ export default defineComponent({
             })
         },
     },
-    // setup(){
-    //     let progress = ref(0);
-
-    //     return {
-    //         progress,
-    //     };
-    // },
     mounted: function() {
         this.getOrderMsg(1);
         this.getOrderMsg(2);
         this.getOrderMsg(3);
         this.getOrderMsg(4);
-
-        // setInterval(() => {
-        //     this.progress += 0.01;
-        //     if (this.progress > 1) {
-        //         setTimeout(() => {
-        //             this.progress = 0;
-        //         }, 1000);
-        //     }
-        // }, 50);
     }
 })
 </script>
 
 <style>
+.note{
+    font-size: 18px;
+}
+
+.fontFamliy{
+    font-family: "楷体";
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;
