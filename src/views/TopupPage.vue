@@ -6,14 +6,14 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>车辆充电中</span>
+                    <span class="fontFamliy">车辆充电中</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
         
         <ion-content>
             <!-- <span>111111</span> -->
-            <ion-card>
+            <ion-card class="fontFamliy">
                 <ion-card-header>
                     <ion-card-title>
                         <span>充电订单编号：{{ msg.startChargeSeq }}</span>
@@ -27,7 +27,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-card>
+            <ion-card class="fontFamliy">
                 <ion-card-content>
                     <span>
                         <span id="totalMoney">累计费用：{{ msg.totalMoney }}元</span>
@@ -45,10 +45,10 @@
                 </ion-card-content>
             </ion-card>
             
-            <ion-button @click="postEndCharing" id="endCharing" expand="block">结束充电</ion-button>
-            <ion-button @click="changDetails" id="details" expand="block">计费详情</ion-button>
+            <ion-button class="fontFamliy" @click="postEndCharing" id="endCharing" expand="block">结束充电</ion-button>
+            <ion-button class="fontFamliy" @click="changDetails" id="details" expand="block">计费详情</ion-button>
 
-            <ion-card v-if="ifDetails == true" v-for="detail in msg.chargeDetails">
+            <ion-card class="fontFamliy" v-if="ifDetails == true" v-for="detail in msg.chargeDetails">
                 <ion-card-header>
                     <ion-card-title>
                         <span>开始时间：{{ detail.DetailStartTime }}</span>
@@ -70,7 +70,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-button @click="getCode" id="endCharing" expand="block">手动停止充电</ion-button>
+            <ion-button class="fontFamliy" @click="getCode" id="endCharing" expand="block">手动停止充电</ion-button>
 
         </ion-content>
 
@@ -250,6 +250,7 @@ export default {
         //充电完成
         chargingSuccess :async(id) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '充电完成',
                 buttons: [
                     {
@@ -266,6 +267,7 @@ export default {
          //手动充电结束
          endCode :async(code) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '停止充电验证码：' + code,
                 buttons: [
                     {
@@ -285,6 +287,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;

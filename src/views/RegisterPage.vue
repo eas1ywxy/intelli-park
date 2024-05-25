@@ -6,12 +6,12 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>车辆登记</span>
+                    <span class="fontFamliy">车辆登记</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
         
-        <ion-content>
+        <ion-content class="fontFamliy">
             <ion-card>
                 <ion-input id="vehicleBrand" label="车辆品牌" label-placement="floating" fill="solid" placeholder="请输入车辆品牌"></ion-input>
                 <ion-input id="vehicleModel" label="充电车型" label-placement="floating" fill="solid" placeholder="直流快充/交流慢充/交直流混合充电"></ion-input>
@@ -140,6 +140,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;

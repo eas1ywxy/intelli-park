@@ -22,6 +22,11 @@ npm install @zxing/library --save
 npm install @ionic/pwa-elements
 ```
 
+### Sass
+```
+npm install -D sass
+```
+
 ## 启动项目
 
 ### 浏览器下启动

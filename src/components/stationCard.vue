@@ -1,8 +1,8 @@
 <template>
     <ion-card :href='`/tabs/StationPage?stationId=${msg.stationId}&longitude=${userMsg.userLng}&latitude=${userMsg.userLat}`'>
         <ion-card-header>
-            <ion-card-title class="stationTitle">{{ msg.stationName.length>12 ? msg.stationName.slice(0,12)+"..." : msg.stationName  }}
-                <span class="regionName">
+            <ion-card-title class="stationTitle fontFamliy">{{ msg.stationName.length>12 ? msg.stationName.slice(0,12)+"..." : msg.stationName  }}
+                <span class="regionName fontFamliy">
                     <div class="stationStatusOnline">
                         <span>在线{{ msg.fastFree }}/{{ msg.fastSum }}</span>
                     </div>
@@ -11,7 +11,7 @@
                 </span>
             </ion-card-title>
             <ion-card-subtitle>
-                <span class="stationParkFee">计时充电费用：
+                <span class="stationParkFee fontFamliy">计时充电费用：
                     <span class="parkFee">{{ msg.parkFee }}</span>
                     元/度
                 </span>
@@ -19,7 +19,7 @@
         </ion-card-header>
 
         <ion-card-content>
-            <span class="stationStressMsg">
+            <span class="stationStressMsg fontFamliy">
                 距离当前 
                 <span class="stationDistance">{{ msg.distance }}</span>
                 m，服务电话：
@@ -54,6 +54,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 .stationTitle{
     color: #1E90FF;
 }

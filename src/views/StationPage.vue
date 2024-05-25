@@ -6,7 +6,7 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>详情信息</span>
+                    <span class="fontFamliy">详情信息</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
@@ -19,10 +19,10 @@
             <ion-card>
                 <ion-card-header>
                     <ion-card-title>
-                        <span id="stationName">{{ msg.stationName.length>15 ? msg.stationName.slice(0,15)+"..." : msg.stationName }}</span>
+                        <span id="stationName" class="fontFamliy">{{ msg.stationName.length>15 ? msg.stationName.slice(0,15)+"..." : msg.stationName }}</span>
                     </ion-card-title>
                     <ion-card-subtitle>
-                        <span id="stationType">
+                        <span id="stationType" class="fontFamliy">
                             <!-- 站点类型：1:公共； 50;个人； 100:公交（专用）; 101:环卫（专用） 102:物流（专用）; 103:出租车（专用）; 255:其他 -->
                             <span v-if="msg.stationType==1">公共充电站</span>
                             <span v-else-if="msg.stationType==50">个人充电站</span>
@@ -32,7 +32,7 @@
                             <span v-else-if="msg.stationType==103">出租车充电站</span>
                             <span v-else="msg.stationType==255">其他</span>
                         </span>
-                        <span id="stationStatus">
+                        <span id="stationStatus" class="fontFamliy">
                             <!-- 0:未知； 1:建设中； 5:关闭下线； 6:维护中； 50:正常使用 -->
                             <span v-if="msg.stationStatus==50">
                                 <ion-icon aria-hidden="true" :icon="checkmarkCircle"/>
@@ -46,7 +46,8 @@
                     </ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
-                    <span class="stationMsg">{{ msg.stationAddress.length>15 ? msg.stationAddress.slice(0,15)+"..." : msg.stationAddress }}</span>
+                    <!-- msg.stationAddress.length>15 ? msg.stationAddress.slice(0,15)+"..." : msg.stationAddress -->
+                    <span class="stationMsg fontFamliy">{{ msg.stationAddress }}</span>
                     <div id="distance">
                         <ion-icon aria-hidden="true" :icon="navigate" style="color: #fff;"/>
                         <span>{{ msg.distance }} m</span>
@@ -57,19 +58,21 @@
             <ion-card>
                 <ion-card-header>
                     <ion-card-title>
-                        <span id="feeTitle">费用细明</span>
-                        <span id="workingTime">营业时间：{{ msg.businessHours }}</span>
+                        <div class="fontFamliy">
+                            <span id="feeTitle">费用细明</span>
+                            <span id="workingTime">营业时间：{{ msg.businessHours }}</span>
+                        </div>
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
                     <!-- <span id="nowParkFee">{{ msg.parkFee.toFixed(4) }}</span> -->
-                    <span id="nowParkFee">{{ msg.parkFee }}</span>
-                    <span id="pastParkFee">
+                    <span id="nowParkFee" class="fontFamliy">{{ msg.parkFee }}</span>
+                    <span id="pastParkFee" class="fontFamliy">
                         <!-- <span id="pastParkFeeNum">{{ (1.5).toFixed(4) }}</span> -->
                         元/度
                     </span>
                     <hr class="line">
-                    <div>
+                    <div class="fontFamliy">
                         <span id="feeForPark">停车收费</span>
                         <span id="freePark">2小时免费</span>
                     </div>
@@ -79,28 +82,28 @@
             <ion-card>
                 <ion-card-header>
                     <ion-card-title>
-                        <span id="basicInformation">基本信息</span>
+                        <span id="basicInformation" class="fontFamliy">基本信息</span>
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                    <span id="regionName">
+                    <span id="regionName" class="fontFamliy">
                         <span>所属园区:</span>
                         <span id="region">{{ msg.regionName }}</span>
                     </span>
                     <br>
-                    <span id="serviceTel">
+                    <span id="serviceTel" class="fontFamliy">
                         <span>服务电话:</span>
                         <span id="tel">{{ msg.serviceTel }}</span>
                     </span>
 
                     <hr class="line">
 
-                    <div id="DetailFoldBtn" @click="changingDetailsFold()">
+                    <div id="DetailFoldBtn" class="fontFamliy" @click="changingDetailsFold()">
                         <ion-icon class="moreMsgIcon" :icon="caretDownOutline" v-if="detailsFold"></ion-icon>
                         <ion-icon class="moreMsgIcon" :icon="caretForwardOutline" v-else="detailsFold"></ion-icon>
                         <span id="DetailFoldBtnMsg">更多详情信息</span>
                     </div>
-                    <div v-if="detailsFold">
+                    <div v-if="detailsFold" class="fontFamliy">
                         <span class="stationMsg">国家代码：{{ msg.countryCode }}</span>
                         <br>
                         <span class="stationMsg">省市辖区：{{ msg.areaCode }}</span>
@@ -225,6 +228,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #chargingcar{
     position: relative;
     padding: 0.2rem;

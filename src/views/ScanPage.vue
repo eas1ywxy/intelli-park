@@ -2,11 +2,11 @@
     <ion-page>
         <ion-header>
             <ion-toolbar>
-                <ion-title style="text-align: center; margin-right: 12px;">请对准设备二维码</ion-title>
+                <ion-title class="fontFamliy" style="text-align: center; margin-right: 12px;">请对准设备二维码</ion-title>
             </ion-toolbar>
         </ion-header>
 
-        <ion-content>
+        <ion-content class="fontFamliy">
             <div id="sanBox">
                 <video ref="video" id="video" autoplay></video>
                 <!-- <div v-show="tipShow" id="scan-tip">{{ tipMsg }}</div>
@@ -197,6 +197,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;

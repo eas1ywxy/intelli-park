@@ -6,12 +6,12 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>登录</span>
+                    <span class="fontFamliy">登录</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
 
-        <ion-content>
+        <ion-content class="fontFamliy">
             <div id="logo">
                 <img src="../../resources/logo.png" alt="logo">
             </div>
@@ -198,6 +198,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;

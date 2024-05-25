@@ -2,7 +2,7 @@
     <ion-page>
         <ion-header>
             <ion-toolbar>
-                <ion-title style="text-align: center;">您附近的充电站</ion-title>
+                <ion-title class="fontFamliy" style="text-align: center;">您附近的充电站</ion-title>
             </ion-toolbar>
         </ion-header>
 
@@ -46,7 +46,8 @@ export default {
         getService:function(pageData) {
             return request({
                 url: '/stations/near',
-                params: pageData
+                method: 'GET',
+                params: pageData,
             })
         }
     },
@@ -58,6 +59,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 .stationCard{
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;

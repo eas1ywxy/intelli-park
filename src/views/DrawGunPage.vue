@@ -6,12 +6,12 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>请确认拔枪设备</span>
+                    <span class="fontFamliy">请确认拔枪设备</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
 
-        <ion-content class="ion-padding">
+        <ion-content class="ion-padding fontFamliy">
             <div id="equipmentBox">
                 <img id="equipmentImg" src="../../resources/equipment.png" alt="充电桩"/>
                 <div id="equipmentMsg">
@@ -39,14 +39,14 @@
                 </div>
             </div>
 
-            <ion-button id="chooseVehicle" expand="block">选择充电车辆</ion-button>
-            <ion-modal id="chooseVehicleBreakPoints" ref="modal" trigger="chooseVehicle" :initial-breakpoint="0.25" :breakpoints="[0, 0.25, 0.5, 0.75]">
+            <ion-button  class="fontFamliy" id="chooseVehicle" expand="block">选择充电车辆</ion-button>
+            <ion-modal  class="fontFamliy" id="chooseVehicleBreakPoints" ref="modal" trigger="chooseVehicle" :initial-breakpoint="0.25" :breakpoints="[0, 0.25, 0.5, 0.75]">
                 <ion-content>
                     <ion-list v-for="(vehicle,index) in vehiclelist">
                         <ion-item  @click="chooseVehicle(vehicle.vehicleId, index)">
                             <ion-label>
-                                <h2>{{ vehicle.licencePlate }}</h2>
-                                <p>充电车型：
+                                <h2 class="fontFamliy">{{ vehicle.licencePlate }}</h2>
+                                <p  class="fontFamliy">充电车型：
                                     <span v-if="vehicle.vehicleModel==1">直流快充</span>
                                     <span v-else-if="vehicle.vehicleModel==2">交流慢充</span>
                                     <span v-else="vehicle.vehicleModel==3">交直流混合充电</span>
@@ -62,7 +62,7 @@
             
             <!-- <connect-card v-for="connect in equipmentMsg.connects" :connectMsg="connect"></connect-card> -->
 
-            <ion-button @click="postStartCharing" id="startCharing" expand="block">确认开始充电</ion-button>
+            <ion-button class="fontFamliy" @click="postStartCharing" id="startCharing" expand="block">确认开始充电</ion-button>
             </ion-content>
     </ion-page>
 </template>
@@ -112,20 +112,6 @@ export default {
         goBack: function(){
             history.go(-1);
         },
-
-        // //GET 获取充电桩设备信息
-        // async getEquipmentMsg() {
-        //     const urlParams = new URLSearchParams(window.location.search);
-        //     const request = await this.getService({equipmentId: urlParams.get('equipmentId') || ''});
-        //     console.log(request.data.data);
-        //     this.equipmentMsg = request.data.data;
-        // },
-        // getService:function(pageData) {
-        //     return request({
-        //         url: '/tabs/DrawGunPage',
-        //         params: pageData
-        //     })
-        // },
 
         //GET 获取用户个人信息
         async getUserMsg()  {
@@ -178,9 +164,6 @@ export default {
                     this.failure(request.data.message);
                 }
             }
-            
-            // this.vehiclelist = request.data.data.records;
-            // console.log(this.vehiclelist[0].vehicleId);
         },
         getStart:function(info) {
             return request({
@@ -211,6 +194,7 @@ export default {
         //二维码失效弹窗
         needScan :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '二维码失效，请重新扫码',
                 buttons: [
                     {
@@ -227,6 +211,7 @@ export default {
         //用户未选择车辆
         needChooseVehicle :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '请优先选择充电车辆',
                 buttons: [
                     {
@@ -243,6 +228,7 @@ export default {
         //开始充电成功
         charingSuccess :async(seq) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '开始充电成功',
                 buttons: [
                     {
@@ -259,6 +245,7 @@ export default {
         //失败弹窗
         failure :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '操作失败',
                 message: message,
                 buttons: ['确定'],
@@ -280,6 +267,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;

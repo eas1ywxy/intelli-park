@@ -6,13 +6,13 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>订单评分</span>
+                    <span class="fontFamliy">订单评分</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
 
         <ion-content>
-            <ion-card>
+            <ion-card class="fontFamliy">
                 <ion-card-header>
                     <ion-card-title id="starTitle">
                         请为本次订单打分
@@ -34,7 +34,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-card>
+            <ion-card class="fontFamliy">
                 <ion-card-header>
                     <ion-card-title>
                         您对本次服务有哪些建议？
@@ -45,7 +45,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-button id="keepReviewBtn" expand="block" @click="postFeedbackNote()">保存信息</ion-button>
+            <ion-button class="fontFamliy" id="keepReviewBtn" expand="block" @click="postFeedbackNote()">保存信息</ion-button>
 
             <img id="caky" src="../../resources/caky.png">
         </ion-content>
@@ -122,6 +122,7 @@ export default {
         //保存失败弹窗
         keepFailure :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '保存失败',
                 message: message,
                 buttons: ['确定'],
@@ -131,6 +132,7 @@ export default {
         //保存成功
         keepSuccess :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '保存成功',
                 buttons: [
                     {
@@ -148,6 +150,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;

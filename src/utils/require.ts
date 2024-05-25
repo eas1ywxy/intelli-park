@@ -51,7 +51,6 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
-    // console.log('th2');
     // 错误的特殊情况 => 401 权限不足 或 token 过期 => 拦截到登录
     if (error.response?.status === 401) {
       console.log('请重新登录');

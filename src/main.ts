@@ -32,7 +32,7 @@ import '@ionic/vue/css/display.css';
 import '@ionic/vue/css/palettes/dark.system.css';
 
 /* Theme variables */
-import './theme/variables.css';
+import './theme/variables.scss';
 
 // import axios from 'axios';
 // Vue.prototype.$axios = axios;

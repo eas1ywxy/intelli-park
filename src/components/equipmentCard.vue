@@ -2,11 +2,11 @@
     <ion-card>
         <ion-card-header id="cardHeader">
             <ion-card-title>
-                <span>{{ msg.equipmentName }}</span>
+                <span class="fontFamliy">{{ msg.equipmentName }}</span>
             </ion-card-title>
         </ion-card-header>
 
-        <ion-card-content style="float: left;">
+        <ion-card-content style="float: left;" class="fontFamliy">
             <span class="connectMsgs">设备生产厂商名称：{{ msg.manufacturerName }}</span>
             <br>
             <span class="connectMsgs">设备型号：{{ msg.equipmentModel }}</span>
@@ -21,15 +21,12 @@
             </span>
             <br>
             <span class="connectMsgs">充电设备总功率：{{ msg.power }}W</span>
-            <br>
-            <hr>
-            
+            <br> 
 
-            <div class="equipmentConnectBtn" v-for="(connect, index) in msg.connects" :key="index">
-                <ion-button @click="connectBtnOnclick(index)">{{ connectorName[index] }}</ion-button>
+            <div class="equipmentConnectBtn" v-for="(connect, index) in msg.hasConnectors" :key="index">
+                <ion-button v-if="connect.gunNum==1" @click="connectBtnOnclick(index)"> A电枪 </ion-button>
+                <ion-button v-else="connect.gunNum==2" @click="connectBtnOnclick(index)"> B电枪 </ion-button>
             </div>
-            <hr>
-            <br>
             <br>
             <div class="connectMsgs" v-if="connectMsg">
                 <!-- 1:家用插座（模式2）; 2:交流接口插座（模式3,连 接方式B）; 3:交流接口插头（带枪线， 模式3,连接方式C）; 4:直流接口枪头（带枪线， 模式4）; 5:无线充电座； 6:其他 -->
@@ -89,7 +86,6 @@ export default {
             msg: this.msg,
             connectMsg: false,
             index: 0,
-            connectorName: ["1号接口","2号接口"],
         }
     },
     methods: {
@@ -104,19 +100,26 @@ export default {
             }
         },
         getConnectMsg(index) {
-            return this.msg.connects[index];
+            return this.msg.hasConnectors[index];
         }
     }
 }
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #cardHeader {
     padding-bottom: 0;
 }
 
 .equipmentConnectBtn {
     float: left;
+    margin-left: 10px;
+    margin-top: 5px;
 }
 
 .connectMsgs {

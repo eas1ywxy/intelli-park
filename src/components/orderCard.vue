@@ -52,7 +52,7 @@ export default {
 
 <style>
 .fontFamliy{
-    font-family: "楷体";
+    font-family: '华文楷体';
     font-weight: 500;
 }
 

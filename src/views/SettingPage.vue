@@ -6,7 +6,7 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>其他设置</span>
+                    <span class="fontFamliy">其他设置</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
@@ -14,23 +14,25 @@
         <ion-content>
             <ion-list inset="true">
                 <ion-item button="true">
-                    <ion-label id="signOut">注销账号</ion-label>
+                    <ion-label id="signOut"><span class="fontFamliy">注销账号</span></ion-label>
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
+                    css-class="fontFamliy"
                     trigger="signOut"
                     header="请确认是否注销"
                     :buttons="signOutButtons"
                 ></ion-alert>
 
                 <ion-item id="passward-alert" button="true">
-                    <ion-label>修改密码</ion-label>
+                    <ion-label><span class="fontFamliy">修改密码</span></ion-label>
                     <!-- <span id="note">
                         <ion-note id="passward" slot="end" v-for="p in userMsg.password">{{ "·" }}</ion-note>
                     </span> -->
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
+                    css-class="fontFamliy"
                     trigger="passward-alert"
                     header="重新设置用户密码"
                     :buttons="alertButtons3"
@@ -38,11 +40,12 @@
                 ></ion-alert>
             </ion-list>
 
-            <ion-list inset="true">
+            <ion-list inset="true" class="fontFamliy">
                 <ion-item id="quitBtn" button="true" @click="">
-                    <ion-label id="quitwords">退出登录</ion-label>
+                    <ion-label id="quitwords"><span class="fontFamliy">退出登录</span></ion-label>
                 </ion-item>
                 <ion-alert
+                    css-class="fontFamliy"
                     trigger="quitBtn"
                     header="请确认是否退出"
                     :buttons="quitButtons"
@@ -277,6 +280,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;

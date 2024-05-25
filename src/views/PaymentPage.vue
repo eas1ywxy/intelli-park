@@ -6,13 +6,13 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>支付</span>
+                    <span class="fontFamliy">支付</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
 
         <ion-content>
-            <ion-card>
+            <ion-card class="fontFamliy">
                 <ion-card-header>
                     <ion-card-title>
                         <span id="costTitle">本次订单所需支付金额：</span>
@@ -25,7 +25,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-card>
+            <ion-card class="fontFamliy">
                 <ion-card-header>
                     <ion-card-title>
                         <span id="userBalance">您的余额：</span>
@@ -34,8 +34,8 @@
                 </ion-card-header>
             </ion-card>
 
-            <ion-button v-if="msg.cost < userMsg.balance" id="open-toast" @click="postWalletRecharge(msg.cost)" expand="block">确认支付</ion-button>
-            <ion-button v-else="msg.cost > userMsg.balance" id="open-toast" expand="block" href="/tabs/WalletPage">去充值</ion-button>
+            <ion-button class="fontFamliy" v-if="msg.cost < userMsg.balance" id="open-toast" @click="postWalletRecharge(msg.cost)" expand="block">确认支付</ion-button>
+            <ion-button class="fontFamliy" v-else="msg.cost > userMsg.balance" id="open-toast" expand="block" href="/tabs/WalletPage">去充值</ion-button>
         </ion-content>
     </ion-page>
 </template>
@@ -117,6 +117,7 @@ export default {
         //支付成功
         paySuccess :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '支付成功',
                 buttons: [
                     {
@@ -133,6 +134,7 @@ export default {
         //支付失败
         payFailure :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy',
                 header: '支付失败',
                 message: message,
                 buttons: ['确定'],
@@ -148,6 +150,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;

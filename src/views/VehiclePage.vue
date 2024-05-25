@@ -6,12 +6,12 @@
                     <span style="float: left;" @click="goBack()">
                         <ion-icon id="backBtn":icon="arrowBackOutline" slot="end"></ion-icon>
                     </span>
-                    <span>车辆信息</span>
+                    <span class="fontFamliy">车辆信息</span>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
 
-        <ion-content>
+        <ion-content class="fontFamliy">
             <ion-button id="addCarBtn" expand="block" :href='`/tabs/RegisterPage?id=${userId}`'>+</ion-button>
 
             <vehicle-card v-for="vehicleMsg in vehiclelist" :msg="vehicleMsg"></vehicle-card>
@@ -69,6 +69,11 @@ export default {
 </script>
 
 <style>
+.fontFamliy{
+    font-family: '华文楷体';
+    font-weight: 500;
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;
