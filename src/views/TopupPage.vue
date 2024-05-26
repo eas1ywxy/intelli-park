@@ -45,7 +45,13 @@
                 </ion-card-content>
             </ion-card>
             
-            <ion-button class="fontFamliy" @click="postEndCharing" id="endCharing" expand="block">结束充电</ion-button>
+            <ion-button class="fontFamliy" @click="stopCharing" id="endCharing" expand="block">结束充电</ion-button>
+            <ion-alert
+                    css-class="fontFamliy alertTwoButton"
+                    trigger="endCharing"
+                    header="请确认是否结束充电"
+                    :buttons="endCharingButtons"
+                ></ion-alert>
             <ion-button class="fontFamliy" @click="changDetails" id="details" expand="block">计费详情</ion-button>
 
             <ion-card class="fontFamliy" v-if="ifDetails == true" v-for="detail in msg.chargeDetails">
@@ -73,73 +79,11 @@
             <ion-button class="fontFamliy" @click="getCode" id="endCharing" expand="block">手动停止充电</ion-button>
 
         </ion-content>
-
-        <!-- <ion-content>
-            <ion-card>
-                <ion-card-header>
-                    <ion-card-title>
-                        <span>充电订单编号：{{ msg.startChargeSeq }}</span>
-                    </ion-card-title>
-                </ion-card-header>
-
-                <ion-card-content>
-                    <span>充电开始时间：{{ msg.StartTime }}</span>
-                    <br>
-                    <span>充电结束时间：{{ msg.EndTime }}</span>
-                </ion-card-content>
-            </ion-card>
-
-            <ion-card>
-                <ion-card-content>
-                    <span>
-                        <span id="totalMoney">累计费用：{{ msg.totalMoney }}元</span>
-                        <span id="totalPower">累计充电量：{{ msg.totalPower }}kw·h</span>
-                    </span>
-
-                    <div id="charging">
-                        <div id="charingBox">
-                            <div id="greenBox">
-                                <span id="soc">{{ (msg.soc*100).toFixed(2) }}%</span>
-                            </div>
-                        </div>
-                        <div id="charingBoxAfter"></div>
-                    </div>
-                </ion-card-content>
-                
-            </ion-card>
-
-            <ion-button @click="postEndCharing" id="endCharing" expand="block">结束充电</ion-button>
-            <ion-button @click="changDetails" id="details" expand="block">计费详情</ion-button>
-
-            <ion-card v-if="ifDetails == true" v-for="detail in msg.chargeDetails">
-                <ion-card-header>
-                    <ion-card-title>
-                        <span>开始时间：{{ detail.DetailStartTime }}</span>
-                    </ion-card-title>
-                </ion-card-header>
-
-                <ion-card-content>
-                    <span>结束时间：{{ detail.DetailEndTime }}</span>
-                    <br>
-                    <span>时段电价：{{ detail.elecPrice }}</span>
-                    <br>
-                    <span>时段服务费价格：{{ detail.servicePrice }}</span>
-                    <br>
-                    <span>时段充电量：{{ detail.detailPower }}</span>
-                    <br>
-                    <span>时段电费：{{ detail.detailElecMoney }}</span>
-                    <br>
-                    <span>时段服务费：{{ detail.detailServiceMoney }}</span>
-                </ion-card-content>
-            </ion-card>
-
-            <ion-button @click="getCode" id="endCharing" expand="block">手动停止充电</ion-button>
-        </ion-content> -->
     </ion-page>
 </template>
 
 <script setup>
-import {IonHeader, IonToolbar, IonTitle, IonPage, IonContent, IonList, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, alertController} from '@ionic/vue';
+import {IonHeader, IonToolbar, IonTitle, IonPage, IonContent, IonAlert, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, alertController} from '@ionic/vue';
 import { 
     arrowBackOutline,
  } from 'ionicons/icons';
@@ -152,25 +96,20 @@ export default {
     data(){
         return{
             ifDetails: false,
-            msg:{
-                // StartTime: "2024-05-05 02:03:07",
-                // EndTime: "2024-05-05 02:03:22",
-                // startChargeSeq: "34434116888000168",
-                // totalMoney: 260,
-                // totalPower: 200,
-                // soc: 0.4,
-                // chargeDetails: [
-                //     {
-                //         "DetailStartTime": "2024-05-05 02:03:07",
-                //         "DetailEndTime": "2024-05-05 02:03:22",
-                //         "elecPrice": 1.2,
-                //         "detailServiceMoney": 20,
-                //         "detailElecMoney": 240,
-                //         "servicePrice": 0.1,
-                //         "detailPower": 200
-                //     }
-                // ],
-            }
+            msg:{},
+
+            //注销提示框
+            endCharingButtons: [
+                {
+                    text: '取消',
+                },
+                {
+                    text: '确定',
+                    handler: () => {
+                        this.postEndCharing();
+                    },
+                },
+            ],
         }
     },
     methods:{
@@ -181,7 +120,7 @@ export default {
 
         //设置充电剩余量
         changeSoc(){
-            document.getElementById("greenBox").style.width = String((300*(this.msg.soc)) + "px");
+            document.getElementById("greenBox").style.width = String((280*(this.msg.soc)) + "px");
         },
         
 
@@ -250,7 +189,7 @@ export default {
         //充电完成
         chargingSuccess :async(id) => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '充电完成',
                 buttons: [
                     {
@@ -267,7 +206,7 @@ export default {
          //手动充电结束
          endCode :async(code) => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '停止充电验证码：' + code,
                 buttons: [
                     {
@@ -292,6 +231,51 @@ export default {
     font-weight: 500;
 }
 
+.alertOneButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+      justify-content: center;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      widows: 100%;
+      margin:0;
+    }
+}
+
+.alertTwoButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      width: 50%;
+      border-left: 1px solid #e1dce6;
+      margin:0;
+      padding-right: 45px;
+    }
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;
@@ -310,16 +294,15 @@ export default {
     margin: 60px 0px;
     position: relative;
     bottom: 20px;
-    left: 15px;
+    left: 5px;
 }
 
 #charingBox{
     float: left;
-    width: 300px;
+    width: 280px;
     height: 100px;
     border: 2px solid #6f6f6f;
     border-radius: 5%;
-    /* background-color: rgb(45,213,91); */
 }
 
 #greenBox{

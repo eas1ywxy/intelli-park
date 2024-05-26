@@ -29,38 +29,40 @@
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                    <div class="fontFamliy" id="amountBox">
-                        <div class="btn" @click="selectAmount(1)">
-                            <span class="amount">￥50</span>
-                        </div>
-                        <div class="btn" @click="selectAmount(2)">
-                            <span class="amount">￥80</span>
-                        </div>
-                        <div class="btn" @click="selectAmount(3)">
-                            <span class="amount">￥100</span>
-                        </div>
-                        <div class="btn" @click="selectAmount(4)">
-                            <span class="amount">￥200</span>
-                        </div>
-                        <div class="btn" @click="selectAmount(5)">
-                            <span class="amount">￥500</span>
-                        </div>
-                        <div class="btn" @click="selectAmount(6)">
-                            <span class="amount">￥600</span>
-                        </div>
-                        <div class="btn" @click="selectAmount(7)">
-                            <span class="amount">￥800</span>
-                        </div>
-                        <div class="btn" id="otherBtn" @click="selectAmount(8)">
-                            <span class="amount" id="otherAmount">其他面额</span>
-                        </div>
-                        <ion-alert
-                            cssClass="fontFamliy"
-                            trigger="otherBtn"
-                            header="请输入其他充值面额"
-                            :buttons="alertButtons"
-                            :inputs="alertInputs"
-                        ></ion-alert>
+                    <div id="box">
+                        <span class="fontFamliy" id="amountBox">
+                            <div class="btn" @click="selectAmount(1)">
+                                <span class="amount">￥50</span>
+                            </div>
+                            <div class="btn" @click="selectAmount(2)">
+                                <span class="amount">￥80</span>
+                            </div>
+                            <div class="btn" @click="selectAmount(3)">
+                                <span class="amount">￥100</span>
+                            </div>
+                            <div class="btn" @click="selectAmount(4)">
+                                <span class="amount">￥200</span>
+                            </div>
+                            <div class="btn" @click="selectAmount(5)">
+                                <span class="amount">￥500</span>
+                            </div>
+                            <div class="btn" @click="selectAmount(6)">
+                                <span class="amount">￥600</span>
+                            </div>
+                            <div class="btn" @click="selectAmount(7)">
+                                <span class="amount">￥800</span>
+                            </div>
+                            <div class="btn" id="otherBtn" @click="selectAmount(8)">
+                                <span class="amount" id="otherAmount">其他面额</span>
+                            </div>
+                            <ion-alert
+                                cssClass="fontFamliy alertTwoButton"
+                                trigger="otherBtn"
+                                header="请输入其他充值面额"
+                                :buttons="alertButtons"
+                                :inputs="alertInputs"
+                            ></ion-alert>
+                        </span>
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -186,7 +188,7 @@ export default {
         //充值成功
         chargeSuccess :async() => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '充值成功',
                 buttons: [
                     {
@@ -203,7 +205,7 @@ export default {
         //充值失败
         chargeFailure :async(message) => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '充值失败',
                 message: message,
                 buttons: ['确定'],
@@ -223,26 +225,77 @@ export default {
     font-weight: 500;
 }
 
+.alertOneButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+      justify-content: center;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      widows: 100%;
+      margin:0;
+    }
+}
+
+.alertTwoButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      width: 50%;
+      border-left: 1px solid #e1dce6;
+      margin:0;
+      padding-right: 45px;
+    }
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;
     top: 3px;
 }
 
+#box{
+    width: 100%;
+}
+
 #amountBox{
+    width: 100%;
     float: left;
     padding-bottom: 20px;
+    margin-left: 3%;
 }
 
 .btn{
     float: left;
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     border: 2px solid #b3b3b3;
     border-radius: 10px;
     font-size: 20px;
     text-align: center;
-    margin: 5px 5px
+    margin: 1% 1%;
 }
 
 .amount{
@@ -262,7 +315,7 @@ export default {
 }
 
 #otherBtn{
-    width: 210px;
+    width: 185px;
 }
 
 #otherAmount{

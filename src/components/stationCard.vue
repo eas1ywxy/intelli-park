@@ -4,7 +4,7 @@
             <ion-card-title class="stationTitle fontFamliy">{{ msg.stationName.length>12 ? msg.stationName.slice(0,12)+"..." : msg.stationName  }}
                 <span class="regionName fontFamliy">
                     <div class="stationStatusOnline">
-                        <span>在线{{ msg.fastFree }}/{{ msg.fastSum }}</span>
+                        <span>空闲{{ msg.fastFree }}/{{ msg.fastSum }}</span>
                     </div>
                     <br/>
                     所属园区：{{ msg.regionName }}
@@ -17,9 +17,8 @@
                 </span>
             </ion-card-subtitle>
         </ion-card-header>
-
         <ion-card-content>
-            <span class="stationStressMsg fontFamliy">
+            <span class="fontFamliy">
                 距离当前 
                 <span class="stationDistance">{{ msg.distance }}</span>
                 m，服务电话：
@@ -76,6 +75,8 @@ export default {
 
 .stationParkFee{
     padding-left: 0.3rem;
+    position: relative;
+    top: 5px;
 }
 
 .parkFee{

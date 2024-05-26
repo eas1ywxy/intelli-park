@@ -39,8 +39,8 @@
                 </div>
             </div>
 
-            <ion-button  class="fontFamliy" id="chooseVehicle" expand="block">选择充电车辆</ion-button>
-            <ion-modal  class="fontFamliy" id="chooseVehicleBreakPoints" ref="modal" trigger="chooseVehicle" :initial-breakpoint="0.25" :breakpoints="[0, 0.25, 0.5, 0.75]">
+            <ion-button class="fontFamliy" id="chooseVehicle" expand="block">选择充电车辆</ion-button>
+            <ion-modal class="fontFamliy" id="chooseVehicleBreakPoints" ref="modal" trigger="chooseVehicle" :initial-breakpoint="0.25" :breakpoints="[0, 0.25, 0.5, 0.75]">
                 <ion-content>
                     <ion-list v-for="(vehicle,index) in vehiclelist">
                         <ion-item  @click="chooseVehicle(vehicle.vehicleId, index)">
@@ -59,10 +59,8 @@
                     </ion-list>
                 </ion-content>
             </ion-modal>
-            
-            <!-- <connect-card v-for="connect in equipmentMsg.connects" :connectMsg="connect"></connect-card> -->
 
-            <ion-button class="fontFamliy" @click="postStartCharing" id="startCharing" expand="block">确认开始充电</ion-button>
+            <ion-button class="fontFamliy" @click="postStartCharing" id="startCharing" expand="block" :disabled="chooseIndex==-1?true:false">确认开始充电</ion-button>
             </ion-content>
     </ion-page>
 </template>
@@ -83,24 +81,7 @@ import axios from 'axios';
 export default {
     data(){
         return{
-            equipmentMsg:{
-                // equipmentName: "编号1设备",
-                // equipmentId: 124555,
-                // stationName: "成都信息工程大学",
-                // equipmentModel: "A074",
-                // equipmentType: 1,
-                // power: 380,
-                // connects: [
-                //     {
-                //         // connectorName: "1号接口",
-                //         // connectorId: 12423,
-                //         // connectorType: 2,
-                //         // power: 80,
-                //         // matchCars: 2,
-                //         // state: 2,
-                //     },
-                // ]
-            },
+            equipmentMsg:{},
             userMsg:{},
             vehiclelist:[],
             chooseIndex: -1,
@@ -194,7 +175,7 @@ export default {
         //二维码失效弹窗
         needScan :async() => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '二维码失效，请重新扫码',
                 buttons: [
                     {
@@ -211,14 +192,11 @@ export default {
         //用户未选择车辆
         needChooseVehicle :async() => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '请优先选择充电车辆',
                 buttons: [
                     {
                         text: '确定',
-                        // handler: () => {
-                        //     window.location.href = "/tabs/ScanPage";
-                        // }
                     }
                 ],
             });
@@ -228,7 +206,7 @@ export default {
         //开始充电成功
         charingSuccess :async(seq) => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '开始充电成功',
                 buttons: [
                     {
@@ -245,7 +223,7 @@ export default {
         //失败弹窗
         failure :async(message) => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '操作失败',
                 message: message,
                 buttons: ['确定'],
@@ -272,6 +250,28 @@ export default {
     font-weight: 500;
 }
 
+.alertOneButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+      justify-content: center;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      widows: 100%;
+      margin:0;
+    }
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;
@@ -286,11 +286,9 @@ export default {
 }
 
 #equipmentImg{
-    margin: 0px 100px;
+    margin: 0px 60px;
     width: 200px;
     height: 240px;
-    position: relative;
-    left: -20px;
 }
 
 #equipmentMsg{

@@ -11,7 +11,7 @@
             </ion-toolbar>
         </ion-header>
 
-        <ion-content class="fontFamliy">
+        <ion-content>
             <div id="logo">
                 <img src="../../resources/logo.png" alt="logo">
             </div>
@@ -22,23 +22,23 @@
                     </ion-card-title>
                 </ion-card-header>
                 <ion-card-content v-if="hasAccount">
-                    <ion-input class="input" id="username1" label="用户名" label-placement="floating" fill="solid" placeholder="请输入用户名"></ion-input>
+                    <ion-input class="input fontFamliy" id="username1" label="用户名" label-placement="floating" fill="solid" placeholder="请输入用户名"></ion-input>
                     <br>
-                    <ion-input class="input" id="password1" label="密码" label-placement="floating" fill="solid" placeholder="请输入密码"></ion-input>
+                    <ion-input class="input fontFamliy" id="password1" label="密码" type="password" label-placement="floating" fill="solid" placeholder="请输入密码"></ion-input>
                 </ion-card-content>
                 <ion-card-content v-else="!hasAccount">
-                    <ion-input class="input" id="username2" label="用户名" label-placement="floating" fill="solid" placeholder="请输入用户名"></ion-input>
+                    <ion-input class="input fontFamliy" id="username2" label="用户名" label-placement="floating" fill="solid" placeholder="请输入用户名"></ion-input>
                     <br>
-                    <ion-input class="input" id="phoneNum" label="手机号" label-placement="floating" fill="solid" placeholder="请输入手机号"></ion-input>
+                    <ion-input class="input fontFamliy" id="phoneNum" label="手机号" label-placement="floating" fill="solid" placeholder="请输入手机号"></ion-input>
                     <br>
-                    <ion-input class="input" id="password2" label="密码" label-placement="floating" fill="solid" placeholder="请输入密码"></ion-input>
+                    <ion-input class="input fontFamliy" id="password2" label="密码" label-placement="floating" fill="solid" placeholder="请输入密码"></ion-input>
                 </ion-card-content>
             </ion-card>
 
-            <ion-button v-if="hasAccount" class="mainButton" @click="postLoginMsg" expand="block">登录</ion-button>
-            <ion-button v-else="!hasAccount" class="mainButton" @click="postRegistrationMsg" expand="block">注册</ion-button>
-            <ion-button v-if="hasAccount" class="secondButton" @click="RegisterOrLogin" expand="block">没有账号？前往注册</ion-button>
-            <ion-button v-else="!hasAccount" class="secondButton" @click="RegisterOrLogin" expand="block">已有账号，去登录</ion-button>
+            <ion-button v-if="hasAccount" class="mainButton fontFamliy" @click="postLoginMsg" expand="block">登录</ion-button>
+            <ion-button v-else="!hasAccount" class="mainButton fontFamliy" @click="postRegistrationMsg" expand="block">注册</ion-button>
+            <ion-button v-if="hasAccount" class="secondButton fontFamliy" @click="RegisterOrLogin" expand="block">没有账号？前往注册</ion-button>
+            <ion-button v-else="!hasAccount" class="secondButton fontFamliy" @click="RegisterOrLogin" expand="block">已有账号，去登录</ion-button>
         </ion-content>
     </ion-page>
 </template>
@@ -73,7 +73,7 @@ export default {
     methods:{
         //返回行一页
         goBack: function(){
-            history.go(-1);
+            window.location.href = "/tabs/PersonPage";
         },
 
         //注册或者登录
@@ -140,6 +140,7 @@ export default {
         //登录失败
         loginFailure :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertButton',
                 header: '登录失败',
                 message: message,
                 buttons: ['确定'],
@@ -150,6 +151,7 @@ export default {
         //登录成功
         loginSuccess :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertButton',
                 header: '登录成功',
                 message: '欢迎登录，'+message,
                 buttons: [
@@ -167,6 +169,7 @@ export default {
         //注册失败
         registrationFailure :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertButton',
                 header: '注册失败',
                 message: message,
                 buttons: ['确定'],
@@ -177,6 +180,7 @@ export default {
         //注册成功
         registrationSuccess :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertButton',
                 header: '注册成功',
                 message: '请登录',
                 buttons: ['确定'],
@@ -201,6 +205,25 @@ export default {
 .fontFamliy{
     font-family: '华文楷体';
     font-weight: 500;
+}
+
+.alertButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+        margin-top: -10px;
+    }
+   .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+      justify-content: center;
+    }
+   .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
 }
 
 #backBtn{

@@ -11,8 +11,8 @@
             </ion-toolbar>
         </ion-header>
 
-        <ion-content class="fontFamliy">
-            <ion-button id="addCarBtn" expand="block" :href='`/tabs/RegisterPage?id=${userId}`'>+</ion-button>
+        <ion-content>
+            <ion-button id="addCarBtn" class="fontFamliy" expand="block" :href='`/tabs/RegisterPage?id=${userId}`'>+</ion-button>
 
             <vehicle-card v-for="vehicleMsg in vehiclelist" :msg="vehicleMsg"></vehicle-card>
         </ion-content>

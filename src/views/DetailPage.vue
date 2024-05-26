@@ -65,10 +65,7 @@
                         <span class="stars" v-for="s in msg.star"><ion-icon :icon="star" slot="start" size="large"></ion-icon></span>
                         <span class="stars" v-for="s in (5-msg.star)"><ion-icon :icon="starOutline" slot="start" size="large"></ion-icon></span>
                     </p>
-                    <!-- <br>
-                    <br>
-                    <br> -->
-                    <p class="fontFamliy" id="feedbackNote">
+                    <p class="fontFamliy" id="feedbackNote" v-if="msg.feedbackNote.length!=0">
                         <span>备注：{{ String(msg.feedbackNote).length>40 ? msg.feedbackNote.slice(0,39)+"..." : msg.feedbackNote }}</span>
                     </p>
                     <br>
@@ -151,7 +148,7 @@ export default {
     methods: {
         //返回上一页
         goBack: function(){
-            history.go(-1);
+            window.location.href = "/tabs/OrderPage";
         },
 
         //GET 获取订单详情信息
@@ -349,7 +346,7 @@ export default {
     float: left;
     position: relative;
     left: 10px;
-    bottom: 10px;
+    bottom: 5px;
     color: #f9c521;
 }
 

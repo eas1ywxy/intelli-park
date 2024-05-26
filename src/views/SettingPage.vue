@@ -18,7 +18,7 @@
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
-                    css-class="fontFamliy"
+                    css-class="fontFamliy alertTwoButton"
                     trigger="signOut"
                     header="请确认是否注销"
                     :buttons="signOutButtons"
@@ -26,13 +26,10 @@
 
                 <ion-item id="passward-alert" button="true">
                     <ion-label><span class="fontFamliy">修改密码</span></ion-label>
-                    <!-- <span id="note">
-                        <ion-note id="passward" slot="end" v-for="p in userMsg.password">{{ "·" }}</ion-note>
-                    </span> -->
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
-                    css-class="fontFamliy"
+                    css-class="fontFamliy alertTwoButton"
                     trigger="passward-alert"
                     header="重新设置用户密码"
                     :buttons="alertButtons3"
@@ -45,7 +42,7 @@
                     <ion-label id="quitwords"><span class="fontFamliy">退出登录</span></ion-label>
                 </ion-item>
                 <ion-alert
-                    css-class="fontFamliy"
+                    css-class="fontFamliy alertTwoButton"
                     trigger="quitBtn"
                     header="请确认是否退出"
                     :buttons="quitButtons"
@@ -143,6 +140,7 @@ export default {
             const request = await this.updatePassword(info);
             console.log(request.data);
             if(request.data.code==200){
+                this.setLocalIsLoginFalse();
                 this.changePasswordSuccess();
             }else{
                 this.changeFailure(request.data.message);
@@ -200,6 +198,7 @@ export default {
         //退出成功弹窗
         quitSuccess :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
                 header: '退出成功',
                 buttons: [
                     {
@@ -216,6 +215,7 @@ export default {
         //退出失败弹窗
         quitFailure :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
                 header: '退出失败',
                 message: message,
                 buttons: ['确定'],
@@ -226,6 +226,7 @@ export default {
         //注销成功弹窗
         signOutSuccess :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
                 header: '注销成功',
                 buttons: [
                     {
@@ -242,6 +243,7 @@ export default {
         //注销失败弹窗
         signOutFailure :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
                 header: '注销失败',
                 message: message,
                 buttons: ['确定'],
@@ -252,6 +254,7 @@ export default {
         //修改密码成功
         changePasswordSuccess :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
                 header: '修改成功',
                 message: '请重新登录',
                 buttons: [
@@ -269,6 +272,7 @@ export default {
         //修改失败
         changeFailure :async(message) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
                 header: '修改失败',
                 message: message,
                 buttons: ['确定'],
@@ -285,6 +289,51 @@ export default {
     font-weight: 500;
 }
 
+.alertOneButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+      justify-content: center;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      widows: 100%;
+      margin:0;
+    }
+}
+
+.alertTwoButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      width: 50%;
+      border-left: 1px solid #e1dce6;
+      margin:0;
+      padding-right: 45px;
+    }
+}
+
 #backBtn{
     font-size: 25px;
     position: relative;
@@ -297,6 +346,7 @@ export default {
 }
 
 #quitwords{
+    font-size: 16px;
     text-align: center;
     color: #f7f9fc;
 }

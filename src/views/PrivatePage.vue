@@ -24,7 +24,7 @@
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
-                    css-class="fontFamliy"
+                    css-class="fontFamliy alertTwoButton"
                     trigger="avator-alert"
                     header="请选择你喜欢的头像"
                     :buttons="alertButtons1"
@@ -37,7 +37,7 @@
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
-                    css-class="fontFamliy"
+                    css-class="fontFamliy alertTwoButton"
                     trigger="name-alert"
                     header="重新设置用户名"
                     :buttons="alertButtons2"
@@ -50,7 +50,7 @@
                     <ion-icon :icon="chevronForward" slot="end"></ion-icon>
                 </ion-item>
                 <ion-alert
-                    css-class="fontFamliy"
+                    css-class="fontFamliy alertTwoButton"
                     trigger="phoneNum-alert"
                     header="重新绑定用户手机号"
                     :buttons="alertButtons4"
@@ -223,9 +223,10 @@ export default {
             const request = await this.updateUsername(info);
             console.log(request);
             if(request.data.code==200){
-                this.changeSuccess();
+                this.setLocalIsLoginFalse();
                 this.setLocalUserMsg(request.headers.authorization);
                 this.getUserMsg();
+                this.changeUserNameSuccess();
             }else{
                 this.changeFailure(request.data.message);
             }
@@ -263,7 +264,7 @@ export default {
         //修改失败
         changeFailure :async(message) => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '修改失败',
                 message: message,
                 buttons: ['确定'],
@@ -273,9 +274,26 @@ export default {
         //修改成功
         changeSuccess :async() => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '修改成功',
                 buttons: ['确定'],
+            });
+            await alert.present();
+        },
+        //修改用户名成功
+        changeUserNameSuccess :async() => {
+            const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
+                header: '修改成功',
+                message: '请重新登录',
+                buttons: [
+                    {
+                        text: '确定',
+                        handler: () => {
+                            window.location.href = "/tabs/LoginPage";
+                        }
+                    }
+                ],
             });
             await alert.present();
         },
@@ -284,6 +302,11 @@ export default {
         setLocalUserMsg(authorization){
             let token = authorization.replace('Bearer','').trim();
             localStorage.setItem('token', token);
+        },
+
+        //设置isLogin为false
+        setLocalIsLoginFalse: function(){
+            localStorage.setItem('isLogin', 0);
         },
     },
     mounted: function() {
@@ -300,6 +323,51 @@ export default {
 .fontFamliy{
     font-family: '华文楷体';
     font-weight: 500;
+}
+
+.alertOneButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+      justify-content: center;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      widows: 100%;
+      margin:0;
+    }
+}
+
+.alertTwoButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      width: 50%;
+      border-left: 1px solid #e1dce6;
+      margin:0;
+      padding-right: 45px;
+    }
 }
 
 #note{

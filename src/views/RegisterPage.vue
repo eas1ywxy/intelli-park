@@ -11,14 +11,14 @@
             </ion-toolbar>
         </ion-header>
         
-        <ion-content class="fontFamliy">
+        <ion-content>
             <ion-card>
-                <ion-input id="vehicleBrand" label="车辆品牌" label-placement="floating" fill="solid" placeholder="请输入车辆品牌"></ion-input>
-                <ion-input id="vehicleModel" label="充电车型" label-placement="floating" fill="solid" placeholder="直流快充/交流慢充/交直流混合充电"></ion-input>
-                <ion-input id="electricity" label="电池容量" label-placement="floating" fill="solid" placeholder="请输入车辆电池容量，单位：kw·h"></ion-input>
-                <ion-input id="licencePlate" label="车辆牌照" label-placement="floating" fill="solid" placeholder="请输入有效车牌号"></ion-input>
+                <ion-input id="vehicleBrand" class="fontFamliy" label="车辆品牌" label-placement="floating" fill="solid" placeholder="请输入车辆品牌"></ion-input>
+                <ion-input id="vehicleModel" class="fontFamliy" label="充电车型" label-placement="floating" fill="solid" placeholder="直流快充/交流慢充/交直流混合充电"></ion-input>
+                <ion-input id="electricity" class="fontFamliy" label="电池容量" label-placement="floating" fill="solid" placeholder="请输入车辆电池容量，单位：kw·h"></ion-input>
+                <ion-input id="licencePlate" class="fontFamliy" label="车辆牌照" label-placement="floating" fill="solid" placeholder="请输入有效车牌号"></ion-input>
             </ion-card>
-            <ion-button id="addCarBtn" expand="block" @click="keepVehicleMsg">保存信息</ion-button>
+            <ion-button id="addCarBtn" class="fontFamliy" expand="block" @click="keepVehicleMsg">保存信息</ion-button>
         </ion-content>
     </ion-page>
 </template>
@@ -73,20 +73,13 @@ export default {
             let electricity = document.getElementById('electricity');
             this.vehicleMsg.electricity = Number(electricity.value);
 
-            this.postVehicleMsg();
 
-            // if(this.vehicleMsg.vehicleBrand==''){
-            //     this.registerBrandFailure();
-            // }else if(this.vehicleMsg.vehicleModel<0){
-            //     this.registerModelFailure();
-            // }else if(this.vehicleMsg.licencePlate==''){
-            //     this.registerPlateFailure();
-            // }else if(!(this.vehicleMsg.electricity>0)){
-            //     // console.log(this.vehicleMsg.electricity);
-            //     this.registerElectricityFailure()
-            // }else{
-            //     this.postVehicleMsg(this.vehicleMsg);
-            // }
+            if(this.vehicleMsg.vehicleModel==-1){
+                this.changeVehicleModel();
+            }else{
+                this.postVehicleMsg();
+            }
+            
         },
 
         //POST 登记用户车辆
@@ -110,9 +103,21 @@ export default {
             })
         },
 
+        //请修改充电车型
+        changeVehicleModel :async(userId) => {
+            const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
+                header: '充电车型错误',
+                message: '请确保输入的充电车型正确',
+                buttons: ['确定'],
+            });
+            await alert.present();
+        },
+
         //登记成功
         registerSuccess :async(userId) => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
                 header: '登记成功',
                 buttons: [
                     {
@@ -129,7 +134,8 @@ export default {
         //修改失败弹窗
         registerFailure :async(message) => {
             const alert = await alertController.create({
-                header: '修改失败',
+                cssClass: 'fontFamliy alertOneButton',
+                header: '登记失败',
                 message: message,
                 buttons: ['确定'],
             });
@@ -143,6 +149,28 @@ export default {
 .fontFamliy{
     font-family: '华文楷体';
     font-weight: 500;
+}
+
+.alertOneButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+      justify-content: center;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      widows: 100%;
+      margin:0;
+    }
 }
 
 #backBtn{

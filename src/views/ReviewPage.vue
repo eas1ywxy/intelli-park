@@ -122,7 +122,7 @@ export default {
         //保存失败弹窗
         keepFailure :async(message) => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '保存失败',
                 message: message,
                 buttons: ['确定'],
@@ -132,7 +132,7 @@ export default {
         //保存成功
         keepSuccess :async() => {
             const alert = await alertController.create({
-                cssClass: 'fontFamliy',
+                cssClass: 'fontFamliy alertOneButton',
                 header: '保存成功',
                 buttons: [
                     {
@@ -153,6 +153,28 @@ export default {
 .fontFamliy{
     font-family: '华文楷体';
     font-weight: 500;
+}
+
+.alertOneButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+      justify-content: center;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      widows: 100%;
+      margin:0;
+    }
 }
 
 #backBtn{
@@ -202,5 +224,9 @@ export default {
 
 #markword{
     font-size: 20px
+}
+
+#keepReviewBtn{
+    margin: 10px;
 }
 </style>

@@ -41,8 +41,8 @@ request.interceptors.response.use(
     if (res.code === 401) {
       console.log('请重新登录');
       localStorage.removeItem('isLogin');
-      router.push('/tabs/LoginPage');
-      // window.location.href = "/tabs/LoginPage";
+      // router.push('/tabs/LoginPage');
+      window.location.href = "/tabs/LoginPage";
     }
 
     // 处理业务失败, 给错误提示，抛出错误
@@ -55,7 +55,6 @@ request.interceptors.response.use(
     if (error.response?.status === 401) {
       console.log('请重新登录');
       localStorage.removeItem('isLogin');
-      // router.push('/tabs/LoginPage');
       window.location.href = "/tabs/LoginPage";
     }
 

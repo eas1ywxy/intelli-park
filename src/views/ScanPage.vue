@@ -38,8 +38,6 @@ export default {
             tipShow: false,  // 是否展示提示
             tipMsg: '',  // 提示文本内容
             scanText: '',  // 扫码结果文本内容
-            // virtualData: '{"equipmentId":"325345","stationId":"34534535","equipmentModel":"A074","equipmentType":"1","power":"380","equipmntName":"一号设备"}', //二维码虚拟数据
-            // virtualData: '{"sex":"男","info":"我是好人"},{"sex":"女","info":"我是好人",}',
             jn: JSON,
             equipmentMsg: {
                 equipmentId: Number,
@@ -93,38 +91,6 @@ export default {
             console.error(err);
             });
         },
-        // 使用摄像头扫描
-        // decodeFromInputVideoFunc(firstDeviceId) { 
-        //     this.codeReader.reset(); // 重置
-        //     this.codeReader.decodeFromInputVideoDeviceContinuously(firstDeviceId, 'video', (result, err) => {
-        //     this.tipMsg = '正在尝试识别...';
-        //     if (result) {
-                
-        //         console.log('扫码结果', result.text);
-        //         this.scanText = result.text;
-        //         console.log(this.scanText);
-        //         this.jn = this.strToJson(this.scanText);
-        //         this.equipmentMsg.equipmentId = this.jn[0].equipmentId;
-        //         this.equipmentMsg.stationId = this.jn[0].stationId;
-        //         this.equipmentMsg.equipmentModel = this.jn[0].equipmentModel;
-        //         this.equipmentMsg.equipmentType = this.jn[0].equipmentType;
-        //         this.equipmentMsg.power = this.jn[0].power;
-        //         this.equipmentMsg.equipmntName = this.jn[0].equipmntName;
-        //         console.log(this.equipmentMsg.equipmentId);
-        //         this.tipMsg = '识别成功';
-
-        //         let btn = document.getElementById('open-toast');
-        //         btn.setAttribute('disabled', false);
-
-        //         let toast = document.getElementById('toast');
-        //         toast.setAttribute('message', result.text);
-
-        //         let drawGunBtn = document.getElementById('drawGunBtn');
-        //         drawGunBtn.setAttribute('disabled', false);
-        //     }
-        //     });
-        // },
-
         
         // 使用摄像头扫描
         decodeFromInputVideoFunc(firstDeviceId) { 
@@ -177,6 +143,7 @@ export default {
         //需要登录弹窗
         needLogin :async() => {
             const alert = await alertController.create({
+                cssClass: 'fontFamliy alertOneButton',
                 header: '请先登录',
                 buttons: [
                     {
@@ -200,6 +167,28 @@ export default {
 .fontFamliy{
     font-family: '华文楷体';
     font-weight: 500;
+}
+
+.alertOneButton{
+    .alert-wrapper {
+        border-radius: 15px;
+    }
+    .alert-title {
+        text-align: center;
+    }
+    .alert-button-group {
+      padding: 0;
+      border-top: 1px solid #e1dce6;
+      justify-content: center;
+    }
+    .alert-message {
+      max-height: 240px;
+      text-align:center;
+    }
+    .alert-button {
+      widows: 100%;
+      margin:0;
+    }
 }
 
 #backBtn{

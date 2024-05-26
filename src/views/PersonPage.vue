@@ -42,7 +42,7 @@
                         </span>
                         <ion-icon id="userMsgBtn" :icon="chevronForward" slot="end"></ion-icon>
                         <span id="userMsgOutline">
-                            <div id="noName">登录</div>
+                            <div id="noName" class="fontFamliy">登录</div>
                         </span>
                     </div>
                 </ion-card-content>
@@ -114,7 +114,6 @@ export default {
 
         //判断是否登录了
         getLocalIsLogin(){
-            // console.log('login',localStorage.getItem('isLogin'));
             if(localStorage.getItem('isLogin')==1){
                 this.isLongin = true;
                 this.getUserMsg();
